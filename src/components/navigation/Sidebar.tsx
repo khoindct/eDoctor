@@ -4,6 +4,7 @@ import { Drawer, Hidden } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import MapIcon from '@material-ui/icons/Map';
+import EventIcon from '@material-ui/icons/Event';
 import List from '@material-ui/core/List';
 import { makeStyles } from '@material-ui/core/styles';
 import NavItem from './NavItem';
@@ -46,6 +47,11 @@ const items = [
     icon: MapIcon,
     title: 'Map',
   },
+  {
+    path: '/app/calendar',
+    icon: EventIcon,
+    title: 'Calendar',
+  },
 ];
 
 const Sidebar: React.FC<SideBarProps> = ({
@@ -73,21 +79,21 @@ const Sidebar: React.FC<SideBarProps> = ({
     <React.Fragment>
       <Hidden lgUp>
         <Drawer
-          anchor='left'
+          anchor="left"
           classes={{ paper: classes.mobileDrawer }}
           onClose={onMobileClose}
           open={openMobile}
-          variant='temporary'
+          variant="temporary"
         >
           {drawerItems}
         </Drawer>
       </Hidden>
       <Hidden mdDown>
         <Drawer
-          anchor='left'
+          anchor="left"
           classes={{ paper: classes.desktopDrawer }}
           open
-          variant='persistent'
+          variant="persistent"
         >
           {drawerItems}
         </Drawer>

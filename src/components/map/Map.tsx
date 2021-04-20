@@ -40,7 +40,7 @@ const Map = () => {
 
   return (
     // Important! Always set the container height explicitly
-    <div className='map'>
+    <div className="map">
       <GoogleMapReact
         bootstrapURLKeys={{ key: `${process.env.REACT_APP_GOOGLE_MAP_API}` }}
         defaultCenter={center}

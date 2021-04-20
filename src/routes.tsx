@@ -7,6 +7,7 @@ import LoginPage from './pages/auth/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CustomerPage from './pages/CustomerPage';
 import MapPage from './pages/MapPage';
+import CalendarPage from './pages/CalendarPage';
 
 const routes = [
   {
@@ -16,7 +17,8 @@ const routes = [
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'customers', element: <CustomerPage /> },
       { path: 'map', element: <MapPage /> },
-      { path: '*', element: <Navigate to='/404' /> },
+      { path: 'calendar', element: <CalendarPage /> },
+      { path: '*', element: <Navigate to="/404" /> },
     ],
   },
   {
