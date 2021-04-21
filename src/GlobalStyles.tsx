@@ -3,10 +3,10 @@ import { createStyles, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles(() =>
   createStyles({
     "@global": {
-      "*": {
-        boxSizing: "border-box",
+      "*, *::before, *::after": {
+        boxSizing: "inherit",
         margin: 0,
-        padding: 0,
+        padding: "0",
       },
       html: {
         "-webkit-font-smoothing": "antialiased",
