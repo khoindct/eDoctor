@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import './Map.scss';
-import GoogleMapReact from 'google-map-react';
-import LocationMarker from './LocationMarker';
+import { useEffect, useState } from "react";
+import "./Map.scss";
+import GoogleMapReact from "google-map-react";
+import LocationMarker from "./LocationMarker";
 
 interface Location {
   lat: number;

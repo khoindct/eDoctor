@@ -1,17 +1,7 @@
-import React, { useState } from "react";
-import {
-  Avatar,
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import React from "react";
+import { makeStyles, Grid } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import MUIDataTable from "mui-datatables";
 
 interface CustomerListProps {
   customers: {
@@ -34,69 +24,99 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     marginRight: theme.spacing(2),
   },
+  editButton: {
+    cursor: "pointer",
+  },
 }));
+
+const datatableData = [
+  ["Joe James", "Example Inc.", "Yonkers", "NY"],
+  ["John Walsh", "Example Inc.", "Hartford", "CT"],
+  ["Bob Herm", "Example Inc.", "Tampa", "FL"],
+  ["James Houston", "Example Inc.", "Dallas", "TX"],
+  ["Prabhakar Linwood", "Example Inc.", "Hartford", "CT"],
+  ["Kaui Ignace", "Example Inc.", "Yonkers", "NY"],
+  ["Esperanza Susanne", "Example Inc.", "Hartford", "CT"],
+  ["Christian Birgitte", "Example Inc.", "Tampa", "FL"],
+  ["Meral Elias", "Example Inc.", "Hartford", "CT"],
+  ["Deep Pau", "Example Inc.", "Yonkers", "NY"],
+  ["Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
+  ["Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
+  ["Brigid Ankur", "Example Inc.", "Dallas", "TX"],
+  ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
+  ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
+  ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
+  ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
+];
 
 const CustomerList: React.FC<CustomerListProps> = ({ customers }) => {
   const classes = useStyles();
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
 
-  const handleLimitChange = (event: any) => {
-    setLimit(event.target.value);
-  };
-
-  const handlePageChange = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+  const columns = [
+    {
+      name: "name",
+      label: "Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "company",
+      label: "Company",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "city",
+      label: "City",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "state",
+      label: "State",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "actions",
+      label: "Actions",
+      options: {
+        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          return (
+            <EditIcon
+              className={classes.editButton}
+              onClick={() => console.log(value, tableMeta)}
+            />
+          );
+        },
+      },
+    },
+  ];
 
   return (
-    <Card>
-      <Box minWidth={1050}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell>Phone</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {customers.slice(0, limit).map((customer) => (
-              <TableRow hover key={customer.id}>
-                <TableCell>
-                  <Box alignItems="center" display="flex">
-                    <Avatar className={classes.avatar} src={customer.avatarUrl}>
-                      {customer.name}
-                    </Avatar>
-                    <Typography color="textPrimary" variant="body1">
-                      {customer.name}
-                    </Typography>
-                  </Box>
-                </TableCell>
-                <TableCell>{customer.email}</TableCell>
-                <TableCell>
-                  {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
-                </TableCell>
-                <TableCell>{customer.phone}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
-      <TablePagination
-        component="div"
-        count={customers.length}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleLimitChange}
-        page={page}
-        rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
-    </Card>
+    <React.Fragment>
+      Tables
+      <Grid container spacing={4} className={classes.root}>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title="Employee List"
+            data={datatableData}
+            columns={columns}
+            options={{
+              filterType: "checkbox",
+            }}
+          />
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 
