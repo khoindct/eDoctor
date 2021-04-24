@@ -1,10 +1,13 @@
 import Calendar from "../components/calendar/Calendar";
+import Page from "../components/Page";
 
 const CalendarPage: React.FC = () => {
   return (
-    <div style={{ width: "90%", margin: "auto" }}>
-      <Calendar />
-    </div>
+    <Page className="" title="Appointments">
+      <div style={{ width: "90%", margin: "auto" }}>
+        <Calendar />
+      </div>
+    </Page>
   );
 };
 

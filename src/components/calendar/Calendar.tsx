@@ -1,51 +1,90 @@
 import React, { useState } from "react";
-import Paper from "@material-ui/core/Paper";
-import { ViewState } from "@devexpress/dx-react-scheduler";
-import {
-  Scheduler,
-  WeekView,
-  MonthView,
-  Toolbar,
-  DateNavigator,
-  Appointments,
-} from "@devexpress/dx-react-scheduler-material-ui";
-import { appointments } from "./data/calendar-fake-data";
-import ExternalViewSwitcher from "./ViewSwitching";
+import FullCalendar, {
+  EventApi,
+  DateSelectArg,
+  EventClickArg,
+  EventContentArg,
+} from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { INITIAL_EVENTS, createEventId } from "./event-utils";
+import "./calendar.scss";
 
 const Calendar: React.FC = () => {
-  const [data] = useState<any>(appointments);
-  const [currentViewName, setCurrentViewName] = useState<any>("Month");
+  const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true);
+  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
 
-  const currentViewNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentViewName((prevState: any) => (prevState = e.target.value));
+  const handleDateSelect = (selectInfo: DateSelectArg) => {
+    let title = prompt("Please enter a new title for your event");
+    let calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect(); // clear date selection
+
+    if (title) {
+      calendarApi.addEvent({
+        id: createEventId(),
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay,
+      });
+    }
+  };
+
+  const handleEventClick = (clickInfo: EventClickArg) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the event '${clickInfo.event.title}'`
+      )
+    ) {
+      clickInfo.event.remove();
+    }
+  };
+
+  const handleEvents = (events: EventApi[]) => {
+    setCurrentEvents(events);
   };
 
   return (
-    <React.Fragment>
-      <ExternalViewSwitcher
-        currentViewName={currentViewName}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          currentViewNameChange(e)
-        }
-      />
-
-      <Paper>
-        <Scheduler data={data}>
-          <ViewState
-            defaultCurrentDate="2018-07-25"
-            currentViewName={currentViewName}
-          />
-          <WeekView startDayHour={10} endDayHour={19} />
-          <MonthView />
-
-          <Toolbar />
-          <DateNavigator />
-
-          <Appointments />
-        </Scheduler>
-      </Paper>
-    </React.Fragment>
+    <div className="demo-app">
+      <div className="demo-app-main">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          }}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          weekends={weekendsVisible}
+          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+          select={handleDateSelect}
+          eventContent={renderEventContent} // custom render function
+          eventClick={handleEventClick}
+          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          /* you can update a remote database when these fire:
+          eventAdd={function(){}}
+          eventChange={function(){}}
+          eventRemove={function(){}}
+          */
+        />
+      </div>
+    </div>
   );
 };
+
+function renderEventContent(eventContent: EventContentArg) {
+  return (
+    <>
+      <b>{eventContent.timeText}</b>
+      <i>{eventContent.event.title}</i>
+    </>
+  );
+}
 
 export default Calendar;

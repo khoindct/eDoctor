@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { makeStyles, Grid } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import MUIDataTable from "mui-datatables";
@@ -30,29 +31,98 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const datatableData = [
-  ["Joe James", "Example Inc.", "Yonkers", "NY"],
-  ["John Walsh", "Example Inc.", "Hartford", "CT"],
-  ["Bob Herm", "Example Inc.", "Tampa", "FL"],
-  ["James Houston", "Example Inc.", "Dallas", "TX"],
-  ["Prabhakar Linwood", "Example Inc.", "Hartford", "CT"],
-  ["Kaui Ignace", "Example Inc.", "Yonkers", "NY"],
-  ["Esperanza Susanne", "Example Inc.", "Hartford", "CT"],
-  ["Christian Birgitte", "Example Inc.", "Tampa", "FL"],
-  ["Meral Elias", "Example Inc.", "Hartford", "CT"],
-  ["Deep Pau", "Example Inc.", "Yonkers", "NY"],
-  ["Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
-  ["Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
-  ["Brigid Ankur", "Example Inc.", "Dallas", "TX"],
-  ["Anna Siranush", "Example Inc.", "Yonkers", "NY"],
-  ["Avram Sylva", "Example Inc.", "Hartford", "CT"],
-  ["Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
-  ["Gaston Festus", "Example Inc.", "Tampa", "FL"],
+  {
+    id: "1",
+    name: "Joe James",
+    company: "Example Inc.",
+    city: "Yonkers",
+    state: "NY",
+  },
+  {
+    id: "2",
+    name: "John Walsh",
+    company: "Example Inc.",
+    city: "Hartford",
+    state: "CT",
+  },
+  {
+    id: "3",
+    name: "Bob Herm",
+    company: "Example Inc.",
+    city: "Tampa",
+    state: "FL",
+  },
+  {
+    id: "4",
+    name: "James Houston",
+    company: "Example Inc.",
+    city: "Dallas",
+    state: "TX",
+  },
+  {
+    id: "5",
+    name: "Prabhakar Linwood",
+    company: "Example Inc.",
+    city: "Hartford",
+    state: "CT",
+  },
+  {
+    id: "6",
+    name: "Kaui Ignace",
+    company: "Example Inc.",
+    city: "Yonkers",
+    state: "NY",
+  },
+  {
+    id: "7",
+    name: "Esperanza Susanne",
+    company: "Example Inc.",
+    city: "Hartford",
+    state: "CT",
+  },
+  {
+    id: "8",
+    name: "Christian Birgitte",
+    company: "Example Inc.",
+    city: "Tampa",
+    state: "FL",
+  },
+  {
+    id: "9",
+    name: "Meral Elias",
+    company: "Example Inc.",
+    city: "Hartford",
+    state: "CT",
+  },
+  {
+    id: "10",
+    name: "Deep Pau",
+    company: "Example Inc.",
+    city: "Yonkers",
+    state: "NY",
+  },
+
+  // ["10", "Deep Pau", "Example Inc.", "Yonkers", "NY"],
+  // ["11", "Sebastiana Hani", "Example Inc.", "Dallas", "TX"],
+  // ["12", "Marciano Oihana", "Example Inc.", "Yonkers", "NY"],
+  // ["13", "Brigid Ankur", "Example Inc.", "Dallas", "TX"],
+  // ["14", "Anna Siranush", "Example Inc.", "Yonkers", "NY"],
+  // ["15", "Avram Sylva", "Example Inc.", "Hartford", "CT"],
+  // ["16", "Serafima Babatunde", "Example Inc.", "Tampa", "FL"],
+  // ["17", "Gaston Festus", "Example Inc.", "Tampa", "FL"],
 ];
 
 const CustomerList: React.FC<CustomerListProps> = ({ customers }) => {
   const classes = useStyles();
+  let navigate = useNavigate();
 
   const columns = [
+    {
+      name: "id",
+      options: {
+        display: false,
+      },
+    },
     {
       name: "name",
       label: "Name",
@@ -90,10 +160,11 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers }) => {
       label: "Actions",
       options: {
         customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          const rowId = tableMeta.rowData[0];
           return (
             <EditIcon
               className={classes.editButton}
-              onClick={() => console.log(value, tableMeta)}
+              onClick={() => navigate(`/app/customers/${rowId}/edit`)}
             />
           );
         },
