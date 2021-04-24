@@ -13,10 +13,16 @@ const useStyles = makeStyles((theme) => ({
   },
   edit_page_content: {
     display: "grid",
-    gridTemplateColumns: "40% 60%",
+    gridTemplateColumns: "40% 1fr",
     gap: "2rem",
     margin: "0 2rem",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "none",
+      gridTemplateRows: "repeat(2, min-content)",
+    },
   },
+  edit_clinic_picture: {},
+  edit_clinic_form: {},
 }));
 
 const EditCustomerPage: React.FC = () => {
@@ -24,9 +30,12 @@ const EditCustomerPage: React.FC = () => {
   return (
     <Page className={classes.root} title="Edit">
       <div className={classes.edit_page_content}>
-        <CardClinicPicture />
-
-        <CardClinicForm />
+        <div className={classes.edit_clinic_picture}>
+          <CardClinicPicture />
+        </div>
+        <div className={classes.edit_clinic_form}>
+          <CardClinicForm />
+        </div>
       </div>
     </Page>
   );

@@ -1,9 +1,9 @@
 import {
   Card,
   CardActionArea,
-  CardContent,
+  CardHeader,
   CardMedia,
-  Typography,
+  Divider,
 } from "@material-ui/core";
 
 // styles
@@ -14,24 +14,16 @@ const CardClinicPicture: React.FC = () => {
 
   return (
     <Card className={classes.root} variant="outlined">
-      <CardActionArea>
+      <CardHeader title="Clinic Photo" />
+      <Divider />
+      <div className={classes.photo}>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
-          height="140"
           image="https://react-material-kit.devias.io/static/mock-images/avatars/avatar-jane_rotanson.png"
           title="Contemplative Reptile"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      </div>
     </Card>
   );
 };

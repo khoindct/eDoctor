@@ -1,16 +1,17 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme: any) => ({
-  root: {},
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
+  root: {
+    borderRadius: "1rem",
+    boxShadow: "rgb(0 0 0 / 12%) 0px 1px 2px, rgb(0 0 0 / 5%) 0px 0px 0px 1px",
   },
-  title: {
-    fontSize: 14,
+  button: {
+    padding: "1rem",
   },
-  pos: {
-    marginBottom: 12,
+  form: {
+    display: "grid",
+    gridTemplateColumns: "repeat(2, 45%)",
+    gap: "2rem",
+    justifyContent: "center",
   },
 }));
