@@ -8,7 +8,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 import CustomerPage from "./pages/CustomerPage";
 import MapPage from "./pages/MapPage";
 import CalendarPage from "./pages/CalendarPage";
-import EditCustomerPage from "./pages/EditCustomerPage";
+import CustomerEditPage from "./pages/CustomerEditPage";
+import ApplicationPage from "./pages/ApplicationPage";
+import ApplicationEditPage from "./pages/ApplicationEditPage";
 
 const routes = [
   {
@@ -16,8 +18,10 @@ const routes = [
     element: <DashboardLayout />,
     children: [
       { path: "dashboard", element: <DashboardPage /> },
+      { path: "applications", element: <ApplicationPage /> },
+      { path: "applications/:id/edit", element: <ApplicationEditPage /> },
       { path: "customers", element: <CustomerPage /> },
-      { path: "customers/:id/edit", element: <EditCustomerPage /> },
+      { path: "customers/:id/edit", element: <CustomerEditPage /> },
       { path: "map", element: <MapPage /> },
       { path: "calendar", element: <CalendarPage /> },
       { path: "*", element: <Navigate to="/404" /> },

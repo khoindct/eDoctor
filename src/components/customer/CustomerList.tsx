@@ -174,11 +174,10 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers }) => {
 
   return (
     <React.Fragment>
-      Tables
       <Grid container spacing={4} className={classes.root}>
         <Grid item xs={12}>
           <MUIDataTable
-            title="Employee List"
+            title="Customer List"
             data={datatableData}
             columns={columns}
             options={{

@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import { Drawer, Hidden } from '@material-ui/core';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import MapIcon from '@material-ui/icons/Map';
-import EventIcon from '@material-ui/icons/Event';
-import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles';
-import NavItem from './NavItem';
+import { Drawer, Hidden } from "@material-ui/core";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import MapIcon from "@material-ui/icons/Map";
+import EventIcon from "@material-ui/icons/Event";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import List from "@material-ui/core/List";
+import { makeStyles } from "@material-ui/core/styles";
+import NavItem from "./NavItem";
 
 interface SideBarProps {
   onMobileClose: () => void;
@@ -22,10 +23,10 @@ const useStyles = makeStyles(() => ({
   desktopDrawer: {
     width: drawerWidth,
     top: 64,
-    height: 'calc(100% - 64px)',
+    height: "calc(100% - 64px)",
   },
   avatar: {
-    cursor: 'pointer',
+    cursor: "pointer",
     width: 64,
     height: 64,
   },
@@ -33,24 +34,29 @@ const useStyles = makeStyles(() => ({
 
 const items = [
   {
-    path: '/app/dashboard',
+    path: "/app/dashboard",
     icon: DashboardIcon,
-    title: 'Dashboard',
+    title: "Dashboard",
   },
   {
-    path: '/app/customers',
+    path: "/app/applications",
+    icon: AssignmentIcon,
+    title: "Applications",
+  },
+  {
+    path: "/app/customers",
     icon: PeopleAltIcon,
-    title: 'Customers',
+    title: "Customers",
   },
   {
-    path: '/app/map',
+    path: "/app/map",
     icon: MapIcon,
-    title: 'Map',
+    title: "Map",
   },
   {
-    path: '/app/calendar',
+    path: "/app/calendar",
     icon: EventIcon,
-    title: 'Calendar',
+    title: "Calendar",
   },
 ];
 

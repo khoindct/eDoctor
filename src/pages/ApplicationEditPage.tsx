@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   edit_clinic_form: {},
 }));
 
-const EditCustomerPage: React.FC = () => {
+const ApplicationEditPage: React.FC = () => {
   const classes = useStyles();
   return (
     <Page className={classes.root} title="Edit">
@@ -41,4 +41,4 @@ const EditCustomerPage: React.FC = () => {
   );
 };
 
-export default EditCustomerPage;
+export default ApplicationEditPage;
