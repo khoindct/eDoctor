@@ -1,0 +1,92 @@
+.landing {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 80vh repeat(4, 1fr);
+}
+
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  color: white;
+
+  &__title {
+    font-size: 3rem;
+  }
+
+  &__subtitle {
+    font-size: 1.4rem;
+  }
+}
+
+.features {
+  background-color: #f9fafa;
+  display: grid;
+  justify-items: center;
+  padding: 5rem;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  &__content {
+    display: flex;
+    width: 80%;
+    gap: 12rem;
+    margin-top: 3rem;
+  }
+
+  &__card {
+  }
+
+  &__icon {
+    font-size: 4rem;
+
+    &--purple {
+      color: #3f51b5;
+    }
+
+    &--red {
+      color: #ff3b30;
+    }
+
+    &--green {
+      color: #05ae0e;
+    }
+  }
+
+  &__text {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtext {
+    font-size: 1.2rem;
+  }
+}
+
+.searching {
+  padding: 7rem;
+  background-color: blue;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+.booking {
+  padding: 7rem;
+  background-color: yellow;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}

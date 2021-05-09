@@ -11,6 +11,10 @@ import CalendarPage from "./pages/CalendarPage";
 import CustomerEditPage from "./pages/CustomerEditPage";
 import ApplicationPage from "./pages/ApplicationPage";
 import ApplicationEditPage from "./pages/ApplicationEditPage";
+import LandingPage from "./pages/LandingPage";
+import BookAppointmentPage from "./pages/BookAppointmentPage";
+import SearchClinicPage from "./pages/SearchClinicPage";
+import SignupPage from "./pages/auth/SignupPage";
 
 const routes = [
   {
@@ -31,7 +35,11 @@ const routes = [
     path: "/",
     element: <MainLayout />,
     children: [
+      { path: "", element: <LandingPage /> },
+      { path: "book-clinic", element: <BookAppointmentPage /> },
+      { path: "search-clinic", element: <SearchClinicPage /> },
       { path: "login", element: <LoginPage /> },
+      { path: "signup", element: <SignupPage /> },
       { path: "404", element: <NotFoundPage /> },
     ],
   },
