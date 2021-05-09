@@ -11,6 +11,7 @@ import CalendarPage from "./pages/CalendarPage";
 import CustomerEditPage from "./pages/CustomerEditPage";
 import ApplicationPage from "./pages/ApplicationPage";
 import ApplicationEditPage from "./pages/ApplicationEditPage";
+import ApplicationDetailPage from "./pages/ApplicationDetailPage";
 import LandingPage from "./pages/LandingPage";
 import BookAppointmentPage from "./pages/BookAppointmentPage";
 import SearchClinicPage from "./pages/SearchClinicPage";
@@ -23,6 +24,7 @@ const routes = [
     children: [
       { path: "dashboard", element: <DashboardPage /> },
       { path: "applications", element: <ApplicationPage /> },
+      { path: "applications/:id/detail", element: <ApplicationDetailPage /> },
       { path: "applications/:id/edit", element: <ApplicationEditPage /> },
       { path: "customers", element: <CustomerPage /> },
       { path: "customers/:id/edit", element: <CustomerEditPage /> },
