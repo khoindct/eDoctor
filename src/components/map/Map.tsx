@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./Map.scss";
 import GoogleMapReact from "google-map-react";
 import LocationMarker from "./LocationMarker";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 interface Location {
   lat: number;
@@ -15,6 +16,9 @@ const Map = () => {
   });
   const [currentPosition, setCurrentPosition] = useState<Location>();
   const [zoom] = useState(19);
+  const { location, coordinates } = useTypedSelector(
+    (state) => state.locations
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -34,10 +38,6 @@ const Map = () => {
     );
   }, []);
 
-  const handleApiLoaded = (map: any, maps: any) => {
-    console.log(google);
-  };
-
   return (
     // Important! Always set the container height explicitly
     <div className="map">
@@ -45,11 +45,9 @@ const Map = () => {
         bootstrapURLKeys={{ key: `${process.env.REACT_APP_GOOGLE_MAP_API}` }}
         defaultCenter={center}
         defaultZoom={zoom}
-        center={currentPosition}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+        center={coordinates}
       >
-        <LocationMarker lat={center.lat} lng={center.lng} />
+        <LocationMarker lat={coordinates.lat} lng={coordinates.lng} />
       </GoogleMapReact>
     </div>
   );

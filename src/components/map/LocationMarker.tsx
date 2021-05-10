@@ -1,4 +1,4 @@
-import { MdLocalHospital } from "react-icons/md";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 import "./LocationMarker.scss";
 
 interface Marker {
@@ -9,10 +9,10 @@ interface Marker {
 
 const LocationMarker: React.FC<Marker> = ({ lat, lng }) => {
   return (
-    <div className="location-marker">
+    <i className="location-marker">
       {" "}
-      <MdLocalHospital className="custom-marker-color text-3xl" />{" "}
-    </div>
+      <LocationOnIcon className="custom-marker-color" />{" "}
+    </i>
   );
 };
 

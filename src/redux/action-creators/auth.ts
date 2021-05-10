@@ -24,7 +24,7 @@ export const signup = (formProps: any, callback: any) => async (
 };
 
 export const signin = (formProps: any, callback: any) => async (
-  dispatch: any
+  dispatch: Dispatch<Action>
 ) => {
   try {
     const response = await axios.post("/users/signin", formProps);

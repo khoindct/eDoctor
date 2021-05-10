@@ -1,0 +1,25 @@
+.root {
+  margin: auto;
+}
+
+.clinic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  grid-gap: 1rem;
+  margin: 1rem 0;
+}
+
+.row:first-child {
+  justify-items: center;
+}
+
+.working-day {
+  transform: translateY(10px);
+}

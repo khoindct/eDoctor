@@ -9,6 +9,7 @@ interface IFormInput {
   email: string;
   password: string;
   passwordConfirm: string;
+  role?: string;
 }
 
 const SignupPage: React.FC = () => {
@@ -21,7 +22,8 @@ const SignupPage: React.FC = () => {
 
   const onSubmit = (formData: IFormInput) => {
     console.log(formData);
-    signup(formData, () => navigate("/app/dashboard"));
+    formData.role = "doctor";
+    signup(formData, () => navigate("/register-clinic"));
   };
 
   return (
