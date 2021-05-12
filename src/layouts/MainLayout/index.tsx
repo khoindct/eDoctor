@@ -4,9 +4,8 @@ import { Outlet } from "react-router";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    width: "100%",
-    height: "100%",
-    display: "flex",
+    width: "80%",
+    margin: "auto",
   },
 }));
 

@@ -16,14 +16,12 @@ const useStyles = makeStyles(() =>
       },
       body: {
         backgroundColor: "#f4f6f8",
-        height: "100%",
         width: "100%",
       },
       a: {
         textDecoration: "none",
       },
       "#root": {
-        height: "100%",
         width: "100%",
       },
     },

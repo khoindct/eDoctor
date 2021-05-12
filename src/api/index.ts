@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const api = () => {
+const api = (headerConfig: any = null) => {
   return axios.create({
     baseURL: "http://localhost:8000/api/v1",
-    headers: "",
+    headers: headerConfig ?? "",
     withCredentials: true,
   });
 };
