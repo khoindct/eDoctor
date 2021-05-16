@@ -12,6 +12,8 @@ import {
   Typography,
   Menu,
   MenuItem,
+  Divider,
+  Button,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -19,10 +21,9 @@ import {
   Person as AccountIcon,
 } from "@material-ui/icons";
 
-import useStyles from "./styles";
-
 import { notificationData } from "./data/headerData";
 import Notification from "../notification/Notification";
+import "./Header.scss";
 
 interface HeaderProps {
   onMobileNavOpen: () => void;
@@ -36,7 +37,6 @@ interface NotificationType {
 }
 
 const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const [notifications] = useState<NotificationType[]>(notificationData);
   const [notificationsMenu, setNotificationsMenu] = useState<any>(null);
@@ -44,30 +44,16 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
   const [profileMenu, setProfileMenu] = useState<any>(null);
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar position="fixed" className="app-bar">
       <Toolbar>
         <Hidden lgUp>
-          <IconButton
-            color="inherit"
-            onClick={onMobileNavOpen}
-            className={classNames(
-              classes.headerMenuButtonSandwich,
-              classes.headerMenuButtonCollapse
-            )}
-          >
-            <MenuIcon
-              classes={{
-                root: classNames(
-                  classes.headerIcon,
-                  classes.headerIconCollapse
-                ),
-              }}
-            />
+          <IconButton color="inherit" onClick={onMobileNavOpen} className="">
+            <MenuIcon />
           </IconButton>
         </Hidden>
 
         <RouterLink to="/">
-          <Typography variant="h6" className={classes.logotype}>
+          <Typography variant="h6" className="">
             LOGO
           </Typography>
         </RouterLink>
@@ -82,30 +68,28 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
             setNotificationsMenu(e.currentTarget);
             setIsNotificationsUnread(false);
           }}
-          className={classes.headerMenuButton}
         >
           <Badge
             color="secondary"
             badgeContent={isNotificationsUnread ? notifications.length : 0}
           >
-            <NotificationsIcon classes={{ root: classes.headerIcon }} />
+            <NotificationsIcon className="header__menu-button" />
           </Badge>
         </IconButton>
         <IconButton
           aria-haspopup="true"
           color="inherit"
-          className={classes.headerMenuButton}
           aria-controls="profile-menu"
           onClick={(e) => setProfileMenu(e.currentTarget)}
         >
-          <AccountIcon classes={{ root: classes.headerIcon }} />
+          <AccountIcon className="header__menu-button" />
         </IconButton>
         <Menu
           id="notifications-menu"
           open={Boolean(notificationsMenu)}
           anchorEl={notificationsMenu}
           onClose={() => setNotificationsMenu(null)}
-          className={classes.headerMenu}
+          className=""
           disableAutoFocusItem
           disableScrollLock
         >
@@ -113,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
             <MenuItem
               key={notification.id}
               onClick={() => setNotificationsMenu(null)}
-              className={classes.headerMenuItem}
+              className=""
             >
               <Notification {...notification} typographyVariant="inherit" />
             </MenuItem>
@@ -124,47 +108,39 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
           open={Boolean(profileMenu)}
           anchorEl={profileMenu}
           onClose={() => setProfileMenu(null)}
-          className={classes.headerMenu}
-          classes={{ paper: classes.profileMenu }}
+          classes={{ paper: "profile" }}
           disableAutoFocusItem
           disableScrollLock
         >
-          <div className={classes.profileMenuUser}>
-            <Typography variant="h4">John Smith</Typography>
+          <div>
+            <Typography variant="h6" className="profile__name">
+              John Smith
+            </Typography>
           </div>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Profile
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Tasks
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Messages
-          </MenuItem>
-          <div className={classes.profileMenuUser}>
-            <Typography
-              className={classes.profileMenuLink}
+          <Divider />
+          <div className="profile__item">
+            <MenuItem className="profile__item--content">
+              <AccountIcon className="profile__item--icon" /> Profile
+            </MenuItem>
+            <MenuItem className="profile__item--content">
+              <AccountIcon className="profile__item--icon" /> Tasks
+            </MenuItem>
+            <MenuItem className="profile__item--content">
+              <AccountIcon className="profile__item--icon" /> Messages
+            </MenuItem>
+          </div>
+          <div className="profile__button">
+            <Button
+              variant="outlined"
               color="primary"
+              size="medium"
+              fullWidth
+              className="profile__button--item"
               // onClick={() => signOut(userDispatch, props.history)}
               onClick={() => navigate("/login", { replace: true })}
             >
               Sign Out
-            </Typography>
+            </Button>
           </div>
         </Menu>
       </Toolbar>

@@ -17,6 +17,7 @@ import BookAppointmentPage from "./pages/BookAppointmentPage";
 import SearchClinicPage from "./pages/SearchClinicPage";
 import SignupPage from "./pages/auth/SignupPage";
 import RegisterClinicPage from "./pages/RegisterClinicPage";
+import DashboardPatientPage from "./pages/DashboardPatientPage";
 
 const routes = [
   {
@@ -44,6 +45,7 @@ const routes = [
       { path: "register-clinic", element: <RegisterClinicPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
+      { path: "profile/:id", element: <DashboardPatientPage /> },
       { path: "404", element: <NotFoundPage /> },
     ],
   },

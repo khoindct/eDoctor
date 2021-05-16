@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles((theme: any) => ({
-  root: {},
+  root: {
+    fontSize: "1.5rem",
+  },
   editButton: {
     cursor: "pointer",
   },

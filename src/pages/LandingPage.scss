@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 80vh repeat(4, 1fr);
+  grid-template-rows: 90vh repeat(4, min-content);
 }
 
 .hero {
@@ -14,29 +14,71 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 2rem;
+  gap: 10rem;
   color: white;
 
   &__title {
-    font-size: 3rem;
+    font-size: 4.8rem;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  &__title--border {
+    width: 8rem;
+    height: 4px;
+    margin: 8px auto 0;
+    display: block;
+    background-color: var(--color-primary);
   }
 
   &__subtitle {
-    font-size: 1.4rem;
+    font-size: 2rem;
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.334;
+  }
+
+  &__button {
+    text-transform: uppercase;
+    padding: 2rem 5rem;
+    transform: translateY(-7rem);
+    border-radius: 3px;
+    background-color: var(--color-primary);
+    font-family: var(--font-primary);
+    color: #fff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  &__icon {
+    color: #ffb835;
+    font-size: 2.5rem !important;
+    transform: translateY(10rem);
   }
 }
 
 .features {
-  background-color: #f9fafa;
+  background-color: var(--color-grey-light-1);
   display: grid;
   justify-items: center;
-  padding: 5rem;
+  padding: 10rem;
+  grid-gap: 5rem;
 
   &__header {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.6rem;
+  }
+
+  &__title {
+    font-size: 3.6rem;
+    color: var(--color-grey-dark-1);
+    text-transform: uppercase;
   }
 
   &__content {
@@ -47,46 +89,148 @@
   }
 
   &__card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  &__icon {
-    font-size: 4rem;
-
-    &--purple {
-      color: #3f51b5;
-    }
-
-    &--red {
-      color: #ff3b30;
-    }
-
-    &--green {
-      color: #05ae0e;
-    }
+  &__media {
+    max-width: 15rem;
+    max-height: 10rem;
+    margin: 3rem 0;
   }
 
   &__text {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
+    color: var(--color-grey-dark-1);
     margin-bottom: 0.5rem;
   }
 
   &__subtext {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    color: var(--color-grey-dark-2);
   }
 }
 
 .searching {
   padding: 7rem;
-  background-color: blue;
+  background-color: var(--color-grey-light-3);
   display: grid;
+  grid-template-columns: repeat(2, 50%);
   justify-items: center;
   align-items: center;
+
+  &__media {
+    max-height: 30rem;
+    grid-column: 2 / 3;
+  }
+
+  &__content {
+    grid-row: 1 / 2;
+  }
+
+  &__title {
+    font-size: 2.7rem;
+    color: var(--color-grey-dark-1);
+  }
+
+  &__text {
+    font-size: 1.5rem;
+    color: var(--color-grey-dark-2);
+  }
+
+  &__button {
+    margin-top: 1rem;
+    text-transform: uppercase;
+    padding: 2rem 3rem;
+    border-radius: 3px;
+    background-color: var(--color-primary);
+    font-family: var(--font-primary);
+    color: #fff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
 }
 
 .booking {
   padding: 7rem;
-  background-color: yellow;
+  background-color: var(--color-grey-light-1);
   display: grid;
+  grid-template-columns: repeat(2, 50%);
   justify-items: center;
   align-items: center;
+
+  &__media {
+    max-height: 30rem;
+  }
+
+  &__title {
+    font-size: 2.7rem;
+    color: var(--color-grey-dark-1);
+  }
+
+  &__text {
+    font-size: 1.5rem;
+    color: var(--color-grey-dark-2);
+  }
+
+  &__button {
+    margin-top: 1rem;
+    text-transform: uppercase;
+    padding: 2rem 3rem;
+    border-radius: 3px;
+    background-color: var(--color-primary);
+    font-family: var(--font-primary);
+    color: #fff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
+}
+
+.footer {
+  background-color: var(--color-primary);
+  padding: 8rem;
+}
+
+.nav {
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 2rem;
+  align-items: center;
+
+  &__link:link,
+  &__link:visited {
+    font-size: 1.4rem;
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1.5rem;
+    display: block;
+    transition: all 0.2s;
+  }
+
+  &__link:hover,
+  &__link:active {
+    background-color: rgba(#fff, 0.05);
+    transform: translateY(-3px);
+  }
+}
+
+.copyright {
+  font-size: 1.4rem;
+  color: var(--color-grey-light-2);
+  margin-top: 6rem;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  width: 70%;
 }

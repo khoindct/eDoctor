@@ -1,0 +1,35 @@
+.MuiSvgIcon-root {
+  width: 1.5em !important;
+  height: 1.5em !important;
+}
+
+.MuiTablePagination-caption,
+.MuiSelect-select.MuiSelect-select {
+  font-size: 1.3rem !important;
+}
+
+.MuiTypography-h6 {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+}
+
+.chip-success {
+  padding: 1.5rem 0.5rem !important;
+  font-size: 1.5rem !important;
+  background-color: var(--color-chip-success) !important;
+  color: #fff !important;
+}
+
+.chip-cancel {
+  padding: 1.5rem 0.5rem !important;
+  font-size: 1.5rem !important;
+  background-color: var(--color-chip-error) !important;
+  color: #fff !important;
+}
+
+.chip-pending {
+  padding: 1.5rem 0.5rem !important;
+  font-size: 1.5rem !important;
+  background-color: var(--color-chip-pending) !important;
+  color: #fff !important;
+}
