@@ -1,0 +1,56 @@
+
+.clinic {
+  &__content {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    grid-template-rows: 250px repear(2, min-content);
+  }
+
+  &__image {
+    width: 35rem !important;
+    height: 25rem;
+  }
+
+  &__info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__name {
+    font-size: 2rem;
+    color: var(--color-text-primary);
+  }
+
+  &__description {
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  &__action {
+    display: flex;
+  }
+
+  &__rating {
+    margin-top: 1px;
+    font-size: 1.4rem;
+  }
+
+  &__location,
+  &__map {
+    grid-column: 1 / span 2;
+  }
+
+  &__location {
+    justify-content: space-between;
+  }
+}
+
+.expand {
+  transform: rotate(0deg);
+  transition: 0.4s linear;
+}
+
+.expand-open {
+  transform: rotate(180deg);
+}

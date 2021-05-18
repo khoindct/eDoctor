@@ -1,0 +1,23 @@
+.search-section {
+  grid-column: full-start / full-end;
+  padding: 4rem;
+  background-color: var(--color-grey-light-1);
+}
+
+.search-bar {
+  width: 80%;
+  padding: 2.6rem;
+  background: #f7f9fa;
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: auto;
+}
+
+.search-input {
+  font-size: 1.5rem !important;
+}
+
+.clinic-section {
+  grid-column: center-start / center-end;
+  padding: 4rem 0;
+}
