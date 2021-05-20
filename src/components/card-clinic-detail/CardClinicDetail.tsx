@@ -17,6 +17,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useNavigate } from "react-router-dom";
 import "./CardClinicDetail.scss";
 import Map from "../map/Map";
+import CustomButton from "../CustomButton";
 
 const CardClinicDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const CardClinicDetail: React.FC = () => {
     setExpanded(!expanded);
   };
 
-  const navigateToBooking = () => navigate("/app/customers", { replace: true });
+  const navigateToBooking = () => navigate("/book-clinic", { replace: true });
 
   return (
     <Card className="clinic__content">
@@ -55,13 +56,16 @@ const CardClinicDetail: React.FC = () => {
               {ratingValue}/5
             </Box>
           )}
-          <Button className="ml-auto" onClick={navigateToBooking}>
-            Make An Appointment
-          </Button>
+          <CustomButton className="ml-auto" callback={navigateToBooking}>
+            book now
+          </CustomButton>
         </div>
       </CardContent>
       <CardActions disableSpacing className="clinic__location">
-        <IconButton aria-label="detail location">
+        <IconButton
+          aria-label="detail location"
+          classes={{ root: "icon-button-root" }}
+        >
           <LocationOnIcon className="mr-sm" />
           Clinic address
         </IconButton>

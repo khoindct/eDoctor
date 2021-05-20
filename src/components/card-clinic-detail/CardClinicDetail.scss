@@ -1,4 +1,3 @@
-
 .clinic {
   &__content {
     display: grid;
@@ -29,6 +28,8 @@
 
   &__action {
     display: flex;
+    align-items: center;
+    margin-top: 1rem;
   }
 
   &__rating {
@@ -44,6 +45,12 @@
   &__location {
     justify-content: space-between;
   }
+}
+
+.icon-button-root:hover,
+.icon-button-root:active {
+  cursor: unset;
+  background-color: transparent !important;
 }
 
 .expand {

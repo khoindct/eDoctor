@@ -13,7 +13,7 @@ import {
 import "./RegisterClinicPage.scss";
 import Map from "../components/map/Map";
 import SearchLocation from "../components/map/SearchLocation";
-import axios from "axios";
+import api from "../api";
 
 interface IFormInput {
   email: string;
@@ -30,6 +30,7 @@ interface IFormInput {
 }
 
 const RegisterClinicPage = () => {
+  const axios = api();
   const navigate = useNavigate();
   const [coverImage, setCoverImage] = useState<any>();
   const [saveCoverImage, setSaveCoverImage] = useState<any>();
@@ -73,6 +74,7 @@ const RegisterClinicPage = () => {
       coordinates: [coordinates.lng, coordinates.lat],
     };
     formData.coverImage = saveCoverImage;
+
     const {
       address,
       coverImage,
@@ -83,6 +85,7 @@ const RegisterClinicPage = () => {
       phone,
       schedule,
     } = formData;
+
     const data = new FormData();
     data.append("coverImage", coverImage);
     data.append("address", address);
@@ -99,7 +102,7 @@ const RegisterClinicPage = () => {
   };
 
   return (
-    <div className="root">
+    <div className="register-clinic-page">
       <form className="clinic-form" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="email"

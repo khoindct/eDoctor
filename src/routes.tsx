@@ -13,7 +13,7 @@ import ApplicationPage from "./pages/ApplicationPage";
 import ApplicationEditPage from "./pages/ApplicationEditPage";
 import ApplicationDetailPage from "./pages/ApplicationDetailPage";
 import LandingPage from "./pages/LandingPage";
-import BookAppointmentPage from "./pages/BookAppointmentPage";
+import BookingAndReviewPage from "./pages/BookingAndReviewPage";
 import SearchClinicPage from "./pages/SearchClinicPage";
 import SignupPage from "./pages/auth/SignupPage";
 import RegisterClinicPage from "./pages/RegisterClinicPage";
@@ -40,7 +40,7 @@ const routes = [
     element: <MainLayout />,
     children: [
       { path: "", element: <LandingPage /> },
-      { path: "book-clinic", element: <BookAppointmentPage /> },
+      { path: "book-clinic", element: <BookingAndReviewPage /> },
       { path: "search-clinic", element: <SearchClinicPage /> },
       { path: "register-clinic", element: <RegisterClinicPage /> },
       { path: "login", element: <LoginPage /> },

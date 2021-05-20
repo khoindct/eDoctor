@@ -95,7 +95,7 @@ const LandingPage: React.FC = () => {
             nothing to disrupt your preferred coding style.
           </p>
           <button className="booking__button" onClick={navigateToBooking}>
-            Book an Appointment
+            Register Now
           </button>
         </div>
       </div>
