@@ -1,0 +1,26 @@
+.button {
+  &__contained {
+    background-color: var(--color-primary) !important;
+    transition: 0.4s;
+
+    &:hover {
+      background-color: var(--color-primary-light) !important;
+      transform: translateY(-3px);
+    }
+
+    &:active {
+      background-color: var(--color-primary) !important;
+      transform: translateY(0);
+    }
+  }
+
+  &__label {
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    border-radius: 3px;
+    font-family: var(--font-primary);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+  }
+}
