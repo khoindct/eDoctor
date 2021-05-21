@@ -1,3 +1,44 @@
 .booking-and-review-page {
-  grid-column: center-start / center-end;
+  grid-column: full-start / full-end;
+}
+
+.booking-section,
+.review-content {
+  width: 80%;
+  margin: auto;
+  padding: 4rem;
+}
+
+.booking__card {
+  &--container {
+    padding: 2rem;
+  }
+}
+
+.review-section {
+  margin-top: 5rem;
+  background-color: var(--color-grey-light-1);
+}
+
+.review-title {
+  font-size: 2rem;
+  color: var(--color-text-primary);
+}
+
+.review-input {
+  display: flex;
+  gap: 2rem;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.all-reviews {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
 }
