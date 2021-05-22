@@ -42,3 +42,38 @@
   flex-direction: column;
   gap: 3.5rem;
 }
+
+.comments {
+  font-size: 1.5rem;
+}
+
+.opening {
+  width: 40%;
+}
+
+.book-appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.book-appointment-title {
+  font-size: 1.7rem;
+}
+
+.book-appointment-selected-date {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 1.5rem;
+}
+
+.table {
+  &__head {
+    background-color: var(--color-primary);
+    color: #fff !important;
+    font-size: 1.7rem !important;
+  }
+  &__body {
+    font-size: 1.5rem !important;
+  }
+}
