@@ -1,11 +1,15 @@
 import { Outlet } from "react-router";
+import Header from "../../components/navigation/Header";
 import "./index.scss";
 
 const MainLayout: React.FC = () => {
   return (
-    <div className="container">
-      <Outlet />
-    </div>
+    <>
+      <Header />
+      <div className="container">
+        <Outlet />
+      </div>
+    </>
   );
 };
 

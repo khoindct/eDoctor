@@ -8,7 +8,6 @@ export default makeStyles((theme: any) => ({
   notificationContained: {
     borderRadius: 45,
     height: 45,
-    boxShadow: theme.customShadows.widgetDark,
   },
   notificationContainedShadowless: {
     boxShadow: "none",

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import classNames from "classnames";
-
 import {
   AppBar,
   Badge,
@@ -14,6 +12,7 @@ import {
   MenuItem,
   Divider,
   Button,
+  Avatar,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
@@ -24,9 +23,10 @@ import {
 import { notificationData } from "./data/headerData";
 import Notification from "../notification/Notification";
 import "./Header.scss";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 interface HeaderProps {
-  onMobileNavOpen: () => void;
+  onMobileNavOpen?: () => void;
 }
 
 interface NotificationType {
@@ -42,6 +42,12 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
   const [notificationsMenu, setNotificationsMenu] = useState<any>(null);
   const [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   const [profileMenu, setProfileMenu] = useState<any>(null);
+
+  const { authenticated, errorMessage } = useTypedSelector(
+    (state) => state.auth
+  );
+
+  console.log(authenticated);
 
   return (
     <AppBar position="fixed" className="app-bar">
@@ -70,6 +76,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
           }}
         >
           <Badge
+            classes={{ badge: "header__badge" }}
             color="secondary"
             badgeContent={isNotificationsUnread ? notifications.length : 0}
           >
@@ -82,7 +89,11 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
           aria-controls="profile-menu"
           onClick={(e) => setProfileMenu(e.currentTarget)}
         >
-          <AccountIcon className="header__menu-button" />
+          <Avatar
+            classes={{ root: "header__avatar" }}
+            alt="Remy Sharp"
+            src="../../assets/images/default-avatar.jpg"
+          />
         </IconButton>
         <Menu
           id="notifications-menu"
@@ -108,34 +119,34 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
           open={Boolean(profileMenu)}
           anchorEl={profileMenu}
           onClose={() => setProfileMenu(null)}
-          classes={{ paper: "profile" }}
+          classes={{ paper: "profile-header" }}
           disableAutoFocusItem
           disableScrollLock
         >
           <div>
-            <Typography variant="h6" className="profile__name">
+            <Typography variant="h6" className="profile-header__name">
               John Smith
             </Typography>
           </div>
           <Divider />
-          <div className="profile__item">
-            <MenuItem className="profile__item--content">
-              <AccountIcon className="profile__item--icon" /> Profile
+          <div className="profile-header__item">
+            <MenuItem className="profile-header__item--content">
+              <AccountIcon className="profile-header__item--icon" /> Profile
             </MenuItem>
-            <MenuItem className="profile__item--content">
-              <AccountIcon className="profile__item--icon" /> Tasks
+            <MenuItem className="profile-header__item--content">
+              <AccountIcon className="profile-header__item--icon" /> Tasks
             </MenuItem>
-            <MenuItem className="profile__item--content">
-              <AccountIcon className="profile__item--icon" /> Messages
+            <MenuItem className="profile-header__item--content">
+              <AccountIcon className="profile-header__item--icon" /> Messages
             </MenuItem>
           </div>
-          <div className="profile__button">
+          <div className="profile-header__button">
             <Button
               variant="outlined"
               color="primary"
               size="medium"
               fullWidth
-              className="profile__button--item"
+              className="profile-header__button--item"
               // onClick={() => signOut(userDispatch, props.history)}
               onClick={() => navigate("/login", { replace: true })}
             >

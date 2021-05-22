@@ -3,11 +3,22 @@
   z-index: 1000;
 }
 
-.header__menu-button {
-  font-size: 2.5rem !important;
+.header {
+  &__menu-button {
+    font-size: 2rem !important;
+  }
+
+  &__badge {
+    font-size: 1.4rem !important;
+  }
+
+  &__avatar {
+    width: 4.2rem !important;
+    height: 4.2rem !important;
+  }
 }
 
-.profile {
+.profile-header {
   width: 265px;
   top: 48px;
 

@@ -76,6 +76,20 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-color: var(--color-grey-light-2);
+}
 
+#root {
   min-height: 100vh;
+  display: grid;
+  grid-template-rows: 6.4rem 1fr;
+}
+
+.container {
+  grid-row: 2 / -1;
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(6rem, 1fr)
+    [center-start] repeat(8, [col-start] minmax(min-content, 14rem) [col-end])
+    [center-end] minmax(6rem, 1fr)
+    [full-end];
 }

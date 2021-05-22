@@ -13,6 +13,7 @@ const CustomTextField: React.FC<ICustomTextField> = ({
   rows,
   placeholder,
   isMultiline,
+  ...props
 }) => {
   return (
     <TextField
@@ -30,10 +31,11 @@ const CustomTextField: React.FC<ICustomTextField> = ({
       }}
       label={label}
       multiline={isMultiline}
-      rows={4}
+      rows={rows}
       placeholder={placeholder}
       variant="outlined"
       fullWidth
+      {...props}
     />
   );
 };

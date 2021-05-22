@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
-import { Box, Button, TextField } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
+import CustomTextField from "../../components/CustomTextField";
+import CustomButton from "../../components/CustomButton";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import "./SignupPage.scss";
+import Page from "../../components/Page";
 
 interface IFormInput {
   name: string;
@@ -22,54 +27,52 @@ const SignupPage: React.FC = () => {
 
   const onSubmit = (formData: IFormInput) => {
     console.log(formData);
-    formData.role = "doctor";
-    signup(formData, () => navigate("/register-clinic"));
+    signup(formData, () => navigate(-1));
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Page className="sign-up-page" title="Sign Up">
+      <Avatar className="sign-up-avatar">
+        <LockOutlinedIcon />
+      </Avatar>
+      <h6 className="sign-up-title">Sign Up</h6>
+      <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form">
         <Controller
           name="name"
           control={control}
           defaultValue=""
-          render={({ field }) => <TextField label="Full Name" {...field} />}
+          render={({ field }) => (
+            <CustomTextField label="Full Name" {...field} />
+          )}
         />
         <Controller
           name="email"
           control={control}
           defaultValue=""
-          render={({ field }) => <TextField label="Email Address" {...field} />}
+          render={({ field }) => (
+            <CustomTextField label="Email Address" {...field} />
+          )}
         />
         <Controller
           name="password"
           control={control}
           defaultValue=""
-          render={({ field }) => <TextField label="Password" {...field} />}
+          render={({ field }) => (
+            <CustomTextField label="Password" {...field} />
+          )}
         />
         <Controller
           name="passwordConfirm"
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <TextField label="Confirm Password" {...field} />
+            <CustomTextField label="Confirm Password" {...field} />
           )}
         />
-
-        <Box my={2}>
-          <Button
-            color="primary"
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-          >
-            Sign Up
-          </Button>
-        </Box>
+        <CustomButton type="submit">Sign Up</CustomButton>
       </form>
       {errorMessage && <h3>{errorMessage}</h3>}
-    </div>
+    </Page>
   );
 };
 

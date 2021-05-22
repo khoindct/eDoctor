@@ -3,11 +3,13 @@ import { Action } from "../actions";
 
 interface AuthState {
   authenticated: string;
+  authorization: string;
   errorMessage: string;
 }
 
 const initialState = {
   authenticated: "",
+  authorization: "",
   errorMessage: "",
 };
 
@@ -17,7 +19,11 @@ const authReducer = (
 ): AuthState => {
   switch (action.type) {
     case ActionType.AUTH_USER:
-      return { ...state, authenticated: action.payload };
+      return {
+        ...state,
+        authenticated: action.payload.token,
+        authorization: action.payload.role,
+      };
     case ActionType.AUTH_ERROR:
       return { ...state, errorMessage: action.payload };
     default:
