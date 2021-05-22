@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from "react";
 import {
   Avatar,
   Card,
@@ -12,16 +12,18 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
-import Carousel from "../components/Carousel";
+import CustomCarousel from "../components/CustomCarousel";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import CustomButton from "../components/CustomButton";
 import ReactNiceDate from "../components/ReactNiceDate";
 import DateFnsUtils from "@date-io/date-fns";
+import moment from "moment";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
 } from "@material-ui/pickers";
 import "./BookingAndReviewPage.scss";
+import CustomTextField from "../components/CustomTextField";
 
 function createData(name: string, hours: string) {
   return { name, hours };
@@ -33,25 +35,34 @@ const rows = [
   createData("Wednesday", "08:00 - 17:00"),
   createData("Thursday", "08:00 - 17:00"),
   createData("Friday", "08:00 - 17:00"),
-  createData("Saturday", "08:00 - 17:00"),
-  createData("Sunday", "08:00 - 17:00"),
+  createData("Saturday", "Closed"),
+  createData("Sunday", "Closed"),
 ];
 
 const BookingAndReviewPage = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
+  const [selectedDate, setSelectedDate] = useState<string>();
+  const [selectedTime, setSelectedTime] = useState<Date | null>();
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = (date: any) => {
     setSelectedDate(date);
   };
 
-  const handleBookFormSubmit = () => {  }
+  const handleTimeChange = (date: Date | null) => {
+    setSelectedTime(date);
+  };
+
+  const handleBookFormSubmit = (e: any) => {
+    e.preventDefault();
+  };
+
+  const handleCommentSubmit = (e: any) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="booking-and-review-page">
       <div className="booking-section">
-        <Carousel />
+        <CustomCarousel />
         <Card
           variant="outlined"
           classes={{ root: "booking__card--container" }}
@@ -94,20 +105,27 @@ const BookingAndReviewPage = () => {
               </Table>
             </div>
             <form className="book-appointment-form">
-              <ReactNiceDate />
-              <h6 className="book-appointment-title">Selected date: <span className="book-appointment-selected-date">date here</span></h6>
+              <ReactNiceDate updateDateValue={handleDateChange} />
+              <h6 className="book-appointment-title">
+                Selected date:{" "}
+                <span className="book-appointment-selected-date">
+                  {moment(selectedDate).format("DD-MM-yyy")}
+                </span>
+              </h6>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardTimePicker
                   margin="normal"
                   id="time-picker"
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={selectedTime}
+                  onChange={handleTimeChange}
                   KeyboardButtonProps={{
                     "aria-label": "change time",
                   }}
                 />
               </MuiPickersUtilsProvider>
-              <CustomButton type="submit" callback={handleBookFormSubmit}>Book</CustomButton>
+              <CustomButton type="submit" callback={handleBookFormSubmit}>
+                Book
+              </CustomButton>
             </form>
           </Grid>
         </Card>
@@ -129,13 +147,14 @@ const BookingAndReviewPage = () => {
                 precision={0.5}
                 emptyIcon={<StarBorderIcon fontSize="inherit" />}
               />
-              <TextField
-                id="outlined-multiline-static"
+              <CustomTextField
                 placeholder="Write a public comment..."
-                multiline
                 rows={4}
-                variant="outlined"
+                isMultiline={true}
               />
+              <CustomButton type="submit" callback={handleCommentSubmit}>
+                Submit
+              </CustomButton>
             </form>
           </div>
           <Divider className="mt-md" />

@@ -4,7 +4,7 @@ import "./CustomButton.scss";
 interface ICustomButton {
   type?: "button" | "submit" | "reset" | undefined;
   className?: string;
-  callback?: () => void;
+  callback?: (e: any) => void;
 }
 
 const CustomButton: React.FC<ICustomButton> = ({

@@ -1,28 +1,23 @@
 import React, { useState } from "react";
-import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
-import {
-  DateChangeCallBack,
-  DatePickerCalendar,
-  useDateInput,
-} from "react-nice-dates";
+import { DateChangeCallBack, DatePickerCalendar } from "react-nice-dates";
 // import "react-nice-dates/build/style.css";
-import "./ReactNiceDate.scss"
+import "./ReactNiceDate.scss";
 
-const ReactNiceDate: React.FC = () => {
+interface IReactNiceDate {
+  updateDateValue: (e: string) => void;
+}
+
+const ReactNiceDate: React.FC<IReactNiceDate> = ({ updateDateValue }) => {
   const [date, setDate] = useState<Date>();
-  const inputProps = useDateInput({
-    date,
-    format: "yyyy-MM-dd",
-    locale: enGB,
-    onDateChange: setDate,
-  });
+
   const handleOnDateChange: DateChangeCallBack = (event: any) => {
     setDate(event);
+    updateDateValue(event.toUTCString());
   };
 
   return (
-    <div className="date-root">      
+    <div className="date-root">
       <DatePickerCalendar
         date={date}
         onDateChange={handleOnDateChange}

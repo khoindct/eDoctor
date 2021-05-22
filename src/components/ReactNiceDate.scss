@@ -90,6 +90,7 @@ $nice-dates-cell-width: calc(100% / 7);
 
   &-grid {
     height: 330px !important;
+    overflow: hidden;
     box-sizing: content-box;
     position: relative;
     user-select: none;
