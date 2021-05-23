@@ -1,0 +1,30 @@
+.clinic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.step-label {
+  &-root {
+    height: 3.5rem !important;
+  }
+
+  &-root-active,
+  &-root-completed {
+    color: var(--color-primary) !important;
+  }
+
+  &-text {
+    font-size: 1.3rem !important;
+  }
+
+  &-label,
+  &-label-active {
+    font-size: 1.5rem !important;
+    color: var(--color-grey-dark-1) !important;
+  }
+
+  &-label-active {
+    font-weight: bold !important;
+  }
+}

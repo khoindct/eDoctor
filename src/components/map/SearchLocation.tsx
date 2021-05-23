@@ -6,6 +6,7 @@ import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
+import "./SearchLocation.scss";
 
 const SearchLocation = () => {
   const { getLocation } = useActions();
@@ -56,7 +57,7 @@ const SearchLocation = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Search Location"
+            placeholder="Enter your location..."
             margin="normal"
             variant="outlined"
             value={value}

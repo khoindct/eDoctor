@@ -50,13 +50,9 @@ const BookingAndReviewPage = () => {
     setSelectedTime(date);
   };
 
-  const handleBookFormSubmit = (e: any) => {
-    e.preventDefault();
-  };
+  const handleBookFormSubmit = () => {};
 
-  const handleCommentSubmit = (e: any) => {
-    e.preventDefault();
-  };
+  const handleCommentSubmit = () => {};
 
   return (
     <div className="booking-and-review-page">

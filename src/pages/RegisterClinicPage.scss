@@ -1,11 +1,21 @@
 .register-clinic-page {
   grid-column: center-start / center-end;
+  margin-top: 4rem;
 }
 
-.clinic-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+.register-clinic-card {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: 80rem;
+}
+
+.register-clinic-cover {
+  min-height: 30rem;
+}
+
+.register-clinic-content {
+  width: 85%;
+  justify-self: center;
 }
 
 .row {
