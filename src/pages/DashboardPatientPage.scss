@@ -1,11 +1,18 @@
-.patient-page {
+.dashboard-patient-page {
   grid-column: center-start / center-end;
+  display: flex;
+  gap: 2rem;
+  margin-top: 7rem;
+}
+
+.patient-tab-panel {
+  width: 100%;
 }
 
 .patient-profile {
   display: grid;
   grid-template-columns: 40% 60%;
-  grid-gap: 5rem;
+  grid-gap: 3rem;
 }
 
 .tab__label {
@@ -43,10 +50,10 @@
 
   &__name {
     text-align: center;
-    font-size: 1.5rem;
-    line-height: 1.57;
+    font-size: 1.5rem !important;
+    line-height: 1.57 !important;
     color: rgb(23, 43, 77) !important;
-    font-weight: bold;
+    font-weight: bold !important;
   }
 
   &__title {

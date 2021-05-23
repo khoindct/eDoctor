@@ -29,6 +29,7 @@ const CustomTextField: React.FC<ICustomTextField> = ({
         classes: {
           input: "form--input",
           root: "form--input-root",
+          notchedOutline: "form--label-not-touch",
         },
       }}
       type={type}

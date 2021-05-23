@@ -10,7 +10,6 @@ import {
   Divider,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import Page from "../components/Page";
@@ -29,6 +28,7 @@ const TabPanel = (props: TabPanelProps) => {
 
   return (
     <div
+      className="patient-tab-panel"
       role="tabpanel"
       hidden={value !== index}
       id={`scrollable-auto-tabpanel-${index}`}
@@ -36,7 +36,7 @@ const TabPanel = (props: TabPanelProps) => {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -59,180 +59,123 @@ const DashboardPatientPage = () => {
   };
 
   return (
-    <div className="patient-page">
-      <Page className="" title="Dashboard">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
-        >
-          <Tab label="GENERAL" className="tab__label" {...a11yProps(0)} />
-          <Tab label="APPOINTMENTS" className="tab__label" {...a11yProps(1)} />
-          <Tab
-            label="CHANGE PASSWORD"
-            className="tab__label"
-            {...a11yProps(2)}
-          />
-        </Tabs>
+    <Page className="dashboard-patient-page" title="Dashboard">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs example"
+        orientation="vertical"
+      >
+        <Tab label="GENERAL" className="tab__label" {...a11yProps(0)} />
+        <Tab label="APPOINTMENTS" className="tab__label" {...a11yProps(1)} />
+        <Tab label="CHANGE PASSWORD" className="tab__label" {...a11yProps(2)} />
+      </Tabs>
 
-        <TabPanel value={value} index={0}>
-          <div className="patient-profile">
-            <Card className="profile">
-              <CardContent className="profile__action">
-                <div className="profile__info">
-                  <div className="profile__avatar--border">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="../assets/images/default-avatar.jpg"
-                      className="profile__avatar"
-                    />
-                  </div>
-                  <Typography
-                    className="profile__name"
-                    variant="body2"
-                    color="textSecondary"
-                    component="h6"
-                  >
-                    Jane Rotanson
-                  </Typography>
-                </div>
-              </CardContent>
-              <CardActions>
-                <Button
-                  className="profile__button"
-                  size="medium"
-                  color="primary"
-                  fullWidth
-                >
-                  Remove Picture
-                </Button>
-              </CardActions>
-            </Card>
-            <div className="content">
-              <form>
-                <Card>
-                  <CardHeader
-                    title="Profile"
-                    classes={{
-                      title: "profile__title",
-                    }}
-                  />
-                  <Divider />
-                  <CardContent>
-                    <div className="profile__form--input">
-                      <CustomTextField label="Name" />
-                      <CustomTextField label="Email" />
-                      <CustomTextField label="Phone" />
-                    </div>
-                  </CardContent>
-                  <Divider />
-                  <div className="profile__form--action">
-                    <Button
-                      className="profile__button"
-                      size="medium"
-                      color="primary"
-                      variant="contained"
-                    >
-                      Save Changes
-                    </Button>
-                  </div>
-                </Card>
-              </form>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <AppointmentList />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <form>
-            <Card>
-              <CardHeader
-                title="Security"
-                classes={{
-                  title: "profile__title",
-                }}
-              />
-              <Divider />
-              <CardContent>
-                <div className="profile__form--input">
-                  <TextField
-                    id="outlined-basic"
-                    InputLabelProps={{
-                      classes: {
-                        root: "form--input",
-                      },
-                    }}
-                    InputProps={{
-                      label: "form--input",
-                      classes: {
-                        input: "form--input",
-                        root: "form--input-root",
-                      },
-                    }}
-                    label="Old Password"
-                    variant="outlined"
-                    fullWidth
-                  />
-                  <TextField
-                    id="outlined-basic"
-                    InputLabelProps={{
-                      classes: {
-                        root: "form--input",
-                      },
-                    }}
-                    InputProps={{
-                      label: "form--input",
-                      classes: {
-                        input: "form--input",
-                        root: "form--input-root",
-                      },
-                    }}
-                    label="New Password"
-                    variant="outlined"
-                    fullWidth
-                  />
-                  <TextField
-                    id="outlined-basic"
-                    key="Confirm Password"
-                    InputLabelProps={{
-                      classes: {
-                        root: "form--input",
-                      },
-                    }}
-                    InputProps={{
-                      label: "form--input",
-                      classes: {
-                        input: "form--input",
-                        root: "form--input-root",
-                      },
-                    }}
-                    label="Confirm Password"
-                    variant="outlined"
-                    fullWidth
+      <TabPanel value={value} index={0}>
+        <div className="patient-profile">
+          <Card className="profile">
+            <CardContent className="profile__action">
+              <div className="profile__info">
+                <div className="profile__avatar--border">
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="../assets/images/default-avatar.jpg"
+                    className="profile__avatar"
                   />
                 </div>
-              </CardContent>
-              <Divider />
-              <div className="profile__form--action">
-                <Button
-                  className="profile__button"
-                  size="medium"
-                  color="primary"
-                  variant="contained"
+                <Typography
+                  className="profile__name"
+                  variant="body2"
+                  color="textSecondary"
+                  component="h6"
                 >
-                  Save Changes
-                </Button>
+                  Jane Rotanson
+                </Typography>
               </div>
-            </Card>
-          </form>
-        </TabPanel>
-      </Page>
-    </div>
+            </CardContent>
+            <CardActions>
+              <Button
+                className="profile__button"
+                size="medium"
+                color="primary"
+                fullWidth
+              >
+                Remove Picture
+              </Button>
+            </CardActions>
+          </Card>
+          <div className="content">
+            <form>
+              <Card>
+                <CardHeader
+                  title="Profile"
+                  classes={{
+                    title: "profile__title",
+                  }}
+                />
+                <Divider />
+                <CardContent>
+                  <div className="profile__form--input">
+                    <CustomTextField label="Name" />
+                    <CustomTextField label="Email" />
+                    <CustomTextField label="Phone" />
+                  </div>
+                </CardContent>
+                <Divider />
+                <div className="profile__form--action">
+                  <Button
+                    className="profile__button"
+                    size="medium"
+                    color="primary"
+                    variant="contained"
+                  >
+                    Save Changes
+                  </Button>
+                </div>
+              </Card>
+            </form>
+          </div>
+        </div>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <AppointmentList />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <form>
+          <Card>
+            <CardHeader
+              title="Security"
+              classes={{
+                title: "profile__title",
+              }}
+            />
+            <Divider />
+            <CardContent>
+              <div className="profile__form--input">
+                <CustomTextField label="Old Password" />
+                <CustomTextField label="New Password" />
+                <CustomTextField label="Confirm Password" />
+              </div>
+            </CardContent>
+            <Divider />
+            <div className="profile__form--action">
+              <Button
+                className="profile__button"
+                size="medium"
+                color="primary"
+                variant="contained"
+              >
+                Save Changes
+              </Button>
+            </div>
+          </Card>
+        </form>
+      </TabPanel>
+    </Page>
   );
 };
 
