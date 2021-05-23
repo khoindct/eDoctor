@@ -4,7 +4,7 @@ export interface AuthUserAction {
   type: ActionType.AUTH_USER;
   payload: {
     token: string;
-    role: string;
+    role: "admin" | "doctor" | "patient" | "";
   };
 }
 

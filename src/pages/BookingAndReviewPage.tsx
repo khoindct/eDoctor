@@ -9,7 +9,6 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TextField,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import CustomCarousel from "../components/CustomCarousel";

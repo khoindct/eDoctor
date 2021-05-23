@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardActionArea,
-  CardHeader,
-  CardMedia,
-  Divider,
-} from "@material-ui/core";
+import { Card, CardHeader, CardMedia, Divider } from "@material-ui/core";
 
 // styles
 import useStyles from "./styles";

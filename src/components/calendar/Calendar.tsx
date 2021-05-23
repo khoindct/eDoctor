@@ -12,7 +12,9 @@ import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import "./calendar.scss";
 
 const Calendar: React.FC = () => {
+  // eslint-disable-next-line
   const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true);
+  // eslint-disable-next-line
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {

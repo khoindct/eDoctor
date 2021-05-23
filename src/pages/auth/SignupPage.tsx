@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
@@ -24,6 +25,13 @@ const SignupPage: React.FC = () => {
   const { authenticated, errorMessage } = useTypedSelector(
     (state) => state.auth
   );
+
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const onSubmit = (formData: IFormInput) => {
     console.log(formData);
@@ -58,7 +66,7 @@ const SignupPage: React.FC = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <CustomTextField label="Password" {...field} />
+            <CustomTextField label="Password" type="password" {...field} />
           )}
         />
         <Controller
@@ -66,7 +74,11 @@ const SignupPage: React.FC = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <CustomTextField label="Confirm Password" {...field} />
+            <CustomTextField
+              label="Confirm Password"
+              type="password"
+              {...field}
+            />
           )}
         />
         <CustomButton type="submit">Sign Up</CustomButton>

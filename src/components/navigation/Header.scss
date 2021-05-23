@@ -1,6 +1,5 @@
 .app-bar {
-  width: 100vw;
-  z-index: 1000;
+  background-color: var(--color-primary-dark) !important;
 }
 
 .header {
@@ -16,6 +15,13 @@
     width: 4.2rem !important;
     height: 4.2rem !important;
   }
+}
+
+.auth-button {
+  font-size: 1.5rem !important;
+  font-family: var(--font-display) !important;
+  border-color: #fff !important;
+  color: #fff !important;
 }
 
 .profile-header {

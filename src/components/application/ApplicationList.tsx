@@ -1,17 +1,17 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Grid, Chip } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import MUIDataTable from 'mui-datatables';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Grid, Chip } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import MUIDataTable from "mui-datatables";
 
 // styles
-import useStyles from './styles';
+import useStyles from "./styles";
 
-const states: { [key: string]: 'success' | 'warning' | 'secondary' } = {
-  approved: 'success',
-  pending: 'warning',
-  declined: 'secondary',
-};
+// const states: { [key: string]: 'success' | 'warning' | 'secondary' } = {
+//   approved: 'success',
+//   pending: 'warning',
+//   declined: 'secondary',
+// };
 
 const ApplicationList: React.FC<any> = ({ applications }) => {
   const classes = useStyles();
@@ -19,46 +19,46 @@ const ApplicationList: React.FC<any> = ({ applications }) => {
 
   const columns = [
     {
-      name: 'id',
+      name: "id",
       options: {
         display: false,
       },
     },
     {
-      name: 'name',
-      label: 'Name',
+      name: "name",
+      label: "Name",
       options: {
         filter: true,
         sort: true,
       },
     },
     {
-      name: 'company',
-      label: 'Company',
+      name: "company",
+      label: "Company",
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'city',
-      label: 'City',
+      name: "city",
+      label: "City",
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'status',
-      label: 'Status',
+      name: "status",
+      label: "Status",
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: 'actions',
-      label: 'Actions',
+      name: "actions",
+      label: "Actions",
       options: {
         customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
           const rowId = tableMeta.rowData[0];
@@ -75,26 +75,26 @@ const ApplicationList: React.FC<any> = ({ applications }) => {
 
   const datatableData = [
     {
-      id: '1',
-      name: 'Bệnh viện trung ương',
-      company: 'Example Inc.',
-      city: 'Yonkers',
-      status: <Chip label="Approved" classes={{ root: classes['success'] }} />,
+      id: "1",
+      name: "Bệnh viện trung ương",
+      company: "Example Inc.",
+      city: "Yonkers",
+      status: <Chip label="Approved" classes={{ root: classes["success"] }} />,
     },
     {
-      id: '2',
-      name: 'Đa khoa thành phố',
-      company: 'Example Inc.',
-      city: 'Yonkers',
-      status: <Chip label="Pending" classes={{ root: classes['warning'] }} />,
+      id: "2",
+      name: "Đa khoa thành phố",
+      company: "Example Inc.",
+      city: "Yonkers",
+      status: <Chip label="Pending" classes={{ root: classes["warning"] }} />,
     },
     {
-      id: '3',
-      name: 'Huyết học',
-      company: 'Example Inc.',
-      city: 'Yonkers',
+      id: "3",
+      name: "Huyết học",
+      company: "Example Inc.",
+      city: "Yonkers",
       status: (
-        <Chip label="Declined" classes={{ root: classes['secondary'] }} />
+        <Chip label="Declined" classes={{ root: classes["secondary"] }} />
       ),
     },
   ];
@@ -108,7 +108,7 @@ const ApplicationList: React.FC<any> = ({ applications }) => {
             data={datatableData}
             columns={columns}
             options={{
-              filterType: 'checkbox',
+              filterType: "checkbox",
             }}
           />
         </Grid>

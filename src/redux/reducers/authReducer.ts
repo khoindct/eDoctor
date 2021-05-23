@@ -3,11 +3,11 @@ import { Action } from "../actions";
 
 interface AuthState {
   authenticated: string;
-  authorization: string;
+  authorization: "admin" | "doctor" | "patient" | "";
   errorMessage: string;
 }
 
-const initialState = {
+const initialState: AuthState = {
   authenticated: "",
   authorization: "",
   errorMessage: "",

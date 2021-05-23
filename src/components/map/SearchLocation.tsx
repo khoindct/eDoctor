@@ -1,6 +1,6 @@
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { useActions } from "../../hooks/useActions";
 import usePlacesAutocomplete, {
   getGeocode,
@@ -12,7 +12,7 @@ const SearchLocation = () => {
 
   const {
     value,
-    suggestions: { status, data },
+    suggestions: { data },
     setValue,
   } = usePlacesAutocomplete({ debounce: 500 });
 

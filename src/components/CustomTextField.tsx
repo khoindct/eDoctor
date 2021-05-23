@@ -6,6 +6,7 @@ interface ICustomTextField {
   rows?: number;
   placeholder?: string;
   isMultiline?: boolean;
+  type?: "text" | "password";
 }
 
 const CustomTextField: React.FC<ICustomTextField> = ({
@@ -13,6 +14,7 @@ const CustomTextField: React.FC<ICustomTextField> = ({
   rows,
   placeholder,
   isMultiline,
+  type = "text",
   ...props
 }) => {
   return (
@@ -29,6 +31,7 @@ const CustomTextField: React.FC<ICustomTextField> = ({
           root: "form--input-root",
         },
       }}
+      type={type}
       label={label}
       multiline={isMultiline}
       rows={rows}

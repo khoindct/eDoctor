@@ -9,6 +9,8 @@ export const signup =
   (formProps: any, callback: any) => async (dispatch: Dispatch<Action>) => {
     try {
       const response = await axios.post("/users/signup", formProps);
+      console.log(response);
+
       dispatch({
         type: ActionType.AUTH_USER,
         payload: {
@@ -16,6 +18,8 @@ export const signup =
           role: response.data.data.user.role,
         },
       });
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.data.user.role);
       callback();
     } catch (error) {
       dispatch({
@@ -28,7 +32,7 @@ export const signup =
 export const signin =
   (formProps: any, callback: any) => async (dispatch: Dispatch<Action>) => {
     try {
-      const response = await axios.post("/users/signin", formProps);
+      const response = await axios.post("/users/login", formProps);
       dispatch({
         type: ActionType.AUTH_USER,
         payload: {
@@ -36,6 +40,8 @@ export const signin =
           role: response.data.data.user.role,
         },
       });
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.data.user.role);
       callback();
     } catch (error) {
       dispatch({
@@ -45,9 +51,23 @@ export const signin =
     }
   };
 
-export const signout = () => {
-  return {
-    type: ActionType.AUTH_USER,
-    payload: "",
+export const signout =
+  (callback: any) => async (dispatch: Dispatch<Action>) => {
+    try {
+      await axios.get("/users/logout");
+      dispatch({
+        type: ActionType.AUTH_USER,
+        payload: {
+          token: "",
+          role: "",
+        },
+      });
+      localStorage.clear();
+      callback();
+    } catch (error) {
+      dispatch({
+        type: ActionType.AUTH_ERROR,
+        payload: error.message,
+      });
+    }
   };
-};

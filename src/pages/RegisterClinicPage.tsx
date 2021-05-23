@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useDropzone } from "react-dropzone";
 import { useTypedSelector } from "../hooks/useTypedSelector";
-import { useActions } from "../hooks/useActions";
 import { Button, TextField, Typography } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import DateFnsUtils from "@date-io/date-fns";
@@ -47,7 +46,6 @@ const RegisterClinicPage = () => {
     multiple: false,
   });
   const { control, handleSubmit } = useForm<IFormInput>();
-  const { signup } = useActions();
   const { location, coordinates } = useTypedSelector(
     (state) => state.locations
   );
@@ -75,16 +73,8 @@ const RegisterClinicPage = () => {
     };
     formData.coverImage = saveCoverImage;
 
-    const {
-      address,
-      coverImage,
-      description,
-      email,
-      geometry,
-      name,
-      phone,
-      schedule,
-    } = formData;
+    const { address, coverImage, description, email, geometry, name, phone } =
+      formData;
 
     const data = new FormData();
     data.append("coverImage", coverImage);
@@ -95,10 +85,12 @@ const RegisterClinicPage = () => {
     data.append("name", name);
     data.append("phone", phone);
 
-    const res = await axios.post("http://localhost:8000/api/v1/clinics", data);
-    console.log(res);
-
-    // signup(formData, () => navigate("/register-clinic"));
+    try {
+      await axios.post("http://localhost:8000/api/v1/clinics", data);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

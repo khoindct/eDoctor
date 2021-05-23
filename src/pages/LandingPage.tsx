@@ -6,6 +6,7 @@ import { ReactComponent as LocationSvg } from "../assets/images/undraw_My_locati
 import { ReactComponent as DoctorSvg } from "../assets/images/undraw_doctors_hwty.svg";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -103,34 +104,34 @@ const LandingPage: React.FC = () => {
       <footer className="footer">
         <ul className="nav">
           <li className="nav__item">
-            <a href="#" className="nav__link">
+            <Link to="" className="nav__link">
               Find your dream home
-            </a>
+            </Link>
           </li>
           <li className="nav__item">
-            <a href="#" className="nav__link">
+            <Link to="" className="nav__link">
               Request proposal
-            </a>
+            </Link>
           </li>
           <li className="nav__item">
-            <a href="#" className="nav__link">
+            <Link to="" className="nav__link">
               Download home planner
-            </a>
+            </Link>
           </li>
           <li className="nav__item">
-            <a href="#" className="nav__link">
+            <Link to="" className="nav__link">
               Contact us
-            </a>
+            </Link>
           </li>
           <li className="nav__item">
-            <a href="#" className="nav__link">
+            <Link to="" className="nav__link">
               Submit your property
-            </a>
+            </Link>
           </li>
           <li className="nav__item">
-            <a href="#" className="nav__link">
+            <Link to="" className="nav__link">
               Come work with us!
-            </a>
+            </Link>
           </li>
         </ul>
         <p className="copyright">

@@ -14,8 +14,10 @@ const Map = () => {
     lat: 10.0425842,
     lng: 105.7659486,
   });
+  // eslint-disable-next-line
   const [currentPosition, setCurrentPosition] = useState<Location>();
   const [zoom] = useState(19);
+  // eslint-disable-next-line
   const { location, coordinates } = useTypedSelector(
     (state) => state.locations
   );

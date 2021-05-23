@@ -1,13 +1,14 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 import { Avatar } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import CustomTextField from "../../components/CustomTextField";
 import CustomButton from "../../components/CustomButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 import "./LoginPage.scss";
+import { useEffect } from "react";
 
 interface IFormInput {
   email: string;
@@ -17,14 +18,22 @@ interface IFormInput {
 const LoginPage = () => {
   const navigate = useNavigate();
   const { control, handleSubmit } = useForm<IFormInput>();
-  const { signup } = useActions();
+  const { signin } = useActions();
   const { authenticated, errorMessage } = useTypedSelector(
     (state) => state.auth
   );
 
+  useEffect(() => {
+    if (authenticated) {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const onSubmit = (formData: IFormInput) => {
     console.log(formData);
-    signup(formData, () => navigate(-1));
+
+    signin(formData, () => navigate(-1));
   };
 
   return (
@@ -32,7 +41,7 @@ const LoginPage = () => {
       <Avatar className="sign-up-avatar">
         <LockOutlinedIcon />
       </Avatar>
-      <h6 className="sign-up-title">Sign In</h6>
+      <h6 className="sign-up-title">Log In</h6>
       <form onSubmit={handleSubmit(onSubmit)} className="sign-up-form">
         <Controller
           name="email"
@@ -47,7 +56,7 @@ const LoginPage = () => {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <CustomTextField label="Password" {...field} />
+            <CustomTextField label="Password" type="password" {...field} />
           )}
         />
         <CustomButton type="submit">Sign In</CustomButton>
