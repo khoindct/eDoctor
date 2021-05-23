@@ -7,7 +7,7 @@ export const store = createStore(
   {
     auth: {
       authenticated: localStorage.getItem("token") || "",
-      authorization: localStorage.getItem("role") || "",
+      authorization: (localStorage.getItem("role") as any) || "",
       errorMessage: "",
     },
   },

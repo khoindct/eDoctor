@@ -19,10 +19,18 @@ import SignupPage from "./pages/auth/SignupPage";
 import RegisterClinicPage from "./pages/RegisterClinicPage";
 import DashboardPatientPage from "./pages/DashboardPatientPage";
 
-const routes = [
+const routes = (authenticated: string, authorization: string) => [
   {
     path: "app",
-    element: <DashboardLayout />,
+    element: Boolean(authenticated) ? (
+      authorization !== "patient" ? (
+        <DashboardLayout />
+      ) : (
+        <NotFoundPage />
+      )
+    ) : (
+      <LoginPage />
+    ),
     children: [
       { path: "dashboard", element: <DashboardPage /> },
       { path: "applications", element: <ApplicationPage /> },

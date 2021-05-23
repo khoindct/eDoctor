@@ -16,6 +16,7 @@ import {
 import Page from "../components/Page";
 import "./DashboardPatientPage.scss";
 import AppointmentList from "../components/appointment/AppointmentList";
+import CustomTextField from "../components/CustomTextField";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -123,57 +124,9 @@ const DashboardPatientPage = () => {
                   <Divider />
                   <CardContent>
                     <div className="profile__form--input">
-                      <TextField
-                        id="outlined-basic"
-                        InputLabelProps={{
-                          classes: {
-                            root: "form--input",
-                          },
-                        }}
-                        InputProps={{
-                          classes: {
-                            input: "form--input",
-                            root: "form--input-root",
-                          },
-                        }}
-                        label="Name"
-                        variant="outlined"
-                        fullWidth
-                      />
-                      <TextField
-                        id="outlined-basic"
-                        InputLabelProps={{
-                          classes: {
-                            root: "form--input",
-                          },
-                        }}
-                        InputProps={{
-                          classes: {
-                            input: "form--input",
-                            root: "form--input-root",
-                          },
-                        }}
-                        label="Email"
-                        variant="outlined"
-                        fullWidth
-                      />
-                      <TextField
-                        id="outlined-basic"
-                        InputLabelProps={{
-                          classes: {
-                            root: "form--input",
-                          },
-                        }}
-                        InputProps={{
-                          classes: {
-                            input: "form--input",
-                            root: "form--input-root",
-                          },
-                        }}
-                        label="Phone"
-                        variant="outlined"
-                        fullWidth
-                      />
+                      <CustomTextField label="Name" />
+                      <CustomTextField label="Email" />
+                      <CustomTextField label="Phone" />
                     </div>
                   </CardContent>
                   <Divider />
