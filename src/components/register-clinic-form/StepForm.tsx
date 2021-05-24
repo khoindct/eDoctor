@@ -1,6 +1,8 @@
 import { Step, StepLabel, Stepper } from "@material-ui/core";
 import { useState } from "react";
 import { Control, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import api from "../../api";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { IFormInput } from "./controls.model";
 import GeneralStep from "./GeneralStep";
@@ -11,6 +13,8 @@ import "./StepForm.scss";
 const labels = ["General", "Opening Hours", "Location"];
 
 const StepForm = () => {
+  const axios = api();
+  const navigate = useNavigate();
   const { location, coordinates } = useTypedSelector(
     (state) => state.locations
   );
@@ -57,14 +61,21 @@ const StepForm = () => {
     }
   };
 
-  const onSubmit = (formData: IFormInput) => {
+  const onSubmit = async (formData: IFormInput) => {
     formData.address = location;
-    formData.geometry = {
+    formData.geometry = JSON.stringify({
       type: "Point",
       coordinates: [coordinates.lng, coordinates.lat],
-    };
+    });
 
     console.log(formData);
+
+    try {
+      await axios.post("http://localhost:8000/api/v1/clinics", formData);
+      // navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

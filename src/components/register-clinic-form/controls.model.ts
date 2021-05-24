@@ -5,12 +5,13 @@ export interface IFormInput {
   name: string;
   address: string;
   phone: string;
-  coverImage: FileList;
+  coverImage: File;
   description: string;
-  geometry: {
-    type: "Point";
-    coordinates: number[];
-  };
+  geometry: string;
+  // geometry: {
+  //   type: "Point";
+  //   coordinates: number[];
+  // };
 
   // Opening hours property
   startTimeMonday: Date;
