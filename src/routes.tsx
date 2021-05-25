@@ -29,7 +29,7 @@ const routes = (authenticated: string, authorization: string) => [
         <NotFoundPage />
       )
     ) : (
-      <LoginPage />
+      <Navigate to="/login" />
     ),
     children: [
       { path: "dashboard", element: <DashboardPage /> },

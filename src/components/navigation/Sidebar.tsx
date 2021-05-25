@@ -1,11 +1,5 @@
 import React from "react";
-
 import { Drawer, Hidden } from "@material-ui/core";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import MapIcon from "@material-ui/icons/Map";
-import EventIcon from "@material-ui/icons/Event";
-import AssignmentIcon from "@material-ui/icons/Assignment";
 import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/core/styles";
 import NavItem from "./NavItem";
@@ -13,6 +7,7 @@ import NavItem from "./NavItem";
 interface SideBarProps {
   onMobileClose: () => void;
   openMobile: boolean;
+  items: any[];
 }
 
 const drawerWidth = 256;
@@ -25,44 +20,12 @@ const useStyles = makeStyles(() => ({
     top: 64,
     height: "calc(100% - 64px)",
   },
-  avatar: {
-    cursor: "pointer",
-    width: 64,
-    height: 64,
-  },
 }));
-
-const items = [
-  {
-    path: "/app/dashboard",
-    icon: DashboardIcon,
-    title: "Dashboard",
-  },
-  {
-    path: "/app/applications",
-    icon: AssignmentIcon,
-    title: "Applications",
-  },
-  {
-    path: "/app/customers",
-    icon: PeopleAltIcon,
-    title: "Customers",
-  },
-  {
-    path: "/app/map",
-    icon: MapIcon,
-    title: "Map",
-  },
-  {
-    path: "/app/calendar",
-    icon: EventIcon,
-    title: "Calendar",
-  },
-];
 
 const Sidebar: React.FC<SideBarProps> = ({
   openMobile = false,
   onMobileClose,
+  items,
 }) => {
   const classes = useStyles();
 
@@ -97,7 +60,10 @@ const Sidebar: React.FC<SideBarProps> = ({
       <Hidden mdDown>
         <Drawer
           anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
+          classes={{
+            paper: classes.desktopDrawer,
+            root: classes.desktopDrawer,
+          }}
           open
           variant="persistent"
         >

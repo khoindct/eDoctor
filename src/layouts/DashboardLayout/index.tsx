@@ -2,27 +2,59 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../components/navigation/Header";
 import Sidebar from "../../components/navigation/Sidebar";
-import useStyles from "./styles";
-
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import MapIcon from "@material-ui/icons/Map";
+import EventIcon from "@material-ui/icons/Event";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import "./index.scss";
 const DashboardLayout: React.FC = () => {
-  const classes = useStyles();
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
+  const sidebarItems = [
+    {
+      path: "/app/dashboard",
+      icon: DashboardIcon,
+      title: "Dashboard",
+    },
+    {
+      path: "/app/applications",
+      icon: AssignmentIcon,
+      title: "Applications",
+    },
+    {
+      path: "/app/customers",
+      icon: PeopleAltIcon,
+      title: "Customers",
+    },
+    {
+      path: "/app/map",
+      icon: MapIcon,
+      title: "Map",
+    },
+    {
+      path: "/app/calendar",
+      icon: EventIcon,
+      title: "Calendar",
+    },
+  ];
+
   return (
-    <div className={classes.root}>
-      <div className={classes.header}>
-        <Header onMobileNavOpen={() => setMobileNavOpen(true)} />
+    <>
+      <Header onMobileNavOpen={() => setMobileNavOpen(true)} />
+      <div className="container">
+        <div className="sidebar">
+          <Sidebar
+            onMobileClose={() => setMobileNavOpen(false)}
+            openMobile={isMobileNavOpen}
+            items={sidebarItems}
+          />
+        </div>
+        <div className="main-content">
+          <Outlet />
+        </div>
       </div>
-      <div className={classes.sidebar}>
-        <Sidebar
-          onMobileClose={() => setMobileNavOpen(false)}
-          openMobile={isMobileNavOpen}
-        />
-      </div>
-      <div className={classes.content}>
-        <Outlet />
-      </div>
-    </div>
+    </>
   );
 };
 
