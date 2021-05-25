@@ -5,7 +5,7 @@ import MainLayout from "./layouts/MainLayout";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/auth/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import CustomerPage from "./pages/CustomerPage";
+import PatientPage from "./pages/PatientPage";
 import MapPage from "./pages/MapPage";
 import CalendarPage from "./pages/CalendarPage";
 import CustomerEditPage from "./pages/CustomerEditPage";
@@ -18,6 +18,8 @@ import SearchClinicPage from "./pages/SearchClinicPage";
 import SignupPage from "./pages/auth/SignupPage";
 import RegisterClinicPage from "./pages/RegisterClinicPage";
 import DashboardPatientPage from "./pages/DashboardPatientPage";
+import DoctorSettingPage from "./pages/DoctorSettingPage";
+import DoctorRatingPage from "./pages/DoctorRatingPage";
 
 const routes = (authenticated: string, authorization: string) => [
   {
@@ -36,7 +38,9 @@ const routes = (authenticated: string, authorization: string) => [
       { path: "applications", element: <ApplicationPage /> },
       { path: "applications/:id/detail", element: <ApplicationDetailPage /> },
       { path: "applications/:id/edit", element: <ApplicationEditPage /> },
-      { path: "customers", element: <CustomerPage /> },
+      { path: "patients", element: <PatientPage /> },
+      { path: "ratings", element: <DoctorRatingPage /> },
+      { path: "settings", element: <DoctorSettingPage /> },
       { path: "customers/:id/edit", element: <CustomerEditPage /> },
       { path: "map", element: <MapPage /> },
       { path: "calendar", element: <CalendarPage /> },

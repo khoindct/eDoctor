@@ -2,9 +2,9 @@ import { Button } from "@material-ui/core";
 import Page from "../components/Page";
 import CustomerList from "../components/customer/CustomerList";
 import customers from "../data/customer-data";
-import "./CustomerPage.scss";
+import "./PatientPage.scss";
 
-const CustomerPage: React.FC = () => {
+const PatientPage: React.FC = () => {
   return (
     <Page className="" title="Customers">
       <div>
@@ -18,4 +18,4 @@ const CustomerPage: React.FC = () => {
   );
 };
 
-export default CustomerPage;
+export default PatientPage;

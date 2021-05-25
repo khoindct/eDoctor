@@ -9,6 +9,8 @@ interface IDataList {
 }
 
 const DataList: React.FC<IDataList> = ({ data, columns, title }) => {
+  console.log(data, columns);
+
   return (
     <MUIDataTable
       title={title}
