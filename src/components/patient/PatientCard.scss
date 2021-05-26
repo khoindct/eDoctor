@@ -1,0 +1,64 @@
+.profile {
+  width: 100%;
+  align-self: flex-start;
+  justify-self: center;
+
+  &__action {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__info {
+    align-self: center;
+  }
+
+  &__avatar {
+    width: 100px !important;
+    height: 100px !important;
+    margin: auto;
+
+    &--border {
+      width: 118px !important;
+      height: 118px !important;
+      padding: 8px;
+      border: 1px dashed rgba(0, 0, 0, 0.12);
+      border-radius: 50%;
+      margin: auto;
+    }
+  }
+
+  &__name {
+    text-align: center;
+    font-size: 1.5rem !important;
+    line-height: 1.57 !important;
+    color: rgb(23, 43, 77) !important;
+    font-weight: bold !important;
+  }
+
+  &__title {
+    color: var(--color-grey-dark-1);
+    font-size: 1.7rem !important;
+    font-weight: bold !important;
+  }
+
+  &__button {
+    font-size: 1.5rem !important;
+    text-transform: none !important;
+  }
+}
+
+.patient {
+  &__info {
+    gap: 2rem;
+  }
+
+  &__title {
+    font-size: 1.6rem;
+    color: var(--color-text-primary);
+  }
+
+  &__detail {
+    font-size: 1.6rem;
+    color: var(--color-text-secondary);
+  }
+}
