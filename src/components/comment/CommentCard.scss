@@ -1,0 +1,19 @@
+.comment {
+  &__avatar {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+  &__name {
+    font-size: 2rem;
+    color: var(--color-text-primary);
+  }
+  &__date {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+  &__content {
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+  }
+}
