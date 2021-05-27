@@ -1,11 +1,120 @@
-import React from "react";
+import { Box, Button, Card, CardContent, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import CustomButton from "../components/CustomButton";
+import CustomTextField from "../components/CustomTextField";
+import Map from "../components/map/Map";
+import SearchLocation from "../components/map/SearchLocation";
 import Page from "../components/Page";
+import { IFormInput } from "../components/register-clinic-form/controls.model";
 import "./DoctorSettingPage.scss";
 
 const DoctorSettingPage: React.FC = () => {
+  const { register, control, setValue, handleSubmit } = useForm<IFormInput>();
+  const [coverImageFile, setCoverImageFile] = useState<string>();
+  const handleChange = (event: any) => {
+    setValue && setValue("coverImage", event.target.files[0]);
+    setCoverImageFile(window.URL.createObjectURL(event.target.files[0]));
+  };
+
   return (
     <Page className="" title="Settings">
-      edit doctor page
+      <Box mt={5} />
+      <Card>
+        <CardContent>
+          <Grid container spacing={3}>
+            <Grid item xs={3}>
+              <h6 className="clinic-cover-image-title">Cover image:</h6>
+            </Grid>
+            <Grid item xs={9}>
+              <Grid
+                container
+                direction="column"
+                classes={{ root: "cover-image-container" }}
+              >
+                {coverImageFile && (
+                  <img
+                    src={coverImageFile}
+                    alt="Clinic cover"
+                    className="clinic-cover-image"
+                  />
+                )}
+                <input
+                  style={{ display: "none" }}
+                  id="cover-image-file"
+                  type="file"
+                  onChange={handleChange}
+                />
+
+                <label htmlFor="cover-image-file">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    component="span"
+                  >
+                    Upload
+                  </Button>
+                </label>
+              </Grid>
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="name"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <CustomTextField label="Clinic Name" {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="phone"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <CustomTextField label="Clinic Phone" {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <CustomTextField label="Your email" {...field} />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <CustomTextField
+                    label="Description"
+                    isMultiline={true}
+                    rows={6}
+                    {...field}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <SearchLocation />
+            </Grid>
+            <Grid item xs={12}>
+              <Map />
+            </Grid>
+            <Box ml="auto" mt={2} mr={2}>
+              <CustomButton>Save Changes</CustomButton>
+            </Box>
+          </Grid>
+        </CardContent>
+      </Card>
+      <Box mb={5} />
     </Page>
   );
 };

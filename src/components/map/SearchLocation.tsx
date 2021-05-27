@@ -57,7 +57,19 @@ const SearchLocation = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            placeholder="Enter your location..."
+            InputLabelProps={{
+              classes: {
+                root: "form--input",
+              },
+            }}
+            InputProps={{
+              classes: {
+                input: "form--input",
+                root: "form--input-root",
+                notchedOutline: "form--label-not-touch",
+              },
+            }}
+            label="Enter your location"
             margin="normal"
             variant="outlined"
             value={value}
