@@ -1,4 +1,12 @@
-import { Box, Button, Card, CardContent, Grid } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import CustomButton from "../components/CustomButton";
@@ -21,6 +29,13 @@ const DoctorSettingPage: React.FC = () => {
     <Page className="" title="Settings">
       <Box mt={5} />
       <Card>
+        <CardHeader
+          title="Clinic Information"
+          classes={{
+            title: "profile__title",
+          }}
+        />
+        <Divider />
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={3}>

@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, Grid } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+} from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import CustomButton from "../components/CustomButton";
 import Page from "../components/Page";
@@ -20,6 +27,13 @@ const DoctorOpeningHoursPage: React.FC = () => {
       <>
         <Box mt={5} />
         <Card>
+          <CardHeader
+            title="Opening Hours"
+            classes={{
+              title: "profile__title",
+            }}
+          />
+          <Divider />
           <CardContent>
             <form
               className="opening-hours-form"
