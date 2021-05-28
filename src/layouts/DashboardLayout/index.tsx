@@ -8,6 +8,8 @@ import MapIcon from "@material-ui/icons/Map";
 import EventIcon from "@material-ui/icons/Event";
 import SettingsIcon from "@material-ui/icons/Settings";
 import StarRateIcon from "@material-ui/icons/StarRate";
+import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
 import "./index.scss";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 const DashboardLayout: React.FC = () => {
@@ -41,9 +43,19 @@ const DashboardLayout: React.FC = () => {
       title: "Calendar",
     },
     authorization === "doctor" && {
+      path: "/app/opening-hours",
+      icon: QueryBuilderIcon,
+      title: "Opening Hours",
+    },
+    authorization === "doctor" && {
       path: "/app/settings",
       icon: SettingsIcon,
       title: "Settings",
+    },
+    authorization === "doctor" && {
+      path: "/app/security",
+      icon: LockOpenIcon,
+      title: "Security",
     },
   ].filter(Boolean);
 

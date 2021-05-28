@@ -20,6 +20,8 @@ import RegisterClinicPage from "./pages/RegisterClinicPage";
 import DashboardPatientPage from "./pages/DashboardPatientPage";
 import DoctorSettingPage from "./pages/DoctorSettingPage";
 import DoctorRatingPage from "./pages/DoctorRatingPage";
+import DoctorOpeningHoursPage from "./pages/DoctorOpeningHoursPage";
+import DoctorSecurityPage from "./pages/DoctorSecurityPage";
 
 const routes = (authenticated: string, authorization: string) => [
   {
@@ -44,6 +46,8 @@ const routes = (authenticated: string, authorization: string) => [
       { path: "customers/:id/edit", element: <CustomerEditPage /> },
       { path: "map", element: <MapPage /> },
       { path: "calendar", element: <CalendarPage /> },
+      { path: "opening-hours", element: <DoctorOpeningHoursPage /> },
+      { path: "security", element: <DoctorSecurityPage /> },
       { path: "*", element: <Navigate to="/404" /> },
     ],
   },
