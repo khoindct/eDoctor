@@ -23,9 +23,11 @@ import {
 } from "@material-ui/pickers";
 import "./BookingAndReviewPage.scss";
 import CustomTextField from "../components/CustomTextField";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import api from "../api";
 import { useQuery } from "react-query";
+import { Controller, useForm } from "react-hook-form";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const createDateData = (
   dayOfWeek: number,
@@ -53,10 +55,13 @@ const createDateData = (
 
 const BookingAndReviewPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { control, handleSubmit } = useForm();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedTime, setSelectedTime] = useState<Date | null>();
   const [dateRows, setDateRows] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
+  const { authenticated } = useTypedSelector((state) => state.auth);
 
   const axios = api();
   const { isLoading, isError, error, status } = useQuery(
@@ -92,7 +97,15 @@ const BookingAndReviewPage = () => {
 
   const handleBookFormSubmit = () => {};
 
-  const handleCommentSubmit = () => {};
+  const handleCommentSubmit = async (data: any) => {
+    if (!authenticated) {
+      return navigate("/login");
+    }
+    const rating = +data.rating;
+    const review = data.review;
+    const formData = { rating, review };
+    await axios.post(`/reviews/${id}`, formData);
+  };
 
   return (
     <div className="booking-and-review-page">
@@ -175,35 +188,52 @@ const BookingAndReviewPage = () => {
               alt="Remy Sharp"
               src="../assets/images/default-avatar.jpg"
             />
-            <form className="review-form">
-              <Rating
-                name="customized-empty"
-                // defaultValue={2}
-                precision={0.5}
-                emptyIcon={<StarBorderIcon fontSize="inherit" />}
+            <form
+              className="review-form"
+              onSubmit={handleSubmit(handleCommentSubmit)}
+            >
+              <Controller
+                name="rating"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Rating
+                    // defaultValue={2}
+                    precision={0.5}
+                    emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                    {...field}
+                  />
+                )}
               />
-              <CustomTextField
-                placeholder="Write a public comment..."
-                rows={4}
-                isMultiline={true}
+              <Controller
+                name="review"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <CustomTextField
+                    placeholder="Write a public comment..."
+                    rows={4}
+                    isMultiline={true}
+                    {...field}
+                  />
+                )}
               />
-              <CustomButton type="submit" callback={handleCommentSubmit}>
-                Submit
-              </CustomButton>
+
+              <CustomButton type="submit">Submit</CustomButton>
             </form>
           </div>
           <Divider className="mt-md" />
 
           {/* Show all reviews */}
           <div className="all-reviews">
-            {!reviews.length &&
+            {!!reviews.length &&
               reviews.map((review) => (
-                <div className="review-input">
+                <div key={review._id} className="review-input">
                   <Avatar
                     alt="Remy Sharp"
                     // src="../assets/images/default-avatar.jpg"
                     src={
-                      review.user.avatar ||
+                      review.user?.avatar ||
                       "../assets/images/default-avatar.jpg"
                     }
                   />

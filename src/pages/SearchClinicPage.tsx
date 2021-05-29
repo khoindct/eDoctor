@@ -7,14 +7,18 @@ import api from "../api/";
 import "./SearchClinicPage.scss";
 
 import CardClinicDetail from "../components/card-clinic-detail/CardClinicDetail";
+import { useState } from "react";
 
 const SearchClinicPage = () => {
   const axios = api();
+  const [clinics, setClinics] = useState<any[]>([]);
   const { isLoading, isError, error, data } = useQuery(
     "clinicData",
     async () => {
       const response = await axios.get("/clinics/approved-clinics");
-      return response.data;
+      const data = response.data.data.data;
+      setClinics(data);
+      return data;
     }
   );
 
@@ -46,7 +50,7 @@ const SearchClinicPage = () => {
       </section>
 
       <section className="clinic-section">
-        {data.data.data.map((clinic: any) => (
+        {clinics?.map((clinic: any) => (
           <CardClinicDetail key={clinic._id} clinic={clinic} />
         ))}
       </section>
