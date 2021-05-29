@@ -31,7 +31,7 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
   React.useEffect(() => {
     if (setValue) {
       setValue(startDay as any, selectedStartDate);
-      setValue(endDay as any, setSelectedEndDate);
+      setValue(endDay as any, selectedEndDate);
     }
     // eslint-disable-next-line
   }, []);

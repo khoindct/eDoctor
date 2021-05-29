@@ -56,7 +56,7 @@ const routes = (authenticated: string, authorization: string) => [
     element: <MainLayout />,
     children: [
       { path: "", element: <LandingPage /> },
-      { path: "book-clinic", element: <BookingAndReviewPage /> },
+      { path: "book-clinic/:id", element: <BookingAndReviewPage /> },
       { path: "search-clinic", element: <SearchClinicPage /> },
       { path: "register-clinic", element: <RegisterClinicPage /> },
       { path: "login", element: <LoginPage /> },

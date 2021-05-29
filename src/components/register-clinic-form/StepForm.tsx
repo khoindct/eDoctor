@@ -61,17 +61,21 @@ const StepForm = () => {
     }
   };
 
+  function getFormData(object: any) {
+    const formData = new FormData();
+    Object.keys(object).forEach((key) => formData.append(key, object[key]));
+    return formData;
+  }
+
   const onSubmit = async (formData: IFormInput) => {
     formData.address = location;
     formData.geometry = JSON.stringify({
       type: "Point",
       coordinates: [coordinates.lng, coordinates.lat],
     });
-
-    console.log(formData);
-
+    const data = getFormData(formData);
     try {
-      await axios.post("http://localhost:8000/api/v1/clinics", formData);
+      await axios.post("http://localhost:8000/api/v1/clinics", data);
       // navigate("/");
     } catch (error) {
       console.log(error);

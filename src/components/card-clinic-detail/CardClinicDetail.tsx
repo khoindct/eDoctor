@@ -18,38 +18,32 @@ import "./CardClinicDetail.scss";
 import Map from "../map/Map";
 import CustomButton from "../CustomButton";
 
-const CardClinicDetail: React.FC = () => {
+const CardClinicDetail: React.FC<any> = ({ clinic }) => {
   const navigate = useNavigate();
-  const [ratingValue, setRatingValue] = React.useState<number | null>(2);
+  const [ratingValue] = React.useState<number | null>(clinic.ratingAvg || 0);
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const navigateToBooking = () => navigate("/book-clinic", { replace: true });
+  const navigateToBooking = () =>
+    navigate(`/book-clinic/${clinic._id}`, { replace: true });
 
   return (
     <Card className="clinic__content">
       <CardMedia
         classes={{ media: "clinic__image" }}
         component="img"
-        src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1050&q=80"
+        src={clinic?.coverImage?.url}
         title="Clinic Cover Image"
       />
       <CardContent className="clinic__info">
-        <h6 className="clinic__name">Clinic Name Here</h6>
-        <p className="clinic__description mb-auto">Description</p>
+        <h6 className="clinic__name">{clinic?.name}</h6>
+        <p className="clinic__description mb-auto">{clinic?.description}</p>
         <Divider />
         <div className="clinic__action">
-          <Rating
-            name="half-rating-read"
-            value={ratingValue}
-            onChange={(event, newValue) => {
-              setRatingValue(newValue);
-            }}
-            readOnly
-          />
+          <Rating name="half-rating-read" value={ratingValue} readOnly />
           {ratingValue !== null && (
             <Box ml={2} className="clinic__rating">
               {ratingValue}/5
@@ -86,7 +80,7 @@ const CardClinicDetail: React.FC = () => {
         unmountOnExit
       >
         <CardContent>
-          <Map />
+          <Map geometry={clinic?.geometry?.coordinates} />
         </CardContent>
       </Collapse>
     </Card>

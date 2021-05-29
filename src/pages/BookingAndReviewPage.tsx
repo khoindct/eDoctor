@@ -23,24 +23,64 @@ import {
 } from "@material-ui/pickers";
 import "./BookingAndReviewPage.scss";
 import CustomTextField from "../components/CustomTextField";
+import { useParams } from "react-router";
+import api from "../api";
+import { useQuery } from "react-query";
 
-function createData(name: string, hours: string) {
-  return { name, hours };
-}
-
-const rows = [
-  createData("Monday", "08:00 - 17:00"),
-  createData("Tuesday", "08:00 - 17:00"),
-  createData("Wednesday", "08:00 - 17:00"),
-  createData("Thursday", "08:00 - 17:00"),
-  createData("Friday", "08:00 - 17:00"),
-  createData("Saturday", "Closed"),
-  createData("Sunday", "Closed"),
-];
+const createDateData = (
+  dayOfWeek: number,
+  startTime: number,
+  endTime: number
+) => {
+  const dataMap = new Map([
+    [0, "Sunday"],
+    [1, "Monday"],
+    [2, "Tuesday"],
+    [3, "Wednesday"],
+    [4, "Thursday"],
+    [5, "Friday"],
+    [6, "Saturday"],
+  ]);
+  return {
+    name: dataMap.get(dayOfWeek),
+    hours: `${String(startTime / 60).padStart(2, "0")}:${String(
+      startTime % 60
+    ).padStart(2, "0")} - ${String(endTime / 60).padStart(2, "0")}:${String(
+      endTime % 60
+    ).padStart(2, "0")}`,
+  };
+};
 
 const BookingAndReviewPage = () => {
+  const { id } = useParams();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedTime, setSelectedTime] = useState<Date | null>();
+  const [dateRows, setDateRows] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  const axios = api();
+  const { isLoading, isError, error, status } = useQuery(
+    "clinicData",
+    async () => {
+      const response = await axios.get(`/clinics/${id}`);
+      const clinic = response.data.data.data;
+      setDateRows(
+        clinic.schedule.map((row: any) =>
+          createDateData(row.dayOfWeek, row.startTime, row.endTime)
+        )
+      );
+      setReviews(clinic.reviews);
+      return response.data;
+    }
+  );
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {(error as any).message}</span>;
+  }
 
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
@@ -79,7 +119,7 @@ const BookingAndReviewPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
+                  {dateRows?.map((row: any) => (
                     <TableRow key={row.name}>
                       <TableCell
                         classes={{ body: "table__body", head: "table__head" }}
@@ -156,51 +196,28 @@ const BookingAndReviewPage = () => {
 
           {/* Show all reviews */}
           <div className="all-reviews">
-            <div className="review-input">
-              <Avatar
-                alt="Remy Sharp"
-                src="../assets/images/default-avatar.jpg"
-              />
-              <div className="review-form">
-                <Rating
-                  name="customized-empty"
-                  defaultValue={5}
-                  readOnly
-                  emptyIcon={<StarBorderIcon fontSize="inherit" />}
-                />
-                <div className="comments">Good service.</div>
-              </div>
-            </div>
-            <div className="review-input">
-              <Avatar
-                alt="Remy Sharp"
-                src="../assets/images/default-avatar.jpg"
-              />
-              <div className="review-form">
-                <Rating
-                  name="customized-empty"
-                  defaultValue={5}
-                  readOnly
-                  emptyIcon={<StarBorderIcon fontSize="inherit" />}
-                />
-                <div className="comments">Good service.</div>
-              </div>
-            </div>
-            <div className="review-input">
-              <Avatar
-                alt="Remy Sharp"
-                src="../assets/images/default-avatar.jpg"
-              />
-              <div className="review-form">
-                <Rating
-                  name="customized-empty"
-                  defaultValue={5}
-                  readOnly
-                  emptyIcon={<StarBorderIcon fontSize="inherit" />}
-                />
-                <div className="comments">Good service.</div>
-              </div>
-            </div>
+            {!reviews.length &&
+              reviews.map((review) => (
+                <div className="review-input">
+                  <Avatar
+                    alt="Remy Sharp"
+                    // src="../assets/images/default-avatar.jpg"
+                    src={
+                      review.user.avatar ||
+                      "../assets/images/default-avatar.jpg"
+                    }
+                  />
+                  <div className="review-form">
+                    <Rating
+                      name="customized-empty"
+                      defaultValue={review.rating}
+                      readOnly
+                      emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                    />
+                    <div className="comments">{review.review}</div>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>

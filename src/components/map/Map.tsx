@@ -9,10 +9,14 @@ interface Location {
   lng: number;
 }
 
-const Map = () => {
+interface IMap {
+  geometry?: number[];
+}
+
+const Map: React.FC<IMap> = ({ geometry }) => {
   const [center] = useState<Location>({
-    lat: 10.0425842,
-    lng: 105.7659486,
+    lat: geometry?.[1] ?? 10.0425842,
+    lng: geometry?.[0] ?? 105.7659486,
   });
   // eslint-disable-next-line
   const [currentPosition, setCurrentPosition] = useState<Location>();
