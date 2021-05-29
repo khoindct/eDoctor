@@ -95,7 +95,15 @@ const BookingAndReviewPage = () => {
     setSelectedTime(date);
   };
 
-  const handleBookFormSubmit = () => {};
+  const handleBookFormSubmit = async () => {
+    if (!authenticated) {
+      return navigate("/login");
+    }
+    const bookedDate = new Date(Date.parse(selectedDate as any));
+    const bookedTime = selectedTime;
+    const formData = { bookedDate, bookedTime };
+    await axios.post(`/bookings/${id}`, formData);
+  };
 
   const handleCommentSubmit = async (data: any) => {
     if (!authenticated) {
@@ -152,7 +160,10 @@ const BookingAndReviewPage = () => {
                 </TableBody>
               </Table>
             </div>
-            <form className="book-appointment-form">
+            <form
+              className="book-appointment-form"
+              onSubmit={handleSubmit(handleBookFormSubmit)}
+            >
               <ReactNiceDate updateDateValue={handleDateChange} />
               <h6 className="book-appointment-title">
                 Selected date:{" "}
@@ -171,9 +182,7 @@ const BookingAndReviewPage = () => {
                   }}
                 />
               </MuiPickersUtilsProvider>
-              <CustomButton type="submit" callback={handleBookFormSubmit}>
-                Book
-              </CustomButton>
+              <CustomButton type="submit">Book</CustomButton>
             </form>
           </Grid>
         </Card>
