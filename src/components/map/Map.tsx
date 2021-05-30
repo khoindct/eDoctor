@@ -9,16 +9,16 @@ interface Location {
 }
 
 interface IMap {
-  geometry?: number[];
+  geometry: number[];
 }
 
 const Map: React.FC<IMap> = ({ geometry }) => {
   const [center] = useState<Location>({
-    lat: geometry?.[1] ?? 10.0425842,
-    lng: geometry?.[0] ?? 105.7659486,
+    lat: geometry?.[1],
+    lng: geometry?.[0],
   });
-  console.log(center);
   const [zoom] = useState(19);
+  console.log(center);
 
   return (
     // Important! Always set the container height explicitly

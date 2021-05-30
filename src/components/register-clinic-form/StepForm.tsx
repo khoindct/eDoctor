@@ -1,9 +1,17 @@
-import { Step, StepLabel, Stepper } from "@material-ui/core";
+import {
+  Backdrop,
+  CircularProgress,
+  Step,
+  StepLabel,
+  Stepper,
+} from "@material-ui/core";
 import { useState } from "react";
 import { Control, useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { useNavigate } from "react-router";
 import api from "../../api";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import CustomModal from "../CustomModal";
 import { IFormInput } from "./controls.model";
 import GeneralStep from "./GeneralStep";
 import LocationStep from "./LocationStep";
@@ -14,6 +22,9 @@ const labels = ["General", "Opening Hours", "Location"];
 
 const StepForm = () => {
   const axios = api();
+  const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
+  const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { location, coordinates } = useTypedSelector(
     (state) => state.locations
@@ -67,23 +78,54 @@ const StepForm = () => {
     return formData;
   }
 
+  const mutationSubmitClinic = useMutation(
+    (formData) => {
+      return axios.post("http://localhost:8000/api/v1/clinics", formData);
+    },
+    {
+      onSuccess: (_) => {
+        setBackdropOpen(false);
+        setModalSuccessOpen(true);
+        navigate("/");
+      },
+      onError: (error) => {
+        console.error(error);
+        setBackdropOpen(false);
+        setModalErrorOpen(true);
+      },
+    }
+  );
+
   const onSubmit = async (formData: IFormInput) => {
+    setBackdropOpen(true);
+    setModalSuccessOpen(false);
+    setModalErrorOpen(false);
     formData.address = location;
     formData.geometry = JSON.stringify({
       type: "Point",
       coordinates: [coordinates.lng, coordinates.lat],
     });
     const data = getFormData(formData);
-    try {
-      await axios.post("http://localhost:8000/api/v1/clinics", data);
-      // navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+    mutationSubmitClinic.mutate(data as any);
   };
 
   return (
     <div>
+      {modalSuccessOpen && (
+        <CustomModal
+          type="success"
+          message="Your application will be reviewed, we will announce via your email."
+        />
+      )}
+      {modalErrorOpen && (
+        <CustomModal
+          type="error"
+          message="Something goes wrong. Please try again!"
+        />
+      )}
+      <Backdrop className="backdrop" open={backdropOpen}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
       <Stepper
         activeStep={activeStep}
         style={{ margin: "30px 0 15px" }}

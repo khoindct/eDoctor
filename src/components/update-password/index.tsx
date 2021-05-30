@@ -41,14 +41,14 @@ const UpdatePassword: React.FC = () => {
 
   const onSubmit = (formData: IChangePasswordInput) => {
     setBackdropOpen(true);
+    setModalErrorOpen(false);
+    setModalSuccessOpen(false);
     updatePassword(
       formData,
       () => cbUpdatePasswordSuccess(),
       () => cbUpdatePasswordError()
     );
   };
-  console.log(modalSuccessOpen);
-  console.log(modalErrorOpen);
 
   return (
     <>

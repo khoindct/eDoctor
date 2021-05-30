@@ -5,7 +5,8 @@ const MapPage = () => {
   return (
     <Page className="" title="Map">
       <div>
-        <Map />
+        Google Map
+        {/* <Map /> */}
       </div>
     </Page>
   );

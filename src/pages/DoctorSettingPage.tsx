@@ -121,7 +121,8 @@ const DoctorSettingPage: React.FC = () => {
               <SearchLocation />
             </Grid>
             <Grid item xs={12}>
-              <Map />
+              Google Map
+              {/* <Map /> */}
             </Grid>
             <Box ml="auto" mt={2} mr={2}>
               <CustomButton>Save Changes</CustomButton>

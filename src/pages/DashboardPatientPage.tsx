@@ -82,16 +82,15 @@ const DashboardPatientPage = () => {
 
   const getCurrentUser = async () => {
     const { data } = await axios.get("/users/current-user");
-    const result = data.data;
-    setCurrentUser(result);
+    const user = data.data;
+    setCurrentUser(user);
     setUserAvatar(currentUser?.avatar?.url);
 
-    if (currentUser) {
-      setValue("name", currentUser?.name);
-      setValue("email", currentUser?.email);
-      setValue("phone", currentUser?.phone);
-    }
-    return result;
+    setValue("name", user?.name);
+    setValue("email", user?.email);
+    setValue("phone", user?.phone);
+
+    return user;
   };
 
   const { isLoading } = useQuery("profileUser", getCurrentUser, {
@@ -139,6 +138,8 @@ const DashboardPatientPage = () => {
 
   const handleUpdateUserSubmit = async (formData: IUserFormInput) => {
     setBackdropOpen(true);
+    setModalSuccessOpen(false);
+    setModalErrorOpen(false);
     const data = getFormData(formData);
     mutationUpdateProfile.mutate(data as any);
   };

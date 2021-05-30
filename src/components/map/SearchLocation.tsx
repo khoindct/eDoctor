@@ -7,7 +7,6 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import "./SearchLocation.scss";
-import { Typography } from "@material-ui/core";
 
 const SearchLocation = () => {
   const { getLocation } = useActions();
