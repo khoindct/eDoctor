@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
-import { Avatar } from "@material-ui/core";
+import { Avatar, Backdrop, CircularProgress } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import CustomTextField from "../../components/CustomTextField";
 import CustomButton from "../../components/CustomButton";
@@ -20,6 +20,7 @@ interface IFormInput {
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const { control, handleSubmit } = useForm<IFormInput>();
   const { signup } = useActions();
   const { authenticated, errorMessage } = useTypedSelector(
@@ -33,13 +34,21 @@ const SignupPage: React.FC = () => {
     // eslint-disable-next-line
   }, []);
 
+  const cbSignupSubmit = () => {
+    setBackdropOpen(false);
+    navigate(-1);
+  };
+
   const onSubmit = (formData: IFormInput) => {
-    console.log(formData);
-    signup(formData, () => navigate(-1));
+    setBackdropOpen(true);
+    signup(formData, () => cbSignupSubmit());
   };
 
   return (
     <Page className="sign-up-page" title="Sign Up">
+      <Backdrop className="backdrop" open={backdropOpen}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
       <Avatar className="sign-up-avatar">
         <LockOutlinedIcon />
       </Avatar>
