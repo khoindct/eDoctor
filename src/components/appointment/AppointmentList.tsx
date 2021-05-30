@@ -69,56 +69,72 @@ const columns = [
 const AppointmentList: React.FC = () => {
   const data = [
     {
-      clinic: <Typography variant="h5">Joe James</Typography>,
+      clinic: (
+        <Typography variant="h5" component="span">
+          Joe James
+        </Typography>
+      ),
       appDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       bookDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       status: <Chip label="Confirm" classes={{ root: "chip-success" }} />,
     },
     {
-      clinic: <Typography variant="h5">Joe James</Typography>,
+      clinic: (
+        <Typography variant="h5" component="span">
+          Joe James
+        </Typography>
+      ),
       appDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       bookDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       status: <Chip label="Pending" classes={{ root: "chip-pending" }} />,
     },
     {
-      clinic: <Typography variant="h5">Joe James</Typography>,
+      clinic: (
+        <Typography variant="h5" component="span">
+          Joe James
+        </Typography>
+      ),
       appDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       bookDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       status: <Chip label="Cancelled" classes={{ root: "chip-cancel" }} />,
     },
     {
-      clinic: <Typography variant="h5">Joe James</Typography>,
+      clinic: (
+        <Typography variant="h5" component="span">
+          Joe James
+        </Typography>
+      ),
       appDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),
       bookDate: (
-        <Typography variant="h5">
+        <Typography variant="h5" component="span">
           {moment(Date.now()).format("DD-MM-YYYY")}
         </Typography>
       ),

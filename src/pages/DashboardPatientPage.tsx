@@ -1,12 +1,14 @@
 import { useState } from "react";
 import {
   Avatar,
+  Backdrop,
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
   Tab,
   Tabs,
@@ -16,11 +18,23 @@ import Page from "../components/Page";
 import "./DashboardPatientPage.scss";
 import AppointmentList from "../components/appointment/AppointmentList";
 import CustomTextField from "../components/CustomTextField";
+import api from "../api";
+import { useMutation, useQuery } from "react-query";
+import { Controller, useForm } from "react-hook-form";
+import CustomModal from "../components/CustomModal";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
   value: any;
+}
+
+interface IUserFormInput {
+  deleteAvatar?: string;
+  avatar?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
 }
 
 const TabPanel = (props: TabPanelProps) => {
@@ -52,17 +66,89 @@ const a11yProps = (index: any) => {
 };
 
 const DashboardPatientPage = () => {
-  const [value, setValue] = useState(0);
+  const axios = api();
+  const [tabValue, setTabValue] = useState(0);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [userAvatar, setUserAvatar] = useState<string>();
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<any>();
+  const { control, setValue, handleSubmit } = useForm<IUserFormInput>();
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+    setTabValue(newValue);
+  };
+
+  const getCurrentUser = async () => {
+    const { data } = await axios.get("/users/current-user");
+    const result = data.data;
+    setCurrentUser(result);
+    setUserAvatar(currentUser?.avatar?.url);
+
+    if (currentUser) {
+      setValue("name", currentUser?.name);
+      setValue("email", currentUser?.email);
+      setValue("phone", currentUser?.phone);
+    }
+    return result;
+  };
+
+  const { isLoading } = useQuery(["profileUser", currentUser], getCurrentUser, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
+
+  const mutationUpdateProfile = useMutation(
+    (formData) => {
+      return axios.put(`/users/${currentUser._id}`, formData);
+    },
+    {
+      onSuccess: (data) => {
+        const user = data.data.data.data;
+        setCurrentUser(user);
+        setUserAvatar(user?.avatar?.url);
+        setBackdropOpen(false);
+        setModalOpen(true);
+      },
+      onError: (error) => {
+        console.error(error);
+        setBackdropOpen(false);
+      },
+    }
+  );
+
+  const handleUploadAvatar = (event: any) => {
+    setValue && setValue("avatar", event.target.files[0]);
+    setUserAvatar(window.URL.createObjectURL(event.target.files[0]));
+  };
+
+  const handleRemoveAvatar = () => {
+    setValue && setValue("deleteAvatar", currentUser?.avatar?.filename);
+    setValue && setValue("avatar", undefined);
+    setUserAvatar("");
+  };
+
+  function getFormData(object: any) {
+    const formData = new FormData();
+    Object.keys(object).forEach((key) => formData.append(key, object[key]));
+    return formData;
+  }
+
+  const handleUpdateUserSubmit = async (formData: IUserFormInput) => {
+    setBackdropOpen(true);
+    const data = getFormData(formData);
+    mutationUpdateProfile.mutate(data as any);
   };
 
   return (
     <Page className="dashboard-patient-page" title="Dashboard">
+      {modalOpen && <CustomModal />}
+      <Backdrop className="backdrop" open={isLoading || backdropOpen}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
       <Tabs
-        value={value}
-        onChange={handleChange}
+        value={tabValue}
+        onChange={handleTabChange}
         indicatorColor="primary"
         textColor="primary"
         variant="scrollable"
@@ -75,15 +161,15 @@ const DashboardPatientPage = () => {
         <Tab label="CHANGE PASSWORD" className="tab__label" {...a11yProps(2)} />
       </Tabs>
 
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tabValue} index={0}>
         <div className="patient-profile">
           <Card className="profile">
             <CardContent className="profile__action">
               <div className="profile__info">
                 <div className="profile__avatar--border">
                   <Avatar
-                    alt="Remy Sharp"
-                    src="../assets/images/default-avatar.jpg"
+                    alt={currentUser?.name}
+                    src={userAvatar}
                     className="profile__avatar"
                   />
                 </div>
@@ -93,23 +179,46 @@ const DashboardPatientPage = () => {
                   color="textSecondary"
                   component="h6"
                 >
-                  Jane Rotanson
+                  {currentUser?.name}
                 </Typography>
               </div>
             </CardContent>
             <CardActions>
-              <Button
-                className="profile__button"
-                size="medium"
-                color="primary"
-                fullWidth
-              >
-                Remove Picture
-              </Button>
+              {userAvatar ? (
+                <Button
+                  className="profile__button"
+                  size="medium"
+                  color="secondary"
+                  fullWidth
+                  onClick={handleRemoveAvatar}
+                >
+                  Remove Avatar
+                </Button>
+              ) : (
+                <>
+                  <input
+                    style={{ display: "none" }}
+                    id="cover-image-file"
+                    type="file"
+                    onChange={handleUploadAvatar}
+                  />
+                  <label htmlFor="cover-image-file" style={{ width: "100%" }}>
+                    <Button
+                      className="profile__button"
+                      size="medium"
+                      color="secondary"
+                      component="span"
+                      fullWidth
+                    >
+                      Upload Avatar
+                    </Button>
+                  </label>
+                </>
+              )}
             </CardActions>
           </Card>
           <div className="content">
-            <form>
+            <form onSubmit={handleSubmit(handleUpdateUserSubmit)}>
               <Card>
                 <CardHeader
                   title="Profile"
@@ -120,17 +229,42 @@ const DashboardPatientPage = () => {
                 <Divider />
                 <CardContent>
                   <div className="profile__form--input">
-                    <CustomTextField label="Name" />
-                    <CustomTextField label="Email" />
-                    <CustomTextField label="Phone" />
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <CustomTextField
+                          label="Name"
+                          value={currentUser?.name}
+                          {...field}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="email"
+                      control={control}
+                      defaultValue={currentUser?.email || ""}
+                      render={({ field }) => (
+                        <CustomTextField label="Email" {...field} />
+                      )}
+                    />
+                    <Controller
+                      name="phone"
+                      control={control}
+                      defaultValue={currentUser?.phone || ""}
+                      render={({ field }) => (
+                        <CustomTextField label="Phone" {...field} />
+                      )}
+                    />
                   </div>
                 </CardContent>
                 <Divider />
                 <div className="profile__form--action">
                   <Button
+                    type="submit"
                     className="profile__button"
                     size="medium"
-                    color="primary"
+                    color="secondary"
                     variant="contained"
                   >
                     Save Changes
@@ -141,10 +275,10 @@ const DashboardPatientPage = () => {
           </div>
         </div>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tabValue} index={1}>
         <AppointmentList />
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={tabValue} index={2}>
         <form>
           <Card>
             <CardHeader
