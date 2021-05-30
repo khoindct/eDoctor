@@ -10,6 +10,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import StarRateIcon from "@material-ui/icons/StarRate";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
+import AccessibleForwardIcon from "@material-ui/icons/AccessibleForward";
+import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import "./index.scss";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 const DashboardLayout: React.FC = () => {
@@ -18,7 +20,22 @@ const DashboardLayout: React.FC = () => {
 
   const sidebarItems = [
     authorization === "admin" && {
-      path: "/app/map",
+      path: "/admin/clinics",
+      icon: LocalHospitalIcon,
+      title: "Clinics",
+    },
+    authorization === "admin" && {
+      path: "/admin/doctors",
+      icon: PeopleAltIcon,
+      title: "Doctors",
+    },
+    authorization === "admin" && {
+      path: "/admin/patients",
+      icon: AccessibleForwardIcon,
+      title: "Patients",
+    },
+    authorization === "admin" && {
+      path: "/admin/map",
       icon: MapIcon,
       title: "Map",
     },

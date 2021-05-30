@@ -22,12 +22,15 @@ import DoctorSettingPage from "./pages/DoctorSettingPage";
 import DoctorRatingPage from "./pages/DoctorRatingPage";
 import DoctorOpeningHoursPage from "./pages/DoctorOpeningHoursPage";
 import DoctorSecurityPage from "./pages/DoctorSecurityPage";
+import AdminClinicManagePage from "./pages/AdminClinicManagePage";
+import AdminDoctorManagePage from "./pages/AdminDoctorManagePage";
+import AdminPatientManagePage from "./pages/AdminPatientManagePage";
 
 const routes = (authenticated: string, authorization: string) => [
   {
     path: "app",
     element: Boolean(authenticated) ? (
-      authorization !== "patient" ? (
+      authorization === "doctor" ? (
         <DashboardLayout />
       ) : (
         <NotFoundPage />
@@ -44,7 +47,6 @@ const routes = (authenticated: string, authorization: string) => [
       { path: "ratings", element: <DoctorRatingPage /> },
       { path: "settings", element: <DoctorSettingPage /> },
       { path: "customers/:id/edit", element: <CustomerEditPage /> },
-      { path: "map", element: <MapPage /> },
       { path: "calendar", element: <CalendarPage /> },
       { path: "opening-hours", element: <DoctorOpeningHoursPage /> },
       { path: "security", element: <DoctorSecurityPage /> },
@@ -63,6 +65,25 @@ const routes = (authenticated: string, authorization: string) => [
       { path: "signup", element: <SignupPage /> },
       { path: "profile/:id", element: <DashboardPatientPage /> },
       { path: "404", element: <NotFoundPage /> },
+      { path: "*", element: <Navigate to="/404" /> },
+    ],
+  },
+  {
+    path: "admin",
+    element: Boolean(authenticated) ? (
+      authorization === "admin" ? (
+        <DashboardLayout />
+      ) : (
+        <NotFoundPage />
+      )
+    ) : (
+      <Navigate to="/login" />
+    ),
+    children: [
+      { path: "clinics", element: <AdminClinicManagePage /> },
+      { path: "doctors", element: <AdminDoctorManagePage /> },
+      { path: "map", element: <MapPage /> },
+      { path: "patients", element: <AdminPatientManagePage /> },
       { path: "*", element: <Navigate to="/404" /> },
     ],
   },
