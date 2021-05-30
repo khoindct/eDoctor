@@ -46,7 +46,7 @@ const CardClinicDetail: React.FC<any> = ({ clinic }) => {
           <Rating name="half-rating-read" value={ratingValue} readOnly />
           {ratingValue !== null && (
             <Box ml={2} className="clinic__rating">
-              {ratingValue}/5
+              {ratingValue}/5 ({clinic?.reviewCount})
             </Box>
           )}
           <CustomButton className="ml-auto" callback={navigateToBooking}>

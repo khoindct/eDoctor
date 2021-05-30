@@ -7,6 +7,7 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import "./SearchLocation.scss";
+import { Typography } from "@material-ui/core";
 
 const SearchLocation = () => {
   const { getLocation } = useActions();
@@ -52,6 +53,7 @@ const SearchLocation = () => {
       <Autocomplete
         id="free-solo-demo"
         freeSolo
+        classes={{ option: "autoComplete-text" }}
         options={data.map((suggestion) => suggestion.description)}
         onChange={(e, value) => handleChangeInput(value)}
         renderInput={(params) => (
@@ -60,13 +62,6 @@ const SearchLocation = () => {
             InputLabelProps={{
               classes: {
                 root: "form--input",
-              },
-            }}
-            InputProps={{
-              classes: {
-                input: "form--input",
-                root: "form--input-root",
-                notchedOutline: "form--label-not-touch",
               },
             }}
             label="Enter your location"
