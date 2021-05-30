@@ -1,2 +1,6 @@
 @import "assets/styles/base";
 @import "assets/styles/utilities";
+
+.backdrop {
+  z-index: 9999 !important;
+}

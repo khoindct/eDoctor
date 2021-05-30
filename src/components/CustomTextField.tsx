@@ -8,10 +8,22 @@ interface ICustomTextField {
   placeholder?: string;
   isMultiline?: boolean;
   type?: "text" | "password";
+  value?: string;
 }
 
 const CustomTextField: React.FC<ICustomTextField> = forwardRef(
-  ({ label, rows, placeholder, isMultiline, type = "text", ...props }, ref) => {
+  (
+    {
+      label,
+      rows,
+      placeholder,
+      isMultiline,
+      type = "text",
+      value = "",
+      ...props
+    },
+    ref
+  ) => {
     return (
       <TextField
         ref={ref as any}
@@ -30,6 +42,7 @@ const CustomTextField: React.FC<ICustomTextField> = forwardRef(
         }}
         type={type}
         label={label}
+        value={value}
         multiline={isMultiline}
         rows={rows}
         placeholder={placeholder}

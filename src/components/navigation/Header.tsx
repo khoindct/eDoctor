@@ -25,6 +25,8 @@ import Notification from "../notification/Notification";
 import "./Header.scss";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
+import api from "../../api";
+import { useQuery, useQueryClient } from "react-query";
 
 interface HeaderProps {
   onMobileNavOpen?: () => void;
@@ -38,6 +40,7 @@ interface NotificationType {
 }
 
 const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
+  const axios = api();
   const navigate = useNavigate();
   const { signout } = useActions();
   const [notifications] = useState<NotificationType[]>(notificationData);
@@ -49,9 +52,31 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
     (state) => state.auth
   );
 
+  const [currentUser, setCurrentUser] = useState<any>();
+  const getCurrentUser = async () => {
+    if (!authenticated) {
+      return;
+    }
+    const { data } = await axios.get("/users/current-user");
+    const result = data.data;
+    setCurrentUser(result);
+    console.log(currentUser);
+
+    return result;
+  };
+  const _ = useQuery(["user", currentUser], getCurrentUser, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
+
   const handleSignout = () => {
     setProfileMenu(null);
     signout(() => navigate("/"));
+  };
+
+  const navigateToProfile = () => {
+    navigate(`/profile/${currentUser._id}`);
   };
 
   return (
@@ -154,16 +179,16 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
             >
               <div>
                 <Typography variant="h6" className="profile-header__name">
-                  John Smith
+                  {currentUser?.name}
                 </Typography>
               </div>
               <Divider />
               <div className="profile-header__item">
-                <MenuItem className="profile-header__item--content">
+                <MenuItem
+                  className="profile-header__item--content"
+                  onClick={navigateToProfile}
+                >
                   <AccountIcon className="profile-header__item--icon" /> Profile
-                </MenuItem>
-                <MenuItem className="profile-header__item--content">
-                  <AccountIcon className="profile-header__item--icon" /> Tasks
                 </MenuItem>
                 <MenuItem className="profile-header__item--content">
                   <AccountIcon className="profile-header__item--icon" />{" "}

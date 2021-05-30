@@ -31,8 +31,6 @@ const LoginPage = () => {
   }, []);
 
   const onSubmit = (formData: IFormInput) => {
-    console.log(formData);
-
     signin(formData, () => navigate(-1));
   };
 
