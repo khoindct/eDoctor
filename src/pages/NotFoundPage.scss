@@ -1,0 +1,10 @@
+.not-found-page {
+  grid-column: center-start / center-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 5rem;
+  gap: 5rem;
+  padding: 10rem 0;
+}
