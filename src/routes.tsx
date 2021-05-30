@@ -63,6 +63,7 @@ const routes = (authenticated: string, authorization: string) => [
       { path: "signup", element: <SignupPage /> },
       { path: "profile/:id", element: <DashboardPatientPage /> },
       { path: "404", element: <NotFoundPage /> },
+      { path: "*", element: <Navigate to="/404" /> },
     ],
   },
 ];

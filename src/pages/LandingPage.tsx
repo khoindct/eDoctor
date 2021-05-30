@@ -7,6 +7,7 @@ import { ReactComponent as DoctorSvg } from "../assets/images/undraw_doctors_hwt
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import CustomFooter from "../layouts/MainLayout/footer";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -100,46 +101,7 @@ const LandingPage: React.FC = () => {
           </button>
         </div>
       </div>
-
-      <footer className="footer">
-        <ul className="nav">
-          <li className="nav__item">
-            <Link to="" className="nav__link">
-              Find your dream home
-            </Link>
-          </li>
-          <li className="nav__item">
-            <Link to="" className="nav__link">
-              Request proposal
-            </Link>
-          </li>
-          <li className="nav__item">
-            <Link to="" className="nav__link">
-              Download home planner
-            </Link>
-          </li>
-          <li className="nav__item">
-            <Link to="" className="nav__link">
-              Contact us
-            </Link>
-          </li>
-          <li className="nav__item">
-            <Link to="" className="nav__link">
-              Submit your property
-            </Link>
-          </li>
-          <li className="nav__item">
-            <Link to="" className="nav__link">
-              Come work with us!
-            </Link>
-          </li>
-        </ul>
-        <p className="copyright">
-          &copy; Copyright 2021 by Quach Luyl Da's Team. Feel free to use this
-          project for your own purposes. This does NOT apply if you plan to
-          produce your own course or tutorials based on this project.
-        </p>
-      </footer>
+      <CustomFooter />
     </div>
   );
 };

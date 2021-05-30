@@ -91,9 +91,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
         )}
 
         <RouterLink to="/">
-          <Typography variant="h6" className="">
-            LOGO
-          </Typography>
+          <img src="assets/images/logo.png" height={50} width={50} />
         </RouterLink>
 
         <Box flexGrow={1} />
