@@ -94,7 +94,7 @@ const DashboardPatientPage = () => {
     return result;
   };
 
-  const { isLoading } = useQuery(["profileUser", currentUser], getCurrentUser, {
+  const { isLoading } = useQuery("profileUser", getCurrentUser, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchInterval: false,

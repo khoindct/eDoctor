@@ -54,9 +54,6 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
   const [currentUser, setCurrentUser] = useState<any>();
   const getCurrentUser = async () => {
-    if (!authenticated) {
-      return;
-    }
     const { data } = await axios.get("/users/current-user");
     const result = data.data;
     setCurrentUser(result);
@@ -64,7 +61,8 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
     return result;
   };
-  const _ = useQuery(["user", currentUser], getCurrentUser, {
+
+  const _ = useQuery("user", getCurrentUser, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchInterval: false,

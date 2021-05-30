@@ -7,28 +7,40 @@ import api from "../api/";
 import "./SearchClinicPage.scss";
 
 import CardClinicDetail from "../components/card-clinic-detail/CardClinicDetail";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { CircularProgress } from "@material-ui/core";
 
 const SearchClinicPage = () => {
   const axios = api();
   const [clinics, setClinics] = useState<any[]>([]);
-  // const { isLoading, isError, error, data } = useQuery(
-  //   "clinicData",
-  //   async () => {
-  //     const response = await axios.get("/clinics/approved-clinics");
-  //     const data = response.data.data.data;
-  //     setClinics(data);
-  //     return data;
-  //   }
-  // );
+  const [filterInput, setFilterInput] = useState<string>("");
 
-  // if (isLoading) {
-  //   return <span>Loading...</span>;
-  // }
+  const getClinics = async () => {
+    const response = await axios.get("/clinics/approved-clinics");
+    const data = response.data.data.data;
+    setClinics(data);
+    return data;
+  };
 
-  // if (isError) {
-  //   return <span>Error: {(error as any).message}</span>;
-  // }
+  const { isLoading, isError, error, data } = useQuery(
+    "clinicData",
+    getClinics,
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
+
+  const filterClinics = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setFilterInput(e.target.value);
+  };
+
+  if (isError) {
+    return <span>Error: {(error as any).message}</span>;
+  }
 
   return (
     <>
@@ -37,7 +49,8 @@ const SearchClinicPage = () => {
           <FormControl fullWidth>
             <Input
               id="input-with-icon-adornment"
-              placeholder="Search for the clinic"
+              placeholder="Search for the clinic by name"
+              onChange={(e) => filterClinics(e)}
               classes={{ input: "search-input" }}
               startAdornment={
                 <InputAdornment position="start">
@@ -50,9 +63,14 @@ const SearchClinicPage = () => {
       </section>
 
       <section className="clinic-section">
-        {clinics?.map((clinic: any) => (
-          <CardClinicDetail key={clinic._id} clinic={clinic} />
-        ))}
+        {isLoading && <CircularProgress color="secondary" />}
+        {!clinics.length && "No clinics found"}
+        {clinics.length &&
+          clinics
+            .filter((clinic) => clinic.name.toLowerCase().includes(filterInput))
+            .map((clinic: any) => (
+              <CardClinicDetail key={clinic._id} clinic={clinic} />
+            ))}
       </section>
     </>
   );
