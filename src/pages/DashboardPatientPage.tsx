@@ -22,6 +22,7 @@ import api from "../api";
 import { useMutation, useQuery } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import CustomModal from "../components/CustomModal";
+import UpdatePassword from "../components/update-password";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -68,7 +69,8 @@ const a11yProps = (index: any) => {
 const DashboardPatientPage = () => {
   const axios = api();
   const [tabValue, setTabValue] = useState(0);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
+  const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [userAvatar, setUserAvatar] = useState<string>();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<any>();
@@ -108,11 +110,12 @@ const DashboardPatientPage = () => {
         setCurrentUser(user);
         setUserAvatar(user?.avatar?.url);
         setBackdropOpen(false);
-        setModalOpen(true);
+        setModalSuccessOpen(true);
       },
       onError: (error) => {
         console.error(error);
         setBackdropOpen(false);
+        setModalErrorOpen(true);
       },
     }
   );
@@ -142,7 +145,15 @@ const DashboardPatientPage = () => {
 
   return (
     <Page className="dashboard-patient-page" title="Dashboard">
-      {modalOpen && <CustomModal />}
+      {modalSuccessOpen && (
+        <CustomModal type="success" message="Successfully save changes" />
+      )}
+      {modalErrorOpen && (
+        <CustomModal
+          type="error"
+          message="Something goes wrong. Please try again!"
+        />
+      )}
       <Backdrop className="backdrop" open={isLoading || backdropOpen}>
         <CircularProgress color="secondary" />
       </Backdrop>
@@ -279,35 +290,7 @@ const DashboardPatientPage = () => {
         <AppointmentList />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
-        <form>
-          <Card>
-            <CardHeader
-              title="Security"
-              classes={{
-                title: "profile__title",
-              }}
-            />
-            <Divider />
-            <CardContent>
-              <div className="profile__form--input">
-                <CustomTextField label="Old Password" />
-                <CustomTextField label="New Password" />
-                <CustomTextField label="Confirm Password" />
-              </div>
-            </CardContent>
-            <Divider />
-            <div className="profile__form--action">
-              <Button
-                className="profile__button"
-                size="medium"
-                color="primary"
-                variant="contained"
-              >
-                Save Changes
-              </Button>
-            </div>
-          </Card>
-        </form>
+        <UpdatePassword />
       </TabPanel>
     </Page>
   );

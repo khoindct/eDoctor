@@ -1,13 +1,20 @@
 import { Button, Card, Grid } from "@material-ui/core";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import { Dispatch, SetStateAction } from "react";
 import "./CustomModalBody.scss";
 
 interface ICustomModalBody {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
+  type: "success" | "error";
+  message: string;
 }
 
-const CustomModalBody: React.FC<ICustomModalBody> = ({ setModalOpen }) => {
+const CustomModalBody: React.FC<ICustomModalBody> = ({
+  setModalOpen,
+  type,
+  message,
+}) => {
   return (
     <Card>
       <Grid
@@ -18,21 +25,37 @@ const CustomModalBody: React.FC<ICustomModalBody> = ({ setModalOpen }) => {
         style={{ padding: "5rem", gap: "2rem" }}
       >
         <Grid item>
-          <CheckCircleOutlineIcon
-            style={{ fontSize: "5rem", color: "green" }}
-          />
+          {type === "success" && (
+            <CheckCircleOutlineIcon
+              style={{ fontSize: "5rem", color: "green" }}
+            />
+          )}
+          {type === "error" && (
+            <HighlightOffIcon style={{ fontSize: "5rem", color: "red" }} />
+          )}
         </Grid>
         <Grid item style={{ fontSize: "1.7rem" }}>
-          Successfully save changes
+          {message}
         </Grid>
         <Grid item>
-          <Button
-            variant="outlined"
-            style={{ fontSize: "1.7rem", color: "green" }}
-            onClick={() => setModalOpen(false)}
-          >
-            OK
-          </Button>
+          {type === "success" && (
+            <Button
+              variant="outlined"
+              style={{ fontSize: "1.7rem", color: "green" }}
+              onClick={() => setModalOpen(false)}
+            >
+              OK
+            </Button>
+          )}
+          {type === "error" && (
+            <Button
+              variant="outlined"
+              style={{ fontSize: "1.7rem", color: "red" }}
+              onClick={() => setModalOpen(false)}
+            >
+              Try Again
+            </Button>
+          )}
         </Grid>
       </Grid>
     </Card>

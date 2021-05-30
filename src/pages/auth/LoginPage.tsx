@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/Page";
 import { useActions } from "../../hooks/useActions";
-import { Avatar } from "@material-ui/core";
+import { Avatar, Backdrop, CircularProgress } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import CustomTextField from "../../components/CustomTextField";
 import CustomButton from "../../components/CustomButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import "./LoginPage.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface IFormInput {
   email: string;
@@ -17,6 +17,7 @@ interface IFormInput {
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const { control, handleSubmit } = useForm<IFormInput>();
   const { signin } = useActions();
   const { authenticated, errorMessage } = useTypedSelector(
@@ -30,12 +31,21 @@ const LoginPage = () => {
     // eslint-disable-next-line
   }, []);
 
+  const cbLoginSubmit = () => {
+    setBackdropOpen(false);
+    navigate(-1);
+  };
+
   const onSubmit = (formData: IFormInput) => {
-    signin(formData, () => navigate(-1));
+    setBackdropOpen(true);
+    signin(formData, () => cbLoginSubmit());
   };
 
   return (
     <Page className="sign-up-page" title="Login">
+      <Backdrop className="backdrop" open={backdropOpen}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
       <Avatar className="sign-up-avatar">
         <LockOutlinedIcon />
       </Avatar>

@@ -12,23 +12,23 @@ import { useState } from "react";
 const SearchClinicPage = () => {
   const axios = api();
   const [clinics, setClinics] = useState<any[]>([]);
-  const { isLoading, isError, error, data } = useQuery(
-    "clinicData",
-    async () => {
-      const response = await axios.get("/clinics/approved-clinics");
-      const data = response.data.data.data;
-      setClinics(data);
-      return data;
-    }
-  );
+  // const { isLoading, isError, error, data } = useQuery(
+  //   "clinicData",
+  //   async () => {
+  //     const response = await axios.get("/clinics/approved-clinics");
+  //     const data = response.data.data.data;
+  //     setClinics(data);
+  //     return data;
+  //   }
+  // );
 
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
+  // if (isLoading) {
+  //   return <span>Loading...</span>;
+  // }
 
-  if (isError) {
-    return <span>Error: {(error as any).message}</span>;
-  }
+  // if (isError) {
+  //   return <span>Error: {(error as any).message}</span>;
+  // }
 
   return (
     <>
