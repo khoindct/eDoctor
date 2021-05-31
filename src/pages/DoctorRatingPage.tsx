@@ -6,15 +6,9 @@ import "./DoctorRatingPage.scss";
 
 const DoctorRatingPage: React.FC = () => {
   return (
-    <Page className="" title="Rating dashboard">
+    <Page className="" title="Rating Dashboard">
       <Box mt={5} />
       <div className="doctor-rating-page-content">
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
-        <CommentCard />
         <CommentCard />
       </div>
       <Box mb={5} />

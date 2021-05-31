@@ -31,14 +31,22 @@ const LoginPage = () => {
     // eslint-disable-next-line
   }, []);
 
-  const cbLoginSubmit = () => {
+  const cbLoginSubmitSuccess = () => {
     setBackdropOpen(false);
     navigate(-1);
   };
 
+  const cbLoginSubmitError = () => {
+    setBackdropOpen(false);
+  };
+
   const onSubmit = (formData: IFormInput) => {
     setBackdropOpen(true);
-    signin(formData, () => cbLoginSubmit());
+    signin(
+      formData,
+      () => cbLoginSubmitSuccess(),
+      () => cbLoginSubmitError()
+    );
   };
 
   return (

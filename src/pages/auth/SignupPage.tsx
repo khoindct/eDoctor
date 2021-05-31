@@ -34,14 +34,22 @@ const SignupPage: React.FC = () => {
     // eslint-disable-next-line
   }, []);
 
-  const cbSignupSubmit = () => {
+  const cbSignupSubmitSuccess = () => {
     setBackdropOpen(false);
     navigate(-1);
   };
 
+  const cbSignupSubmitError = () => {
+    setBackdropOpen(false);
+  };
+
   const onSubmit = (formData: IFormInput) => {
     setBackdropOpen(true);
-    signup(formData, () => cbSignupSubmit());
+    signup(
+      formData,
+      () => cbSignupSubmitSuccess(),
+      () => cbSignupSubmitError()
+    );
   };
 
   return (

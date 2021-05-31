@@ -54,6 +54,9 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
   const [currentUser, setCurrentUser] = useState<any>();
   const getCurrentUser = async () => {
+    if (!authenticated) {
+      return;
+    }
     const { data } = await axios.get("/users/current-user");
     const result = data.data;
     setCurrentUser(result);
@@ -62,8 +65,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
     return result;
   };
 
-  const _ = useQuery("user", getCurrentUser, {
-    refetchOnMount: false,
+  const _ = useQuery(["user", authenticated], getCurrentUser, {
     refetchOnWindowFocus: false,
     refetchInterval: false,
   });
@@ -75,6 +77,10 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
   const navigateToProfile = () => {
     navigate(`/profile/${currentUser._id}`);
+  };
+
+  const navigateToDashboard = () => {
+    navigate(`/app/dashboard`);
   };
 
   return (
@@ -146,7 +152,10 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
               <Avatar
                 classes={{ root: "header__avatar" }}
                 alt="Remy Sharp"
-                src="../../assets/images/default-avatar.jpg"
+                src={
+                  currentUser?.avatar?.url ||
+                  "../../assets/images/default-avatar.jpg"
+                }
               />
             </IconButton>
             <Menu
@@ -184,16 +193,24 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
               </div>
               <Divider />
               <div className="profile-header__item">
-                <MenuItem
-                  className="profile-header__item--content"
-                  onClick={navigateToProfile}
-                >
-                  <AccountIcon className="profile-header__item--icon" /> Profile
-                </MenuItem>
-                <MenuItem className="profile-header__item--content">
-                  <AccountIcon className="profile-header__item--icon" />{" "}
-                  Messages
-                </MenuItem>
+                {authorization === "patient" && (
+                  <MenuItem
+                    className="profile-header__item--content"
+                    onClick={navigateToProfile}
+                  >
+                    <AccountIcon className="profile-header__item--icon" />{" "}
+                    Profile
+                  </MenuItem>
+                )}
+                {authorization === "doctor" && (
+                  <MenuItem
+                    className="profile-header__item--content"
+                    onClick={navigateToDashboard}
+                  >
+                    <AccountIcon className="profile-header__item--icon" />{" "}
+                    Dashboard
+                  </MenuItem>
+                )}
               </div>
               <div className="profile-header__button">
                 <Button

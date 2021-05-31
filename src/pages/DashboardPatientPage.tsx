@@ -84,7 +84,7 @@ const DashboardPatientPage = () => {
     const { data } = await axios.get("/users/current-user");
     const user = data.data;
     setCurrentUser(user);
-    setUserAvatar(currentUser?.avatar?.url);
+    setUserAvatar(user?.avatar?.url);
 
     setValue("name", user?.name);
     setValue("email", user?.email);
@@ -94,7 +94,6 @@ const DashboardPatientPage = () => {
   };
 
   const { isLoading } = useQuery("profileUser", getCurrentUser, {
-    refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchInterval: false,
   });

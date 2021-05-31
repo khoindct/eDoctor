@@ -16,4 +16,9 @@
     font-size: 1.5rem;
     color: var(--color-text-secondary);
   }
+  &__replies {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 }

@@ -26,7 +26,6 @@ const SearchClinicPage = () => {
     "clinicData",
     getClinics,
     {
-      refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchInterval: false,
     }

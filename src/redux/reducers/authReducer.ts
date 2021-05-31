@@ -23,6 +23,7 @@ const authReducer = (
         ...state,
         authenticated: action.payload.token,
         authorization: action.payload.role,
+        errorMessage: "",
       };
     case ActionType.AUTH_ERROR:
       return { ...state, errorMessage: action.payload };

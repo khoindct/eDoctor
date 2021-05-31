@@ -6,7 +6,8 @@ import { Action } from "../actions";
 const axios = api();
 
 export const signup =
-  (formProps: any, callback: any) => async (dispatch: Dispatch<Action>) => {
+  (formProps: any, callbackSuccess: any, callbackError: any) =>
+  async (dispatch: Dispatch<Action>) => {
     try {
       const response = await axios.post("/users/signup", formProps);
       dispatch({
@@ -18,8 +19,9 @@ export const signup =
       });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.data.user.role);
-      callback();
+      callbackSuccess();
     } catch (error) {
+      callbackError();
       dispatch({
         type: ActionType.AUTH_ERROR,
         payload: "Email in use",
@@ -28,7 +30,8 @@ export const signup =
   };
 
 export const signin =
-  (formProps: any, callback: any) => async (dispatch: Dispatch<Action>) => {
+  (formProps: any, callbackSuccess: any, callbackError: any) =>
+  async (dispatch: Dispatch<Action>) => {
     try {
       const response = await axios.post("/users/login", formProps);
       dispatch({
@@ -40,8 +43,9 @@ export const signin =
       });
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.data.user.role);
-      callback();
+      callbackSuccess();
     } catch (error) {
+      callbackError();
       dispatch({
         type: ActionType.AUTH_ERROR,
         payload: "Invalid login credentials",

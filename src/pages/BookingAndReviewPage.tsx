@@ -1,7 +1,10 @@
 import { useState } from "react";
 import {
   Avatar,
+  Backdrop,
+  Box,
   Card,
+  CircularProgress,
   Divider,
   Grid,
   Table,
@@ -25,9 +28,11 @@ import "./BookingAndReviewPage.scss";
 import CustomTextField from "../components/CustomTextField";
 import { useNavigate, useParams } from "react-router";
 import api from "../api";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import CustomModal from "../components/CustomModal";
+import Page from "../components/Page";
 
 const createDateData = (
   dayOfWeek: number,
@@ -56,9 +61,12 @@ const createDateData = (
 const BookingAndReviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { control, handleSubmit } = useForm();
+  const { control, register, setValue, handleSubmit } = useForm();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedTime, setSelectedTime] = useState<Date | null>();
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
+  const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
+  const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [dateRows, setDateRows] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const { authenticated } = useTypedSelector((state) => state.auth);
@@ -76,16 +84,12 @@ const BookingAndReviewPage = () => {
       );
       setReviews(clinic.reviews);
       return response.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
     }
   );
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {(error as any).message}</span>;
-  }
 
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
@@ -95,6 +99,71 @@ const BookingAndReviewPage = () => {
     setSelectedTime(date);
   };
 
+  const mutationSubmitComment = useMutation(
+    (formData) => {
+      return axios.post(`/reviews/${id}`, formData);
+    },
+    {
+      onSuccess: (data) => {
+        const review = data.data.data.data;
+        setReviews((prevState) => [...prevState, review]);
+        setValue("rating", 0);
+        setValue("review", "");
+        setBackdropOpen(false);
+        setModalSuccessOpen(true);
+      },
+      onError: (error) => {
+        console.error(error);
+        setBackdropOpen(false);
+        setModalErrorOpen(true);
+      },
+    }
+  );
+
+  const mutationSubmitBooking = useMutation(
+    (formData) => {
+      return axios.post(`/bookings/${id}`, formData);
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+
+        // const booking = data.data.data.data;
+        setBackdropOpen(false);
+        setModalSuccessOpen(true);
+      },
+      onError: (error) => {
+        console.error(error);
+        setBackdropOpen(false);
+        setModalErrorOpen(true);
+      },
+    }
+  );
+
+  const mutationSubmitReply = useMutation(
+    (formData: any) => {
+      return axios.post(`/reviews/${formData.reviewId}`, formData.reply);
+    },
+    {
+      onSuccess: (data) => {
+        const review = data.data.data.data;
+        setValue("reply", "");
+        setBackdropOpen(false);
+      },
+      onError: (error) => {
+        console.error(error);
+        setBackdropOpen(false);
+      },
+    }
+  );
+
+  const handleReplySubmit = async (data: any) => {
+    const reply = data.reply;
+    const reviewId = data.reviewId;
+    const formData = { reply, reviewId };
+    mutationSubmitReply.mutate(formData as any);
+  };
+
   const handleBookFormSubmit = async () => {
     if (!authenticated) {
       return navigate("/login");
@@ -102,7 +171,7 @@ const BookingAndReviewPage = () => {
     const bookedDate = new Date(Date.parse(selectedDate as any));
     const bookedTime = selectedTime;
     const formData = { bookedDate, bookedTime };
-    await axios.post(`/bookings/${id}`, formData);
+    mutationSubmitBooking.mutate(formData as any);
   };
 
   const handleCommentSubmit = async (data: any) => {
@@ -112,11 +181,31 @@ const BookingAndReviewPage = () => {
     const rating = +data.rating;
     const review = data.review;
     const formData = { rating, review };
-    await axios.post(`/reviews/${id}`, formData);
+    mutationSubmitComment.mutate(formData as any);
   };
 
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {(error as any).message}</span>;
+  }
+
   return (
-    <div className="booking-and-review-page">
+    <Page className="booking-and-review-page" title="Booking and Review">
+      {modalSuccessOpen && (
+        <CustomModal type="success" message="Successfully save changes" />
+      )}
+      {modalErrorOpen && (
+        <CustomModal
+          type="error"
+          message="Something goes wrong. Please try again!"
+        />
+      )}
+      <Backdrop className="backdrop" open={isLoading || backdropOpen}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
       <div className="booking-section">
         <CustomCarousel />
         <Card
@@ -237,30 +326,69 @@ const BookingAndReviewPage = () => {
           <div className="all-reviews">
             {!!reviews.length &&
               reviews.map((review) => (
-                <div key={review._id} className="review-input">
-                  <Avatar
-                    alt="Remy Sharp"
-                    // src="../assets/images/default-avatar.jpg"
-                    src={
-                      review.user?.avatar ||
-                      "../assets/images/default-avatar.jpg"
-                    }
-                  />
-                  <div className="review-form">
-                    <Rating
-                      name="customized-empty"
-                      defaultValue={review.rating}
-                      readOnly
-                      emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                <Grid container key={review._id}>
+                  <Grid item xs={1}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      // src="../assets/images/default-avatar.jpg"
+                      src={
+                        review?.user?.avatar ||
+                        "../assets/images/default-avatar.jpg"
+                      }
                     />
-                    <div className="comments">{review.review}</div>
-                  </div>
-                </div>
+                  </Grid>
+                  <Grid item xs={11}>
+                    <Grid container direction="column">
+                      <div className="review-name">{review?.user?.name}</div>
+                      <Rating
+                        name="customized-empty"
+                        defaultValue={review.rating}
+                        readOnly
+                        emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                      />
+                      <div className="comments">{review.review}</div>
+                    </Grid>
+                  </Grid>
+                  <Grid container style={{ marginTop: "2rem" }}>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={10}>
+                      <Grid container>
+                        <Grid item xs={1}>
+                          <Avatar
+                            classes={{ root: "comment__avatar" }}
+                            alt="Remy Sharp"
+                            src="../assets/images/default-avatar.jpg"
+                          />
+                        </Grid>
+                        <Grid item xs={10}>
+                          <form onSubmit={handleSubmit(handleReplySubmit)}>
+                            <input
+                              hidden
+                              {...register("reviewId")}
+                              defaultValue={review._id}
+                            />
+                            <Controller
+                              name="reply"
+                              control={control}
+                              defaultValue=""
+                              render={({ field }) => (
+                                <CustomTextField
+                                  placeholder="Type here to reply..."
+                                  {...field}
+                                />
+                              )}
+                            />
+                          </form>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
               ))}
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 
