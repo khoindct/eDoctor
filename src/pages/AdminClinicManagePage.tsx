@@ -1,38 +1,61 @@
 import {
+  Backdrop,
   Box,
+  Button,
   Chip,
+  CircularProgress,
   Grid,
-  IconButton,
-  Menu,
-  MenuItem,
+  Modal,
   Typography,
 } from "@material-ui/core";
 import { useState } from "react";
 import StatisticCard from "../components/dashboard/StatisticCard";
 import DataList from "../components/data-list/DataList";
 import Page from "../components/Page";
-import moment from "moment";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "./AdminDoctorManagePage.scss";
+import { useQuery } from "react-query";
+import api from "../api";
+import ClinicModalBodyDetail from "../components/ClinicModalBodyDetail";
 
 const AdminClinicManagePage = () => {
-  // const [data, setData] = useState();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const axios = api();
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false);
 
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpenModal = (event: any) => {
+    setOpenModal(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
+
+  const getAllClinics = async () => {
+    const { data } = await axios.get("/clinics");
+    const result = data.data.data;
+    return result;
+  };
+
+  const { isLoading, data: clinics } = useQuery("allClinics", getAllClinics, {
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
+
+  if (isLoading) {
+    return (
+      <Page className="" title="Dashboard">
+        <Backdrop className="backdrop" open>
+          <CircularProgress color="secondary" />
+        </Backdrop>
+      </Page>
+    );
+  }
 
   const options = ["Confirm", "Cancel"];
   const columns = [
     {
-      name: "patient",
-      label: "Patient",
+      name: "name",
+      label: "Name",
       options: {
         filter: true,
         sort: false,
@@ -46,8 +69,8 @@ const AdminClinicManagePage = () => {
       },
     },
     {
-      name: "appDate",
-      label: "Appointment Date",
+      name: "phone",
+      label: "Phone",
       options: {
         filter: true,
         sort: false,
@@ -61,8 +84,8 @@ const AdminClinicManagePage = () => {
       },
     },
     {
-      name: "bookTime",
-      label: "Booking Time",
+      name: "address",
+      label: "Address",
       options: {
         filter: true,
         sort: false,
@@ -91,121 +114,86 @@ const AdminClinicManagePage = () => {
       },
     },
     {
-      name: "actions",
-      label: "Actions",
-      options: {
-        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
-          const rowId = tableMeta.rowData[0];
-          return (
-            <>
-              <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-              >
-                {options.map((option) => (
-                  <MenuItem
-                    className="menu-item-content"
-                    key={option}
-                    selected={option === "Pyxis"}
-                    onClick={handleClose}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          );
-        },
-      },
+      name: "action",
+      label: "Action",
     },
   ];
 
-  const dataList = [
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Confirm" classes={{ root: "chip-success" }} />,
-    },
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Pending" classes={{ root: "chip-pending" }} />,
-    },
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Cancelled" classes={{ root: "chip-cancel" }} />,
-    },
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Cancelled" classes={{ root: "chip-cancel" }} />,
-    },
-  ];
+  const getDataList = (list: any[]) => {
+    if (!list?.length) {
+      return [];
+    }
+
+    const chipStyle = new Map([
+      ["pending", "chip-pending"],
+      ["approved", "chip-success"],
+      ["denied", "chip-cancel"],
+    ]);
+
+    const data = list.map((item) => {
+      return {
+        name: <Typography variant="h5">{item.name}</Typography>,
+        phone: <Typography variant="h5">{item.phone}</Typography>,
+        address: <Typography variant="h5">{item.address}</Typography>,
+        status: (
+          <Chip
+            label={item.status[0].toUpperCase() + item.status.slice(1)}
+            classes={{ root: chipStyle.get(item.status) }}
+          />
+        ),
+        action: (
+          <Button
+            type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={handleOpenModal}
+          >
+            View Detail
+          </Button>
+        ),
+      };
+    });
+    return data;
+  };
+  const dataList = getDataList(clinics);
+
+  const clinicsPending = clinics.filter(
+    (clinic: any) => clinic.status === "pending"
+  ).length;
+  const clinicsApproved = clinics.filter(
+    (clinic: any) => clinic.status === "approved"
+  ).length;
+  const clinicsDenied = clinics.filter(
+    (clinic: any) => clinic.status === "denied"
+  ).length;
 
   return (
     <Page className="" title="Dashboard">
+      <Backdrop className="backdrop" open={backdropOpen}>
+        <CircularProgress color="secondary" />
+      </Backdrop>
       <Box mt={5} />
       <Grid className="statistic-container" container justify="space-between">
         <Grid item xs={3}>
-          <StatisticCard title="Total Patient" statistic="1200" />
+          <StatisticCard title="Pending" statistic={clinicsPending} />
         </Grid>
         <Grid item xs={3}>
-          <StatisticCard title="Total Appointments" statistic="1900" />
+          <StatisticCard title="Approved" statistic={clinicsApproved} />
         </Grid>
         <Grid item xs={3}>
-          <StatisticCard title="Ratings" statistic="60" />
+          <StatisticCard title="Denied" statistic={clinicsDenied} />
         </Grid>
       </Grid>
       <Box mt={5} />
       <DataList data={dataList} columns={columns} title="Clinic List" />
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <ClinicModalBodyDetail />
+      </Modal>
     </Page>
   );
 };

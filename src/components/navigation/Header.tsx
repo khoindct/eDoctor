@@ -52,23 +52,28 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
     (state) => state.auth
   );
 
-  const [currentUser, setCurrentUser] = useState<any>();
   const getCurrentUser = async () => {
     if (!authenticated) {
       return;
     }
     const { data } = await axios.get("/users/current-user");
     const result = data.data;
-    setCurrentUser(result);
-    console.log(currentUser);
 
     return result;
   };
 
-  const _ = useQuery(["user", authenticated], getCurrentUser, {
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-  });
+  const { isLoading, data: currentUser } = useQuery(
+    ["user", authenticated],
+    getCurrentUser,
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
+
+  if (isLoading) {
+    <AppBar position="fixed" className="app-bar"></AppBar>;
+  }
 
   const handleSignout = () => {
     setProfileMenu(null);
@@ -81,6 +86,10 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
   const navigateToDashboard = () => {
     navigate(`/app/dashboard`);
+  };
+
+  const navigateToDashboardAdmin = () => {
+    navigate(`/admin/clinics`);
   };
 
   return (
@@ -206,6 +215,15 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
                   <MenuItem
                     className="profile-header__item--content"
                     onClick={navigateToDashboard}
+                  >
+                    <AccountIcon className="profile-header__item--icon" />{" "}
+                    Dashboard
+                  </MenuItem>
+                )}
+                {authorization === "admin" && (
+                  <MenuItem
+                    className="profile-header__item--content"
+                    onClick={navigateToDashboardAdmin}
                   >
                     <AccountIcon className="profile-header__item--icon" />{" "}
                     Dashboard

@@ -19,7 +19,7 @@ import "./DashboardPatientPage.scss";
 import AppointmentList from "../components/appointment/AppointmentList";
 import CustomTextField from "../components/CustomTextField";
 import api from "../api";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import CustomModal from "../components/CustomModal";
 import UpdatePassword from "../components/update-password";
@@ -75,6 +75,7 @@ const DashboardPatientPage = () => {
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<any>();
   const { control, setValue, handleSubmit } = useForm<IUserFormInput>();
+  const queryClient = useQueryClient();
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
@@ -104,9 +105,7 @@ const DashboardPatientPage = () => {
     },
     {
       onSuccess: (data) => {
-        const user = data.data.data.data;
-        setCurrentUser(user);
-        setUserAvatar(user?.avatar?.url);
+        queryClient.invalidateQueries("profileUser");
         setBackdropOpen(false);
         setModalSuccessOpen(true);
       },
