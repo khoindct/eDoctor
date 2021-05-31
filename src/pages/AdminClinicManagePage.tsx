@@ -21,14 +21,7 @@ const AdminClinicManagePage = () => {
   const axios = api();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = (event: any) => {
-    setOpenModal(event.currentTarget);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+  const [clinic, setClinic] = useState<any>();
 
   const getAllClinics = async () => {
     const { data } = await axios.get("/clinics");
@@ -51,7 +44,16 @@ const AdminClinicManagePage = () => {
     );
   }
 
-  const options = ["Confirm", "Cancel"];
+  const handleOpenModal = (clinicId: any) => {
+    const clinic = clinics.find((cl: any) => cl._id === clinicId);
+    setClinic(clinic);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   const columns = [
     {
       name: "name",
@@ -146,7 +148,7 @@ const AdminClinicManagePage = () => {
             type="button"
             variant="outlined"
             color="secondary"
-            onClick={handleOpenModal}
+            onClick={() => handleOpenModal(item._id)}
           >
             View Detail
           </Button>
@@ -192,7 +194,7 @@ const AdminClinicManagePage = () => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <ClinicModalBodyDetail />
+        <ClinicModalBodyDetail clinic={clinic} />
       </Modal>
     </Page>
   );

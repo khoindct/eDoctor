@@ -9,7 +9,7 @@ import {
 import "./ClinicModalBodyDetail.scss";
 import CustomButton from "./CustomButton";
 
-const ClinicModalBodyDetail = () => {
+const ClinicModalBodyDetail: React.FC<any> = ({ clinic }) => {
   return (
     <div className="clinic-detail-body-modal">
       <Card>
@@ -23,7 +23,9 @@ const ClinicModalBodyDetail = () => {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={3}>
-              <h6 className="clinic-cover-image-title">Cover image:</h6>
+              <h6 className="clinic-cover-image-title">
+                <b>Cover image</b>:
+              </h6>
             </Grid>
             <Grid item xs={9}>
               <Grid
@@ -31,26 +33,43 @@ const ClinicModalBodyDetail = () => {
                 direction="column"
                 classes={{ root: "cover-image-container" }}
               >
-                <img src="" alt="Clinic cover" className="clinic-cover-image" />
+                <img
+                  src={clinic?.coverImage?.url}
+                  alt="Clinic cover"
+                  className="clinic-cover-image"
+                />
               </Grid>
             </Grid>
-            <Grid item xs={6}>
-              Clinic name
-            </Grid>
-            <Grid item xs={6}>
-              Clinic phone
+            <Grid item xs={12}>
+              <h6 className="clinic-cover-image-title">
+                <b>Name</b>: {clinic?.name ?? "None"}
+              </h6>
             </Grid>
             <Grid item xs={12}>
-              Clinic email
+              <h6 className="clinic-cover-image-title">
+                <b>Phone</b>: {clinic?.phone ?? "None"}
+              </h6>
             </Grid>
             <Grid item xs={12}>
-              Clinic description
+              <h6 className="clinic-cover-image-title">
+                <b>Email</b>: {clinic?.email ?? "None"}
+              </h6>
             </Grid>
             <Grid item xs={12}>
-              Location here
+              <h6 className="clinic-cover-image-title">
+                <b>Description</b>: {clinic?.description ?? "None"}
+              </h6>
+            </Grid>
+            <Grid item xs={12}>
+              <h6 className="clinic-cover-image-title">
+                <b>Location</b>: {clinic?.address ?? "None"}
+              </h6>
             </Grid>
             <Box ml="auto" mt={2} mr={2}>
-              <CustomButton>Save Changes</CustomButton>
+              <CustomButton>Approve</CustomButton>
+            </Box>
+            <Box mt={2} mr={2}>
+              <CustomButton>Deny</CustomButton>
             </Box>
           </Grid>
         </CardContent>
