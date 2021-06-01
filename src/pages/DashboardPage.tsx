@@ -1,6 +1,9 @@
 import {
+  Backdrop,
   Box,
+  Button,
   Chip,
+  CircularProgress,
   Grid,
   IconButton,
   Menu,
@@ -14,11 +17,52 @@ import Page from "../components/Page";
 import moment from "moment";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "./DashboardPage.scss";
+import { useQuery } from "react-query";
+import api from "../api";
 
 const DashboardPage = () => {
-  // const [data, setData] = useState();
+  const axios = api();
+  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [appointment, setAppointment] = useState<any>();
   const open = Boolean(anchorEl);
+
+  const getAppointments = async () => {
+    const { data } = await axios.get("/bookings/booking-for-clinics");
+
+    const result = data.data.data;
+    return result;
+  };
+
+  const { isLoading, data: clinicAppointments } = useQuery(
+    "clinicAppointments",
+    getAppointments,
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
+
+  if (isLoading) {
+    return (
+      <Page className="" title="Dashboard">
+        <Backdrop className="backdrop" open>
+          <CircularProgress color="secondary" />
+        </Backdrop>
+      </Page>
+    );
+  }
+
+  const handleOpenModal = (appId: any) => {
+    const appointment = clinicAppointments.find((cl: any) => cl._id === appId);
+    setAppointment(appointment);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -46,7 +90,7 @@ const DashboardPage = () => {
       },
     },
     {
-      name: "appDate",
+      name: "bookedDate",
       label: "Appointment Date",
       options: {
         filter: true,
@@ -61,7 +105,7 @@ const DashboardPage = () => {
       },
     },
     {
-      name: "bookTime",
+      name: "bookedTime",
       label: "Booking Time",
       options: {
         filter: true,
@@ -131,77 +175,72 @@ const DashboardPage = () => {
     },
   ];
 
-  const dataList = [
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Confirm" classes={{ root: "chip-success" }} />,
-    },
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Pending" classes={{ root: "chip-pending" }} />,
-    },
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Cancelled" classes={{ root: "chip-cancel" }} />,
-    },
-    {
-      patient: <Typography variant="h5">Joe James</Typography>,
-      appDate: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("DD-MM-YYYY")}
-        </Typography>
-      ),
-      bookTime: (
-        <Typography variant="h5">
-          {moment(Date.now()).format("HH:mm")}
-        </Typography>
-      ),
-      status: <Chip label="Cancelled" classes={{ root: "chip-cancel" }} />,
-    },
-  ];
+  const getDataList = (list: any[]) => {
+    if (!list?.length) {
+      return [];
+    }
+
+    const chipStyle = new Map([
+      ["pending", "chip-pending"],
+      ["approved", "chip-success"],
+      ["denied", "chip-cancel"],
+    ]);
+
+    const data = list.map((item) => {
+      return {
+        patient: <Typography variant="h5">{item.user.name}</Typography>,
+        bookedDate: (
+          <Typography variant="h5">
+            {moment(item.bookedDate).format("DD-MM-YYYY")}
+          </Typography>
+        ),
+        bookedTime: (
+          <Typography variant="h5">{`${String(item.bookedTime / 60).padStart(
+            2,
+            "0"
+          )}:${String(item.bookedTime % 60).padStart(2, "0")}`}</Typography>
+        ),
+        status: (
+          <Chip
+            label={item.status[0].toUpperCase() + item.status.slice(1)}
+            classes={{ root: chipStyle.get(item.status) }}
+          />
+        ),
+        action: (
+          <Button
+            type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={() => handleOpenModal(item._id)}
+          >
+            View Detail
+          </Button>
+        ),
+      };
+    });
+    return data;
+  };
+  const dataList = getDataList(clinicAppointments);
+
+  const totalPatient = clinicAppointments?.length;
+  const totalAppointments = clinicAppointments?.length;
+  const ratings = clinicAppointments?.clinic?.ratingAvg;
 
   return (
     <Page className="" title="Dashboard">
       <Box mt={5} />
       <Grid className="statistic-container" container justify="space-between">
         <Grid item xs={3}>
-          <StatisticCard title="Total Patient" statistic="1200" />
+          <StatisticCard title="Total Patient" statistic={totalPatient} />
         </Grid>
         <Grid item xs={3}>
-          <StatisticCard title="Total Appointments" statistic="1900" />
+          <StatisticCard
+            title="Total Appointments"
+            statistic={totalAppointments}
+          />
         </Grid>
         <Grid item xs={3}>
-          <StatisticCard title="Ratings" statistic="60" />
+          <StatisticCard title="Ratings" statistic={ratings} />
         </Grid>
       </Grid>
       <Box mt={5} />

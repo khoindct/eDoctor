@@ -12,8 +12,8 @@ import CustomFooter from "../layouts/MainLayout/footer";
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const navigateToBooking = () => {
-    navigate("/book-clinic");
+  const navigateToRegisterClinic = () => {
+    navigate("/register-clinic");
   };
 
   const navigateToSearching = () => {
@@ -30,7 +30,6 @@ const LandingPage: React.FC = () => {
         <h3 className="hero__subtitle">
           Discover the best doctors, clinic & hospital the city nearest to you.
         </h3>
-        <button className="hero__button">Register</button>
         <ArrowDownwardIcon className="hero__icon" />
       </div>
 
@@ -69,17 +68,14 @@ const LandingPage: React.FC = () => {
       <div className="searching">
         <LocationSvg className="searching__media" />
         <div className="searching__content">
-          <h2 className="searching__title">
-            Natural styling with almost nothing to learn
-          </h2>
+          <h2 className="searching__title">Search clinics</h2>
           <p className="searching__text">
-            Evie brings you the pages you'll need and the structure to create
-            your own, without a learning curve. It is minimal and mostly styles
-            plain elements. There are only a few classes you'll need to know but
-            nothing to disrupt your preferred coding style.
+            Look for clinic, you can review and rating for specific clinic, with
+            easy to use UI, you won't spend much time to understand what you are
+            looking for
           </p>
           <button className="searching__button" onClick={navigateToSearching}>
-            Search More
+            Search Clinics
           </button>
         </div>
       </div>
@@ -87,16 +83,15 @@ const LandingPage: React.FC = () => {
       <div className="booking">
         <DoctorSvg className="booking__media" />
         <div className="booking__content">
-          <h2 className="booking__title">
-            Natural styling with almost nothing to learn
-          </h2>
+          <h2 className="booking__title">Register clinic account</h2>
           <p className="booking__text">
-            Evie brings you the pages you'll need and the structure to create
-            your own, without a learning curve. It is minimal and mostly styles
-            plain elements. There are only a few classes you'll need to know but
-            nothing to disrupt your preferred coding style.
+            Register clinic account to manage appointments, and you also have a
+            beautiful event noting that help you manage your work easier
           </p>
-          <button className="booking__button" onClick={navigateToBooking}>
+          <button
+            className="booking__button"
+            onClick={navigateToRegisterClinic}
+          >
             Register Now
           </button>
         </div>

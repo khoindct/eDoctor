@@ -135,7 +135,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
         {authenticated && (
           <>
-            <IconButton
+            {/* <IconButton
               color="inherit"
               aria-haspopup="true"
               aria-controls="mail-menu"
@@ -151,7 +151,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
               >
                 <NotificationsIcon className="header__menu-button" />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               aria-haspopup="true"
               color="inherit"
