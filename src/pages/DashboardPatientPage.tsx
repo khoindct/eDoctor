@@ -106,6 +106,7 @@ const DashboardPatientPage = () => {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries("profileUser");
+        queryClient.invalidateQueries("user");
         setBackdropOpen(false);
         setModalSuccessOpen(true);
       },

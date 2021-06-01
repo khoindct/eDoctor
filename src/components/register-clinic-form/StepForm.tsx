@@ -80,7 +80,7 @@ const StepForm = () => {
 
   const mutationSubmitClinic = useMutation(
     (formData) => {
-      return axios.post("http://localhost:8000/api/v1/clinics", formData);
+      return axios.post("/clinics", formData);
     },
     {
       onSuccess: (_) => {
