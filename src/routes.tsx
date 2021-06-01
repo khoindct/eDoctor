@@ -25,6 +25,8 @@ import DoctorSecurityPage from "./pages/DoctorSecurityPage";
 import AdminClinicManagePage from "./pages/AdminClinicManagePage";
 import AdminDoctorManagePage from "./pages/AdminDoctorManagePage";
 import AdminPatientManagePage from "./pages/AdminPatientManagePage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 
 const routes = (authenticated: string, authorization: string) => [
   {
@@ -63,6 +65,11 @@ const routes = (authenticated: string, authorization: string) => [
       { path: "register-clinic", element: <RegisterClinicPage /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
+      { path: "forgot-password", element: <ForgotPasswordPage /> },
+      {
+        path: "/reset-password/:token",
+        element: <ResetPasswordPage />,
+      },
       { path: "profile/:id", element: <DashboardPatientPage /> },
       { path: "404", element: <NotFoundPage /> },
       { path: "*", element: <Navigate to="/404" /> },
