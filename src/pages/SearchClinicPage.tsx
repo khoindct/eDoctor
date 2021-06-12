@@ -22,14 +22,10 @@ const SearchClinicPage = () => {
     return data;
   };
 
-  const { isLoading, isError, error, data } = useQuery(
-    "clinicData",
-    getClinics,
-    {
-      refetchOnWindowFocus: false,
-      refetchInterval: false,
-    }
-  );
+  const { isLoading, isError, error } = useQuery("clinicData", getClinics, {
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+  });
 
   const filterClinics = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

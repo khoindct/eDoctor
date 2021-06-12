@@ -10,7 +10,9 @@ const ApplicationDetailPage: React.FC = () => {
         <div className="">
           <CardClinicPicture />
         </div>
-        <div className="">{/* <CardClinicDetail /> */}</div>
+        <div className="">
+          <CardClinicDetail />
+        </div>
       </div>
     </Page>
   );

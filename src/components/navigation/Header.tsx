@@ -26,7 +26,7 @@ import "./Header.scss";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 import api from "../../api";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 
 interface HeaderProps {
   onMobileNavOpen?: () => void;
@@ -106,6 +106,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
         <RouterLink to="/">
           <img
             src={window.location.origin + "/assets/images/logo.png"}
+            alt="application logo"
             height={50}
             width={50}
           />
@@ -135,7 +136,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
         {authenticated && (
           <>
-            {/* <IconButton
+            <IconButton
               color="inherit"
               aria-haspopup="true"
               aria-controls="mail-menu"
@@ -151,7 +152,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
               >
                 <NotificationsIcon className="header__menu-button" />
               </Badge>
-            </IconButton> */}
+            </IconButton>
             <IconButton
               aria-haspopup="true"
               color="inherit"

@@ -40,7 +40,7 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
     },
     {
       onSuccess: (data) => {
-        const review = data.data.data.data;
+        // const review = data.data.data.data;
         setValue("reply", "");
         setBackdropOpen(false);
       },

@@ -8,6 +8,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Modal,
   Typography,
 } from "@material-ui/core";
 import { useState } from "react";
@@ -19,10 +20,11 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "./DashboardPage.scss";
 import { useQuery } from "react-query";
 import api from "../api";
+import AppointmentModalBodyDetail from "../components/AppointmentModalBodyDetail";
 
 const DashboardPage = () => {
   const axios = api();
-  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
+  // const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [appointment, setAppointment] = useState<any>();
@@ -139,7 +141,7 @@ const DashboardPage = () => {
       label: "Actions",
       options: {
         customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
-          const rowId = tableMeta.rowData[0];
+          // const rowId = tableMeta.rowData[0];
           return (
             <>
               <IconButton
@@ -245,6 +247,14 @@ const DashboardPage = () => {
       </Grid>
       <Box mt={5} />
       <DataList data={dataList} columns={columns} title="Appointment List" />
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <AppointmentModalBodyDetail appointment={appointment} />
+      </Modal>
     </Page>
   );
 };

@@ -11,7 +11,6 @@ import CustomButton from "../components/CustomButton";
 import Page from "../components/Page";
 import { IFormInput } from "../components/register-clinic-form/controls.model";
 import OpeningHoursPerDay from "../components/register-clinic-form/OpeningHoursPerDay";
-import OpeningHoursStep from "../components/register-clinic-form/OpeningHoursStep";
 import "./DoctorOpeningHoursPage.scss";
 
 const DoctorOpeningHoursPage: React.FC = () => {

@@ -27,7 +27,6 @@ const CustomTextField: React.FC<ICustomTextField> = forwardRef(
     return (
       <TextField
         ref={ref as any}
-        id="outlined-basic"
         InputLabelProps={{
           classes: {
             root: "form--input",

@@ -11,14 +11,13 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import CustomButton from "../components/CustomButton";
 import CustomTextField from "../components/CustomTextField";
-import Map from "../components/map/Map";
 import SearchLocation from "../components/map/SearchLocation";
 import Page from "../components/Page";
 import { IFormInput } from "../components/register-clinic-form/controls.model";
 import "./DoctorSettingPage.scss";
 
 const DoctorSettingPage: React.FC = () => {
-  const { register, control, setValue, handleSubmit } = useForm<IFormInput>();
+  const { control, setValue } = useForm<IFormInput>();
   const [coverImageFile, setCoverImageFile] = useState<string>();
   const handleChange = (event: any) => {
     setValue && setValue("coverImage", event.target.files[0]);

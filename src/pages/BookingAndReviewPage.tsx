@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Avatar,
   Backdrop,
-  Box,
   Card,
   CircularProgress,
   Divider,
@@ -72,7 +71,7 @@ const BookingAndReviewPage = () => {
   const { authenticated } = useTypedSelector((state) => state.auth);
 
   const axios = api();
-  const { isLoading, isError, error, status } = useQuery(
+  const { isLoading, isError, error } = useQuery(
     "clinicData",
     async () => {
       const response = await axios.get(`/clinics/${id}`);
@@ -146,7 +145,7 @@ const BookingAndReviewPage = () => {
     },
     {
       onSuccess: (data) => {
-        const review = data.data.data.data;
+        // const review = data.data.data.data;
         setValue("reply", "");
         setBackdropOpen(false);
       },

@@ -6,7 +6,6 @@ import { ReactComponent as LocationSvg } from "../assets/images/undraw_My_locati
 import { ReactComponent as DoctorSvg } from "../assets/images/undraw_doctors_hwty.svg";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 import CustomFooter from "../layouts/MainLayout/footer";
 
 const LandingPage: React.FC = () => {

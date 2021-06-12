@@ -95,7 +95,7 @@ const AdminDoctorManagePage = () => {
       label: "Actions",
       options: {
         customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
-          const rowId = tableMeta.rowData[0];
+          // const rowId = tableMeta.rowData[0];
           return (
             <>
               <IconButton

@@ -8,7 +8,7 @@ import {
   Modal,
   Typography,
 } from "@material-ui/core";
-import { useState } from "react";
+import React, { useState } from "react";
 import StatisticCard from "../components/dashboard/StatisticCard";
 import DataList from "../components/data-list/DataList";
 import Page from "../components/Page";
@@ -19,7 +19,7 @@ import ClinicModalBodyDetail from "../components/ClinicModalBodyDetail";
 
 const AdminClinicManagePage = () => {
   const axios = api();
-  const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
+  const [backdropOpen] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState(false);
   const [clinic, setClinic] = useState<any>();
 
@@ -194,7 +194,9 @@ const AdminClinicManagePage = () => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <ClinicModalBodyDetail clinic={clinic} />
+        <React.Fragment>
+          <ClinicModalBodyDetail clinic={clinic} />
+        </React.Fragment>
       </Modal>
     </Page>
   );

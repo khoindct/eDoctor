@@ -14,6 +14,7 @@ const NotFoundPage: React.FC = () => {
     <Page className="not-found-page" title="404 Not Found">
       <img
         src="assets/images/404_page_not_found.svg"
+        alt="404 illustration"
         style={{ width: "50%" }}
       />
       <CustomButton callback={navigateBack}>
