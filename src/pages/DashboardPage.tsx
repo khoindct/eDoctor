@@ -11,7 +11,7 @@ import {
   Modal,
   Typography,
 } from "@material-ui/core";
-import { useState } from "react";
+import React, { useState } from "react";
 import StatisticCard from "../components/dashboard/StatisticCard";
 import DataList from "../components/data-list/DataList";
 import Page from "../components/Page";
@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const open = Boolean(anchorEl);
 
   const getAppointments = async () => {
-    const { data } = await axios.get("/bookings/booking-for-clinics");
+    const { data } = await axios.get("/bookings/users");
 
     const result = data.data.data;
     return result;
@@ -253,7 +253,9 @@ const DashboardPage = () => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <AppointmentModalBodyDetail appointment={appointment} />
+        <React.Fragment>
+          <AppointmentModalBodyDetail appointment={appointment} />
+        </React.Fragment>
       </Modal>
     </Page>
   );
