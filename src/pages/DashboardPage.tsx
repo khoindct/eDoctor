@@ -197,10 +197,12 @@ const DashboardPage = () => {
           </Typography>
         ),
         bookedTime: (
-          <Typography variant="h5">{`${String(item.bookedTime / 60).padStart(
-            2,
-            "0"
-          )}:${String(item.bookedTime % 60).padStart(2, "0")}`}</Typography>
+          <Typography variant="h5">{`${Math.floor(
+            item.bookedTime / 60
+          ).toLocaleString(undefined, {
+            minimumIntegerDigits: 2,
+            useGrouping: false,
+          })}:${item.bookedTime % 60}`}</Typography>
         ),
         status: (
           <Chip
