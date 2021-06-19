@@ -26,6 +26,7 @@ const SearchLocation: React.FC<ISearchLocation> = ({ address = "" }) => {
     if (address) {
       data.push(address as any);
     }
+    // eslint-disable-next-line
   }, []);
 
   const handleInput = (
