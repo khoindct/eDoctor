@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { ChangeEvent } from "react";
@@ -8,7 +9,11 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import "./SearchLocation.scss";
 
-const SearchLocation = () => {
+interface ISearchLocation {
+  address?: string;
+}
+
+const SearchLocation: React.FC<ISearchLocation> = ({ address = "" }) => {
   const { getLocation } = useActions();
 
   const {
@@ -16,6 +21,12 @@ const SearchLocation = () => {
     suggestions: { data },
     setValue,
   } = usePlacesAutocomplete({ debounce: 500 });
+
+  useEffect(() => {
+    if (address) {
+      data.push(address as any);
+    }
+  }, []);
 
   const handleInput = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -52,6 +63,7 @@ const SearchLocation = () => {
       <Autocomplete
         id="free-solo-demo"
         freeSolo
+        value={address}
         classes={{ option: "autoComplete-text" }}
         options={data.map((suggestion) => suggestion.description)}
         onChange={(e, value) => handleChangeInput(value)}

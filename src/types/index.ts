@@ -9,3 +9,16 @@ export interface IUser {
   };
   email: string;
 }
+
+export interface IClinicDetail {
+  coverImage: {
+    url: string;
+    filename: string;
+  };
+  name: string;
+  email: string;
+  address: string;
+  description: string;
+  phone: string;
+  coordinates: number[];
+}
