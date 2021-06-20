@@ -27,7 +27,7 @@ interface IScheduleDay {
 
 const DoctorOpeningHoursPage: React.FC = () => {
   const axios = api();
-  const { setValue, handleSubmit } = useForm<IFormInput>();
+  const { getValues, setValue, handleSubmit } = useForm<IFormInput>();
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
@@ -36,35 +36,30 @@ const DoctorOpeningHoursPage: React.FC = () => {
   const getClinicSchedule = async () => {
     const { data } = await axios.get("/clinics/detail/schedule");
     const schedule = data.data.data.schedule;
-    console.log(schedule);
-    const eventStart = new Date();
-    eventStart.setUTCHours(1080, 480);
-    console.log(typeof eventStart);
-    setValue("startTimeSunday", eventStart);
 
-    // const scheduleMap: any = new Map([
-    //   [0, { startTime: "startTimeSunday", endTime: "endTimeSunday" }],
-    //   [1, { startTime: "startTimeMonday", endTime: "endTimeMonday" }],
-    //   [2, { startTime: "startTimeTuesday", endTime: "endTimeTuesday" }],
-    //   [3, { startTime: "startTimeWednesday", endTime: "endTimeWednesday" }],
-    //   [4, { startTime: "startTimeThursday", endTime: "endTimeThursday" }],
-    //   [5, { startTime: "startTimeFriday", endTime: "endTimeFriday" }],
-    //   [6, { startTime: "startTimeSaturday", endTime: "endTimeSaturday" }],
-    // ]);
+    const scheduleMap: any = new Map([
+      [0, { startTime: "startTimeSunday", endTime: "endTimeSunday" }],
+      [1, { startTime: "startTimeMonday", endTime: "endTimeMonday" }],
+      [2, { startTime: "startTimeTuesday", endTime: "endTimeTuesday" }],
+      [3, { startTime: "startTimeWednesday", endTime: "endTimeWednesday" }],
+      [4, { startTime: "startTimeThursday", endTime: "endTimeThursday" }],
+      [5, { startTime: "startTimeFriday", endTime: "endTimeFriday" }],
+      [6, { startTime: "startTimeSaturday", endTime: "endTimeSaturday" }],
+    ]);
 
-    // schedule.forEach((item: IScheduleDay) => {
-    //   const eventStart = new Date();
-    //   eventStart.setUTCHours(
-    //     Math.floor(item.startTime / 60),
-    //     item.startTime % 60
-    //   );
+    schedule.forEach((item: IScheduleDay) => {
+      const eventStart = new Date();
+      eventStart.setUTCHours(
+        Math.floor(item.startTime / 60),
+        item.startTime % 60
+      );
 
-    //   const eventEnd = new Date();
-    //   eventEnd.setUTCHours(Math.floor(item.endTime / 60), item.endTime % 60);
+      const eventEnd = new Date();
+      eventEnd.setUTCHours(Math.floor(item.endTime / 60), item.endTime % 60);
 
-    //   setValue(scheduleMap.get(item.dayOfWeek).startTime, eventStart);
-    //   setValue(scheduleMap.get(item.dayOfWeek).endTime, eventEnd);
-    // });
+      setValue(scheduleMap.get(item.dayOfWeek).startTime, eventStart);
+      setValue(scheduleMap.get(item.dayOfWeek).endTime, eventEnd);
+    });
 
     return schedule;
   };
@@ -87,7 +82,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
     }
   );
 
-  const { data: schedule, isLoading } = useQuery<IScheduleDay[]>(
+  const { isLoading } = useQuery<IScheduleDay[]>(
     "clinicSchedule",
     getClinicSchedule,
     {
@@ -144,42 +139,49 @@ const DoctorOpeningHoursPage: React.FC = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeMonday"
                 endDay="endTimeMonday"
                 day="Monday"
               />
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeTuesday"
                 endDay="endTimeTuesday"
                 day="Tuesday"
               />
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeWednesday"
                 endDay="endTimeWednesday"
                 day="Wednesday"
               />
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeThursday"
                 endDay="endTimeThursday"
                 day="Thursday"
               />
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeFriday"
                 endDay="endTimeFriday"
                 day="Friday"
               />
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeSaturday"
                 endDay="endTimeSaturday"
                 day="Saturday"
               />
               <OpeningHoursPerDay
+                getValues={getValues}
                 setValue={setValue}
                 startDay="startTimeSunday"
                 endDay="endTimeSunday"

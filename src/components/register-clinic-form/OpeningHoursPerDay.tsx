@@ -6,11 +6,12 @@ import {
 } from "@material-ui/pickers";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import React from "react";
-import { UseFormSetValue } from "react-hook-form";
+import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import "./OpeningHoursPerDay.scss";
 import { IFormInput } from "./controls.model";
 
 interface IOpeningHoursPerDay {
+  getValues?: UseFormGetValues<IFormInput>;
   setValue?: UseFormSetValue<IFormInput>;
   startDay: string;
   endDay: string;
@@ -18,6 +19,7 @@ interface IOpeningHoursPerDay {
 }
 
 const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
+  getValues,
   setValue,
   startDay,
   endDay,
@@ -29,6 +31,10 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
     React.useState<MaterialUiPickersDate>(new Date("2014-08-18T17:00:00"));
 
   React.useEffect(() => {
+    if (getValues) {
+      setSelectedStartDate(getValues(startDay as any));
+      setSelectedEndDate(getValues(endDay as any));
+    }
     if (setValue) {
       setValue(startDay as any, selectedStartDate);
       setValue(endDay as any, selectedEndDate);
