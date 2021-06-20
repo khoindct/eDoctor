@@ -49,13 +49,10 @@ const DoctorOpeningHoursPage: React.FC = () => {
 
     schedule.forEach((item: IScheduleDay) => {
       const eventStart = new Date();
-      eventStart.setUTCHours(
-        Math.floor(item.startTime / 60),
-        item.startTime % 60
-      );
+      eventStart.setHours(Math.floor(item.startTime / 60), item.startTime % 60);
 
       const eventEnd = new Date();
-      eventEnd.setUTCHours(Math.floor(item.endTime / 60), item.endTime % 60);
+      eventEnd.setHours(Math.floor(item.endTime / 60), item.endTime % 60);
 
       setValue(scheduleMap.get(item.dayOfWeek).startTime, eventStart);
       setValue(scheduleMap.get(item.dayOfWeek).endTime, eventEnd);
