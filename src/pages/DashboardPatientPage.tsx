@@ -23,6 +23,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import CustomModal from "../components/CustomModal";
 import UpdatePassword from "../components/update-password";
+import { nameRegex } from "../helpers/regex";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -74,7 +75,12 @@ const DashboardPatientPage = () => {
   const [userAvatar, setUserAvatar] = useState<string>();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<any>();
-  const { control, setValue, handleSubmit } = useForm<IUserFormInput>();
+  const {
+    control,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IUserFormInput>();
   const queryClient = useQueryClient();
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
@@ -243,13 +249,26 @@ const DashboardPatientPage = () => {
                     <Controller
                       name="name"
                       control={control}
-                      render={({ field }) => (
-                        <CustomTextField
-                          label="Name"
-                          value={currentUser?.name}
-                          {...field}
-                        />
-                      )}
+                      defaultValue=""
+                      rules={{
+                        required: "Name cannot be empty",
+                        pattern: {
+                          value: nameRegex,
+                          message: "Name contain only letters",
+                        },
+                      }}
+                      render={({ field }) =>
+                        errors.name ? (
+                          <CustomTextField
+                            label="Full Name"
+                            error={true}
+                            helperText={errors.name.message}
+                            {...field}
+                          />
+                        ) : (
+                          <CustomTextField label="Full Name" {...field} />
+                        )
+                      }
                     />
                     <Controller
                       name="email"
