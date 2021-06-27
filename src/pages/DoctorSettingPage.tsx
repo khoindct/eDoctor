@@ -18,6 +18,7 @@ import CustomModal from "../components/CustomModal";
 import CustomTextField from "../components/CustomTextField";
 import SearchLocation from "../components/map/SearchLocation";
 import Page from "../components/Page";
+import { clinicNameRegex } from "../helpers/regex";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import "./DoctorSettingPage.scss";
 
@@ -34,7 +35,12 @@ interface IClinicDetailInput {
 
 const DoctorSettingPage: React.FC = () => {
   const axios = api();
-  const { control, setValue, handleSubmit } = useForm<IClinicDetailInput>();
+  const {
+    control,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IClinicDetailInput>();
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
@@ -211,9 +217,25 @@ const DoctorSettingPage: React.FC = () => {
                   name="name"
                   control={control}
                   defaultValue=""
-                  render={({ field }) => (
-                    <CustomTextField label="Clinic Name" {...field} />
-                  )}
+                  rules={{
+                    required: "Clinic name cannot be empty",
+                    pattern: {
+                      value: clinicNameRegex,
+                      message: "Clinic name cannot contain special characters",
+                    },
+                  }}
+                  render={({ field }) =>
+                    errors.name ? (
+                      <CustomTextField
+                        label="Clinic Name"
+                        error={true}
+                        helperText={errors.name.message}
+                        {...field}
+                      />
+                    ) : (
+                      <CustomTextField label="Clinic Name" {...field} />
+                    )
+                  }
                 />
               </Grid>
               <Grid item xs={6}>
