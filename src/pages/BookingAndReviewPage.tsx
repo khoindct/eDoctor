@@ -49,6 +49,12 @@ interface IFormBooking {
   bookedTime: Date;
 }
 
+interface IClinicSchedule {
+  dayOfWeek: number;
+  startTime: number;
+  endTime: number;
+}
+
 const createDateData = (
   dayOfWeek: number,
   startTime: number,
@@ -77,7 +83,6 @@ const BookingAndReviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
-    control,
     setValue,
     setError,
     formState: { errors },
@@ -215,14 +220,24 @@ const BookingAndReviewPage = () => {
     const now = new Date(Date.now());
     [now, bookedDate].forEach((date) => date.setHours(0, 0, 0, 0));
     if (bookedDate.getTime() < now.getTime()) {
-      setError("bookedTime", {
+      setError("bookedDate", {
         type: "invalidBookedDate",
         message: "Please pick booking date in the future",
       });
       return;
     }
     const selectedTime = bookedTime.getDay();
-    const workingDay = clinic.find((row) => row.dayOfWeek === selectedTime);
+    const workingDay = clinic.find(
+      (row: IClinicSchedule) => row.dayOfWeek === selectedTime
+    );
+    const time = bookedTime.getHours() * 60 + (bookedTime.getMinutes() % 60);
+    if (workingDay.startTime <= time || time <= workingDay.endTime) {
+      setError("bookedTime", {
+        type: "invalidBookedTime",
+        message: `The clinic is closed. Please book in working time`,
+      });
+      return;
+    }
     const formData = { bookedDate, bookedTime };
     mutationSubmitBooking.mutate(formData as any);
   };
@@ -324,6 +339,12 @@ const BookingAndReviewPage = () => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+              {errors.bookedDate && (
+                <CustomFormHelperText message={errors.bookedDate.message} />
+              )}
+              {errors.bookedTime && (
+                <CustomFormHelperText message={errors.bookedTime.message} />
+              )}
               <CustomButton type="submit">Book</CustomButton>
             </form>
           </Grid>
