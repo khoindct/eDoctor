@@ -19,9 +19,10 @@ import CustomTextField from "../CustomTextField";
 import { useMutation } from "react-query";
 import api from "../../api";
 import ReplyIcon from "@material-ui/icons/Reply";
+import { IReview } from "../../types";
 
 interface ICommentCard {
-  review?: any;
+  review: IReview;
 }
 
 const CommentCard: React.FC<ICommentCard> = ({ review }) => {
@@ -29,6 +30,7 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
   const { control, setValue, handleSubmit } = useForm();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [expanded, setExpanded] = React.useState(false);
+  const commentDate = review.updatedAt ?? review.createdAt;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -36,7 +38,7 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
 
   const mutationSubmitComment = useMutation(
     (formData) => {
-      return axios.post(`/reviews/${review._id}`, formData);
+      return axios.post(`/reviews/reply/${review._id}`, formData);
     },
     {
       onSuccess: (data) => {
@@ -52,9 +54,8 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
   );
 
   const handleReplySubmit = async (data: any) => {
-    const rating = +data.rating;
-    const review = data.review;
-    const formData = { rating, review };
+    const reply = data.reply;
+    const formData = { reply };
     mutationSubmitComment.mutate(formData as any);
   };
 
@@ -70,26 +71,29 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
               <Avatar
                 classes={{ root: "comment__avatar" }}
                 alt="Remy Sharp"
-                src="../assets/images/default-avatar.jpg"
+                src={review.user.avatar.url}
               />
             </Grid>
             <Grid item xs={6}>
               <Grid container direction="column">
-                <h6 className="comment__name">Jane Rotanson</h6>
-                <p className="comment__date">27/05/2021 - 07:00</p>
-                <Box mt={1} />
-                <p className="comment__content">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Quibusdam labore sequi corrupti temporibus, officiis voluptas
-                  culpa deleniti animi quis, tempore facilis dolore autem
-                  repellendus similique quae totam obcaecati debitis. Neque?
+                <h6 className="comment__name">{review.user.name}</h6>
+                <p className="comment__date">
+                  {new Date(commentDate).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "numeric",
+                    year: "numeric",
+                  })}{" "}
+                  - {new Date(commentDate).getHours()}:
+                  {new Date(commentDate).getMinutes()}
                 </p>
+                <Box mt={1} />
+                <p className="comment__content">{review.review}</p>
               </Grid>
             </Grid>
             <Grid item style={{ marginLeft: "auto" }}>
               <Rating
                 name="customized-empty"
-                defaultValue={5}
+                defaultValue={review.rating}
                 readOnly
                 emptyIcon={<StarBorderIcon fontSize="inherit" />}
               />
@@ -117,33 +121,29 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
         >
           <Box ml={15}>
             <CardContent className="comment__replies">
-              <Grid container>
-                <Grid item xs={1}>
-                  <Avatar
-                    classes={{ root: "comment__avatar" }}
-                    alt="Remy Sharp"
-                    src="../assets/images/default-avatar.jpg"
-                  />
-                </Grid>
-                <Grid item xs={9}>
-                  <Grid container direction="column">
-                    <h6 className="comment__name">Jane Rotanson</h6>
-                    <Box mt={1} />
-                    <p className="comment__content">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Quibusdam labore sequi corrupti temporibus, officiis
-                      voluptas culpa deleniti animi quis, tempore facilis dolore
-                      autem repellendus similique quae totam obcaecati debitis.
-                      Neque?
-                    </p>
+              {review.replies.map((reply) => (
+                <Grid container key={reply._id}>
+                  <Grid item xs={1}>
+                    <Avatar
+                      classes={{ root: "comment__avatar" }}
+                      alt={reply.user.name}
+                      src={reply.user.avatar.url}
+                    />
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Grid container direction="column">
+                      <h6 className="comment__name">{reply.user.name}</h6>
+                      <Box mt={1} />
+                      <p className="comment__content">{reply.reply}</p>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
+              ))}
               <Grid container>
                 <Grid item xs={1}>
                   <Avatar
                     classes={{ root: "comment__avatar" }}
-                    alt="Remy Sharp"
+                    alt="Remy"
                     src="../assets/images/default-avatar.jpg"
                   />
                 </Grid>

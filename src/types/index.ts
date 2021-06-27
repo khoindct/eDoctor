@@ -22,3 +22,19 @@ export interface IClinicDetail {
   phone: string;
   coordinates: number[];
 }
+
+export interface IReply {
+  _id: string;
+  reply: string;
+  user: IUser;
+}
+
+export interface IReview {
+  _id: string;
+  rating: number;
+  review: string;
+  replies: IReply[];
+  user: IUser;
+  createdAt: Date;
+  updatedAt: Date;
+}
