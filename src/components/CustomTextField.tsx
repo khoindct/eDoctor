@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { TextField } from "@material-ui/core";
 import "./CustomTextField.scss";
+import { Message } from "react-hook-form/dist/types";
 
 interface ICustomTextField {
   label?: string;
@@ -9,6 +10,8 @@ interface ICustomTextField {
   isMultiline?: boolean;
   type?: "text" | "password";
   value?: string;
+  error?: boolean;
+  helperText?: Message | string;
 }
 
 const CustomTextField: React.FC<ICustomTextField> = forwardRef(
@@ -20,6 +23,8 @@ const CustomTextField: React.FC<ICustomTextField> = forwardRef(
       isMultiline,
       type = "text",
       value = "",
+      error,
+      helperText,
       ...props
     },
     ref
@@ -39,6 +44,11 @@ const CustomTextField: React.FC<ICustomTextField> = forwardRef(
             notchedOutline: "form--label-not-touch",
           },
         }}
+        FormHelperTextProps={{
+          className: "form--helper-text",
+        }}
+        error={error}
+        helperText={helperText}
         type={type}
         label={label}
         value={value}

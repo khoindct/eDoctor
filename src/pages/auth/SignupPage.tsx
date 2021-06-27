@@ -19,9 +19,16 @@ interface IFormInput {
 }
 
 const SignupPage: React.FC = () => {
+  const emailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const navigate = useNavigate();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
-  const { control, handleSubmit } = useForm<IFormInput>();
+  const {
+    control,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormInput>();
   const { signup } = useActions();
   const { authenticated, errorMessage } = useTypedSelector(
     (state) => state.auth
@@ -66,37 +73,96 @@ const SignupPage: React.FC = () => {
           name="name"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Full Name" {...field} />
-          )}
+          rules={{ required: true }}
+          render={({ field }) =>
+            errors.name ? (
+              <CustomTextField
+                label="Full Name"
+                error={true}
+                helperText="Name cannot be empty"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Full Name" {...field} />
+            )
+          }
         />
         <Controller
           name="email"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Email Address" {...field} />
-          )}
+          rules={{
+            pattern: { value: emailRegex, message: "Invalid email" },
+            required: "Email cannot be empty",
+          }}
+          render={({ field }) =>
+            errors.email ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.email?.message}
+                label="Email Address"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Email Address" {...field} />
+            )
+          }
         />
         <Controller
           name="password"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Password" type="password" {...field} />
-          )}
+          rules={{
+            required: "Password cannot be empty",
+            minLength: {
+              value: 8,
+              message: "Password length must greater than 8",
+            },
+          }}
+          render={({ field }) =>
+            errors.password ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.password.message}
+                label="Password"
+                type="password"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Password" type="password" {...field} />
+            )
+          }
         />
         <Controller
           name="passwordConfirm"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField
-              label="Confirm Password"
-              type="password"
-              {...field}
-            />
-          )}
+          rules={{
+            required: "Password confirm cannot be empty",
+            minLength: {
+              value: 8,
+              message: "Password confirm length must greater than 8",
+            },
+            validate: (value) =>
+              value === watch("password") || "Passwords are not match",
+          }}
+          render={({ field }) =>
+            errors.passwordConfirm ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.passwordConfirm.message}
+                label="Confirm Password"
+                type="password"
+                {...field}
+              />
+            ) : (
+              <CustomTextField
+                label="Confirm Password"
+                type="password"
+                {...field}
+              />
+            )
+          }
         />
         <CustomButton type="submit">Sign Up</CustomButton>
       </form>
