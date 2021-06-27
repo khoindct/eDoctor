@@ -1,4 +1,10 @@
-import { Control, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import {
+  Control,
+  DeepMap,
+  FieldError,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 
 export interface IFormInput {
   email: string;
@@ -40,6 +46,7 @@ export interface IFormStep {
   handleNext?: () => void;
   handleBack?: () => void;
   setValue?: UseFormSetValue<IFormInput>;
+  errors: DeepMap<IFormInput, FieldError>;
   control: Control<IFormInput>;
   register: UseFormRegister<IFormInput>;
 }

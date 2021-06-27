@@ -30,7 +30,13 @@ const StepForm = () => {
     (state) => state.locations
   );
   const [activeStep, setActiveStep] = useState(0);
-  const { register, control, setValue, handleSubmit } = useForm<IFormInput>();
+  const {
+    register,
+    control,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormInput>();
 
   // Proceed to next step
   const handleNext = () => setActiveStep((prev) => prev + 1);
@@ -46,6 +52,7 @@ const StepForm = () => {
             control={control}
             register={register}
             setValue={setValue}
+            errors={errors}
           />
         );
       case 1:
@@ -56,6 +63,7 @@ const StepForm = () => {
             control={control}
             register={register}
             setValue={setValue}
+            errors={errors}
           />
         );
       case 2:
@@ -65,6 +73,7 @@ const StepForm = () => {
             handleBack={handleBack}
             control={control}
             register={register}
+            errors={errors}
           />
         );
       default:

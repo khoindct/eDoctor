@@ -5,12 +5,14 @@ import { Controller } from "react-hook-form";
 import CustomButton from "../CustomButton";
 import { Box, Button, Grid } from "@material-ui/core";
 import "./GeneralStep.scss";
+import { clinicNameRegex, emailRegex } from "../../helpers/regex";
 
 // Destructuring props
 const GeneralStep: React.FC<IFormStep> = ({
   handleNext,
   control,
   setValue,
+  errors,
 }) => {
   const [coverImageFile, setCoverImageFile] = useState<string>();
   // Check if all values are not empty or if there are some error
@@ -59,9 +61,25 @@ const GeneralStep: React.FC<IFormStep> = ({
             name="name"
             control={control}
             defaultValue=""
-            render={({ field }) => (
-              <CustomTextField label="Clinic Name" {...field} />
-            )}
+            rules={{
+              required: "Clinic name cannot be empty",
+              pattern: {
+                value: clinicNameRegex,
+                message: "Clinic name cannot contain special characters",
+              },
+            }}
+            render={({ field }) =>
+              errors.name ? (
+                <CustomTextField
+                  label="Clinic Name"
+                  error={true}
+                  helperText={errors.name.message}
+                  {...field}
+                />
+              ) : (
+                <CustomTextField label="Clinic Name" {...field} />
+              )
+            }
           />
         </Grid>
         <Grid item xs={6}>
@@ -79,10 +97,22 @@ const GeneralStep: React.FC<IFormStep> = ({
             name="email"
             control={control}
             defaultValue=""
-            rules={{ required: true }}
-            render={({ field }) => (
-              <CustomTextField label="Your email" {...field} />
-            )}
+            rules={{
+              pattern: { value: emailRegex, message: "Invalid email" },
+              required: "Email cannot be empty",
+            }}
+            render={({ field }) =>
+              errors.email ? (
+                <CustomTextField
+                  error={true}
+                  helperText={errors.email?.message}
+                  label="Email Address"
+                  {...field}
+                />
+              ) : (
+                <CustomTextField label="Email Address" {...field} />
+              )
+            }
           />
         </Grid>
         <Grid item xs={12}>
