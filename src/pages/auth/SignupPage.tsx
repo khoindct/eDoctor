@@ -21,6 +21,8 @@ interface IFormInput {
 const SignupPage: React.FC = () => {
   const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const nameRegex =
+    /^[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ\s|_]+$/;
   const navigate = useNavigate();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const {
@@ -73,13 +75,16 @@ const SignupPage: React.FC = () => {
           name="name"
           control={control}
           defaultValue=""
-          rules={{ required: true }}
+          rules={{
+            required: "Name cannot be empty",
+            pattern: { value: nameRegex, message: "Name contain only letters" },
+          }}
           render={({ field }) =>
             errors.name ? (
               <CustomTextField
                 label="Full Name"
                 error={true}
-                helperText="Name cannot be empty"
+                helperText={errors.name.message}
                 {...field}
               />
             ) : (
