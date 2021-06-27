@@ -9,6 +9,7 @@ import CustomButton from "../../components/CustomButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import "./SignupPage.scss";
 import Page from "../../components/Page";
+import { emailRegex, nameRegex } from "../../helpers/regex";
 
 interface IFormInput {
   name: string;
@@ -19,10 +20,6 @@ interface IFormInput {
 }
 
 const SignupPage: React.FC = () => {
-  const emailRegex =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const nameRegex =
-    /^[a-zA-ZàáãạảăắằẳẵặâấầẩẫậèéẹẻẽêềếểễệđìíĩỉịòóõọỏôốồổỗộơớờởỡợùúũụủưứừửữựỳỵỷỹýÀÁÃẠẢĂẮẰẲẴẶÂẤẦẨẪẬÈÉẸẺẼÊỀẾỂỄỆĐÌÍĨỈỊÒÓÕỌỎÔỐỒỔỖỘƠỚỜỞỠỢÙÚŨỤỦƯỨỪỬỮỰỲỴỶỸÝ\s|_]+$/;
   const navigate = useNavigate();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const {

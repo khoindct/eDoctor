@@ -10,6 +10,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 import "./LoginPage.scss";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { emailRegex } from "../../helpers/regex";
 
 interface IFormInput {
   email: string;
@@ -19,7 +20,11 @@ interface IFormInput {
 const LoginPage = () => {
   const navigate = useNavigate();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
-  const { control, handleSubmit } = useForm<IFormInput>();
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormInput>();
   const { signin } = useActions();
   const { authenticated, errorMessage } = useTypedSelector(
     (state) => state.auth
@@ -64,17 +69,47 @@ const LoginPage = () => {
           name="email"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Email Address" {...field} />
-          )}
+          rules={{
+            pattern: { value: emailRegex, message: "Invalid email" },
+            required: "Email cannot be empty",
+          }}
+          render={({ field }) =>
+            errors.email ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.email?.message}
+                label="Email Address"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Email Address" {...field} />
+            )
+          }
         />
         <Controller
           name="password"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Password" type="password" {...field} />
-          )}
+          rules={{
+            required: "Password cannot be empty",
+            minLength: {
+              value: 8,
+              message: "Password length must greater than 8",
+            },
+          }}
+          render={({ field }) =>
+            errors.password ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.password.message}
+                label="Password"
+                type="password"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Password" type="password" {...field} />
+            )
+          }
         />
         <CustomButton type="submit">Sign In</CustomButton>
       </form>
