@@ -27,7 +27,12 @@ interface ICommentCard {
 
 const CommentCard: React.FC<ICommentCard> = ({ review }) => {
   const axios = api();
-  const { control, setValue, handleSubmit } = useForm();
+  const {
+    control,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [expanded, setExpanded] = React.useState(false);
   const commentDate = review.updatedAt ?? review.createdAt;
@@ -153,12 +158,24 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
                       name="reply"
                       control={control}
                       defaultValue=""
-                      render={({ field }) => (
-                        <CustomTextField
-                          placeholder="Type here to reply..."
-                          {...field}
-                        />
-                      )}
+                      rules={{
+                        required: "Reply cannot be empty",
+                      }}
+                      render={({ field }) =>
+                        errors.reply ? (
+                          <CustomTextField
+                            error={true}
+                            helperText={errors.reply.message}
+                            placeholder="Type here to reply..."
+                            {...field}
+                          />
+                        ) : (
+                          <CustomTextField
+                            placeholder="Type here to reply..."
+                            {...field}
+                          />
+                        )
+                      }
                     />
                   </form>
                 </Grid>
