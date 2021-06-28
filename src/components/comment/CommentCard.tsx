@@ -16,7 +16,7 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import "./CommentCard.scss";
 import { Controller, useForm } from "react-hook-form";
 import CustomTextField from "../CustomTextField";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import api from "../../api";
 import ReplyIcon from "@material-ui/icons/Reply";
 import { IReview } from "../../types";
@@ -27,6 +27,7 @@ interface ICommentCard {
 
 const CommentCard: React.FC<ICommentCard> = ({ review }) => {
   const axios = api();
+  const queryClient = useQueryClient();
   const { control, setValue, handleSubmit } = useForm();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [expanded, setExpanded] = React.useState(false);
@@ -42,7 +43,7 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
     },
     {
       onSuccess: (data) => {
-        // const review = data.data.data.data;
+        queryClient.invalidateQueries("clinicReviews");
         setValue("reply", "");
         setBackdropOpen(false);
       },
