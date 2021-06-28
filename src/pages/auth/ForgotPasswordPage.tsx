@@ -9,6 +9,7 @@ import "./ForgotPasswordPage.scss";
 import api from "../../api";
 import CustomModal from "../../components/CustomModal";
 import { useMutation } from "react-query";
+import { emailRegex } from "../../helpers/regex";
 
 interface IFormInput {
   email: string;
@@ -19,7 +20,11 @@ const ForgotPasswordPage = () => {
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
-  const { control, handleSubmit } = useForm<IFormInput>();
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormInput>();
 
   const mutationResetPassword = useMutation(
     (formData) => {
@@ -71,9 +76,22 @@ const ForgotPasswordPage = () => {
           name="email"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Email Address" {...field} />
-          )}
+          rules={{
+            pattern: { value: emailRegex, message: "Invalid email" },
+            required: "Email cannot be empty",
+          }}
+          render={({ field }) =>
+            errors.email ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.email?.message}
+                label="Email Address"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Email Address" {...field} />
+            )
+          }
         />
         <CustomButton type="submit">Send reset instructions</CustomButton>
       </form>

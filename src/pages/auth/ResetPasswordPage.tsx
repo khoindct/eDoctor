@@ -23,7 +23,13 @@ const ResetPasswordPage = () => {
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
-  const { control, setValue, handleSubmit } = useForm<IFormInput>();
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormInput>();
 
   const mutationUpdatePassword = useMutation(
     (formData) => {
@@ -78,21 +84,57 @@ const ResetPasswordPage = () => {
           name="password"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField label="Password" type="password" {...field} />
-          )}
+          rules={{
+            required: "Password cannot be empty",
+            minLength: {
+              value: 8,
+              message: "Password length must greater than 8",
+            },
+          }}
+          render={({ field }) =>
+            errors.password ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.password.message}
+                label="Password"
+                type="password"
+                {...field}
+              />
+            ) : (
+              <CustomTextField label="Password" type="password" {...field} />
+            )
+          }
         />
         <Controller
           name="passwordConfirm"
           control={control}
           defaultValue=""
-          render={({ field }) => (
-            <CustomTextField
-              label="Confirm Password"
-              type="password"
-              {...field}
-            />
-          )}
+          rules={{
+            required: "Password confirm cannot be empty",
+            minLength: {
+              value: 8,
+              message: "Password confirm length must greater than 8",
+            },
+            validate: (value) =>
+              value === watch("password") || "Passwords are not match",
+          }}
+          render={({ field }) =>
+            errors.passwordConfirm ? (
+              <CustomTextField
+                error={true}
+                helperText={errors.passwordConfirm.message}
+                label="Confirm Password"
+                type="password"
+                {...field}
+              />
+            ) : (
+              <CustomTextField
+                label="Confirm Password"
+                type="password"
+                {...field}
+              />
+            )
+          }
         />
         <CustomButton type="submit">Reset Password</CustomButton>
       </form>

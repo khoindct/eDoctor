@@ -28,8 +28,13 @@ const DoctorSecurityPage: React.FC = () => {
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
-  const { control, setValue, handleSubmit } =
-    useForm<IFormUpdatePasswordInput>();
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormUpdatePasswordInput>();
 
   const mutationUpdatePassword = useMutation(
     (formData) => {
@@ -89,37 +94,90 @@ const DoctorSecurityPage: React.FC = () => {
                   name="passwordCurrent"
                   control={control}
                   defaultValue=""
-                  render={({ field }) => (
-                    <CustomTextField
-                      label="Old Password"
-                      type="password"
-                      {...field}
-                    />
-                  )}
+                  rules={{
+                    required: "Current password cannot be empty",
+                    minLength: {
+                      value: 8,
+                      message: "Current password length must greater than 8",
+                    },
+                  }}
+                  render={({ field }) =>
+                    errors.passwordCurrent ? (
+                      <CustomTextField
+                        error={true}
+                        helperText={errors.passwordCurrent.message}
+                        label="Old Password"
+                        type="password"
+                        {...field}
+                      />
+                    ) : (
+                      <CustomTextField
+                        label="Old Password"
+                        type="password"
+                        {...field}
+                      />
+                    )
+                  }
                 />
                 <Controller
                   name="password"
                   control={control}
                   defaultValue=""
-                  render={({ field }) => (
-                    <CustomTextField
-                      label="New Password"
-                      type="password"
-                      {...field}
-                    />
-                  )}
+                  rules={{
+                    required: "New password cannot be empty",
+                    minLength: {
+                      value: 8,
+                      message: "New password length must greater than 8",
+                    },
+                  }}
+                  render={({ field }) =>
+                    errors.password ? (
+                      <CustomTextField
+                        error={true}
+                        helperText={errors.password.message}
+                        label="New Password"
+                        type="password"
+                        {...field}
+                      />
+                    ) : (
+                      <CustomTextField
+                        label="New Password"
+                        type="password"
+                        {...field}
+                      />
+                    )
+                  }
                 />
                 <Controller
                   name="passwordConfirm"
                   control={control}
                   defaultValue=""
-                  render={({ field }) => (
-                    <CustomTextField
-                      label="Confirm Password"
-                      type="password"
-                      {...field}
-                    />
-                  )}
+                  rules={{
+                    required: "Password confirm cannot be empty",
+                    minLength: {
+                      value: 8,
+                      message: "Password confirm length must greater than 8",
+                    },
+                    validate: (value) =>
+                      value === watch("password") || "Passwords are not match",
+                  }}
+                  render={({ field }) =>
+                    errors.passwordConfirm ? (
+                      <CustomTextField
+                        error={true}
+                        helperText={errors.passwordConfirm.message}
+                        label="Confirm Password"
+                        type="password"
+                        {...field}
+                      />
+                    ) : (
+                      <CustomTextField
+                        label="Confirm Password"
+                        type="password"
+                        {...field}
+                      />
+                    )
+                  }
                 />
               </div>
             </CardContent>

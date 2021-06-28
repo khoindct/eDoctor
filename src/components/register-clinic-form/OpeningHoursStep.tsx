@@ -8,6 +8,7 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
   handleNext,
   handleBack,
   setValue,
+  errors,
 }) => {
   const isValid = true;
 
@@ -15,42 +16,49 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
     <>
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeMonday"
         endDay="endTimeMonday"
         day="Monday"
       />
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeTuesday"
         endDay="endTimeTuesday"
         day="Tuesday"
       />
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeWednesday"
         endDay="endTimeWednesday"
         day="Wednesday"
       />
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeThursday"
         endDay="endTimeThursday"
         day="Thursday"
       />
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeFriday"
         endDay="endTimeFriday"
         day="Friday"
       />
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeSaturday"
         endDay="endTimeSaturday"
         day="Saturday"
       />
       <OpeningHoursPerDay
         setValue={setValue}
+        errors={errors}
         startDay="startTimeSunday"
         endDay="endTimeSunday"
         day="Sunday"

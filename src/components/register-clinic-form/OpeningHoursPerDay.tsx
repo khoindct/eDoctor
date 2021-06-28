@@ -6,13 +6,19 @@ import {
 } from "@material-ui/pickers";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import React from "react";
-import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import {
+  DeepMap,
+  FieldError,
+  UseFormGetValues,
+  UseFormSetValue,
+} from "react-hook-form";
 import "./OpeningHoursPerDay.scss";
 import { IFormInput } from "./controls.model";
 
 interface IOpeningHoursPerDay {
   getValues?: UseFormGetValues<IFormInput>;
   setValue?: UseFormSetValue<IFormInput>;
+  errors: DeepMap<IFormInput, FieldError>;
   startDay: string;
   endDay: string;
   day: string;
@@ -21,6 +27,7 @@ interface IOpeningHoursPerDay {
 const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
   getValues,
   setValue,
+  errors,
   startDay,
   endDay,
   day,
@@ -50,6 +57,7 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     setValue && setValue(endDay as any, date);
     setSelectedEndDate(date);
+    // Set errors for datetime
   };
 
   return (
@@ -78,6 +86,10 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
             KeyboardButtonProps={{
               "aria-label": "change time",
             }}
+            error={(errors as any)[endDay] && true}
+            helperText={
+              (errors as any)[endDay] && (errors as any)[endDay].message
+            }
           />
         </Grid>
       </Grid>

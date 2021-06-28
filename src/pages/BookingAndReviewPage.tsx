@@ -32,6 +32,28 @@ import { Controller, useForm } from "react-hook-form";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import CustomModal from "../components/CustomModal";
 import Page from "../components/Page";
+import CustomFormHelperText from "../components/CustomFormHelperText";
+
+interface IFormReply {
+  reviewId: string;
+  reply: string;
+}
+
+interface IFormComment {
+  rating: number;
+  review: string;
+}
+
+interface IFormBooking {
+  bookedDate: Date;
+  bookedTime: Date;
+}
+
+interface IClinicSchedule {
+  dayOfWeek: number;
+  startTime: number;
+  endTime: number;
+}
 
 const createDateData = (
   dayOfWeek: number,
@@ -60,7 +82,25 @@ const createDateData = (
 const BookingAndReviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { control, register, setValue, handleSubmit } = useForm();
+  const {
+    setValue,
+    setError,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IFormBooking>();
+  const {
+    control: controlComment,
+    setValue: setValueComment,
+    formState: { errors: errorsComment },
+    handleSubmit: handleSubmitComment,
+  } = useForm<IFormComment>();
+  const {
+    control: controlReply,
+    register: registerReply,
+    setValue: setValueReply,
+    formState: { errors: errorsReply },
+    handleSubmit: handleSubmitReply,
+  } = useForm<IFormReply>();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [selectedTime, setSelectedTime] = useState<Date | null>();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
@@ -71,7 +111,12 @@ const BookingAndReviewPage = () => {
   const { authenticated } = useTypedSelector((state) => state.auth);
 
   const axios = api();
-  const { isLoading, isError, error } = useQuery(
+  const {
+    data: clinic,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
     "clinicData",
     async () => {
       const response = await axios.get(`/clinics/${id}`);
@@ -82,7 +127,7 @@ const BookingAndReviewPage = () => {
         )
       );
       setReviews(clinic.reviews);
-      return response.data;
+      return clinic;
     },
     {
       refetchOnWindowFocus: false,
@@ -92,10 +137,12 @@ const BookingAndReviewPage = () => {
 
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
+    setValue("bookedDate", new Date(Date.parse(selectedDate as any)));
   };
 
   const handleTimeChange = (date: Date | null) => {
     setSelectedTime(date);
+    date && setValue("bookedTime", date);
   };
 
   const mutationSubmitComment = useMutation(
@@ -106,8 +153,8 @@ const BookingAndReviewPage = () => {
       onSuccess: (data) => {
         const review = data.data.data.data;
         setReviews((prevState) => [...prevState, review]);
-        setValue("rating", 0);
-        setValue("review", "");
+        setValueComment("rating", 0);
+        setValueComment("review", "");
         setBackdropOpen(false);
         setModalSuccessOpen(true);
       },
@@ -146,7 +193,7 @@ const BookingAndReviewPage = () => {
     {
       onSuccess: (data) => {
         // const review = data.data.data.data;
-        setValue("reply", "");
+        setValueReply("reply", "");
         setBackdropOpen(false);
       },
       onError: (error) => {
@@ -156,24 +203,46 @@ const BookingAndReviewPage = () => {
     }
   );
 
-  const handleReplySubmit = async (data: any) => {
+  const handleReplySubmit = async (data: IFormReply) => {
     const reply = data.reply;
     const reviewId = data.reviewId;
     const formData = { reply, reviewId };
     mutationSubmitReply.mutate(formData as any);
   };
 
-  const handleBookFormSubmit = async () => {
+  const handleBookFormSubmit = async (data: IFormBooking) => {
     if (!authenticated) {
       return navigate("/login");
     }
-    const bookedDate = new Date(Date.parse(selectedDate as any));
-    const bookedTime = selectedTime;
+    // const bookedDate = new Date(Date.parse(selectedDate as any));
+    // const bookedTime = selectedTime;
+    const { bookedDate, bookedTime } = data;
+    const now = new Date(Date.now());
+    [now, bookedDate].forEach((date) => date.setHours(0, 0, 0, 0));
+    if (bookedDate.getTime() < now.getTime()) {
+      setError("bookedDate", {
+        type: "invalidBookedDate",
+        message: "Please pick booking date in the future",
+      });
+      return;
+    }
+    const selectedTime = bookedTime.getDay();
+    const workingDay = clinic.find(
+      (row: IClinicSchedule) => row.dayOfWeek === selectedTime
+    );
+    const time = bookedTime.getHours() * 60 + (bookedTime.getMinutes() % 60);
+    if (workingDay.startTime <= time || time <= workingDay.endTime) {
+      setError("bookedTime", {
+        type: "invalidBookedTime",
+        message: `The clinic is closed. Please book in working time`,
+      });
+      return;
+    }
     const formData = { bookedDate, bookedTime };
     mutationSubmitBooking.mutate(formData as any);
   };
 
-  const handleCommentSubmit = async (data: any) => {
+  const handleCommentSubmit = async (data: IFormComment) => {
     if (!authenticated) {
       return navigate("/login");
     }
@@ -270,6 +339,12 @@ const BookingAndReviewPage = () => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+              {errors.bookedDate && (
+                <CustomFormHelperText message={errors.bookedDate.message} />
+              )}
+              {errors.bookedTime && (
+                <CustomFormHelperText message={errors.bookedTime.message} />
+              )}
               <CustomButton type="submit">Book</CustomButton>
             </form>
           </Grid>
@@ -287,15 +362,19 @@ const BookingAndReviewPage = () => {
             />
             <form
               className="review-form"
-              onSubmit={handleSubmit(handleCommentSubmit)}
+              onSubmit={handleSubmitComment(handleCommentSubmit)}
             >
               <Controller
                 name="rating"
-                control={control}
+                control={controlComment}
                 defaultValue=""
+                rules={{
+                  required: "Please add rating",
+                  min: { value: 0.5, message: "Minimum rating is 0.5" },
+                  max: { value: 5, message: "Maximum rating is 5" },
+                }}
                 render={({ field }) => (
                   <Rating
-                    // defaultValue={2}
                     precision={0.5}
                     emptyIcon={<StarBorderIcon fontSize="inherit" />}
                     {...field}
@@ -304,18 +383,34 @@ const BookingAndReviewPage = () => {
               />
               <Controller
                 name="review"
-                control={control}
+                control={controlComment}
                 defaultValue=""
-                render={({ field }) => (
-                  <CustomTextField
-                    placeholder="Write a public comment..."
-                    rows={4}
-                    isMultiline={true}
-                    {...field}
-                  />
-                )}
+                rules={{
+                  required: "Please add comment for our service",
+                }}
+                render={({ field }) =>
+                  errorsComment.review ? (
+                    <CustomTextField
+                      error={true}
+                      helperText={errorsComment.review.message}
+                      placeholder="Write a public comment..."
+                      rows={4}
+                      isMultiline={true}
+                      {...field}
+                    />
+                  ) : (
+                    <CustomTextField
+                      placeholder="Write a public comment..."
+                      rows={4}
+                      isMultiline={true}
+                      {...field}
+                    />
+                  )
+                }
               />
-
+              {errorsComment.rating && (
+                <CustomFormHelperText message={errorsComment.rating.message} />
+              )}
               <CustomButton type="submit">Submit</CustomButton>
             </form>
           </div>
@@ -360,22 +455,34 @@ const BookingAndReviewPage = () => {
                           />
                         </Grid>
                         <Grid item xs={10}>
-                          <form onSubmit={handleSubmit(handleReplySubmit)}>
+                          <form onSubmit={handleSubmitReply(handleReplySubmit)}>
                             <input
                               hidden
-                              {...register("reviewId")}
+                              {...registerReply("reviewId")}
                               defaultValue={review._id}
                             />
                             <Controller
                               name="reply"
-                              control={control}
+                              control={controlReply}
                               defaultValue=""
-                              render={({ field }) => (
-                                <CustomTextField
-                                  placeholder="Type here to reply..."
-                                  {...field}
-                                />
-                              )}
+                              rules={{
+                                required: "Reply cannot be empty",
+                              }}
+                              render={({ field }) =>
+                                errorsReply.reply ? (
+                                  <CustomTextField
+                                    error={true}
+                                    helperText={errorsReply.reply.message}
+                                    placeholder="Type here to reply..."
+                                    {...field}
+                                  />
+                                ) : (
+                                  <CustomTextField
+                                    placeholder="Type here to reply..."
+                                    {...field}
+                                  />
+                                )
+                              }
                             />
                           </form>
                         </Grid>
