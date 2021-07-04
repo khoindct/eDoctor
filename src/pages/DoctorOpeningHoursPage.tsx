@@ -30,9 +30,18 @@ const DoctorOpeningHoursPage: React.FC = () => {
   const {
     getValues,
     setValue,
+    setError,
+    clearErrors,
     formState: { errors },
     handleSubmit,
   } = useForm<IFormInput>();
+  const reactHookFormProps = {
+    getValues,
+    setValue,
+    setError,
+    clearErrors,
+    errors,
+  };
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
@@ -141,16 +150,15 @@ const DoctorOpeningHoursPage: React.FC = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                errors={errors}
                 startDay="startTimeMonday"
                 endDay="endTimeMonday"
                 day="Monday"
+                {...reactHookFormProps}
               />
               <OpeningHoursPerDay
                 getValues={getValues}
                 setValue={setValue}
+                setError={setError}
                 errors={errors}
                 startDay="startTimeTuesday"
                 endDay="endTimeTuesday"
@@ -159,6 +167,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
               <OpeningHoursPerDay
                 getValues={getValues}
                 setValue={setValue}
+                setError={setError}
                 errors={errors}
                 startDay="startTimeWednesday"
                 endDay="endTimeWednesday"
@@ -167,6 +176,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
               <OpeningHoursPerDay
                 getValues={getValues}
                 setValue={setValue}
+                setError={setError}
                 errors={errors}
                 startDay="startTimeThursday"
                 endDay="endTimeThursday"
@@ -175,6 +185,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
               <OpeningHoursPerDay
                 getValues={getValues}
                 setValue={setValue}
+                setError={setError}
                 errors={errors}
                 startDay="startTimeFriday"
                 endDay="endTimeFriday"
@@ -183,6 +194,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
               <OpeningHoursPerDay
                 getValues={getValues}
                 setValue={setValue}
+                setError={setError}
                 errors={errors}
                 startDay="startTimeSaturday"
                 endDay="endTimeSaturday"
@@ -191,6 +203,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
               <OpeningHoursPerDay
                 getValues={getValues}
                 setValue={setValue}
+                setError={setError}
                 errors={errors}
                 startDay="startTimeSunday"
                 endDay="endTimeSunday"
