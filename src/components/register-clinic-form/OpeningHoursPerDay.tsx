@@ -97,15 +97,15 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
       ? setError &&
         setError(endDay, {
           type: "manual",
-          message: "End time must later start time",
+          message: "End time must after start time",
         })
       : clearErrors && clearErrors([startDay, endDay]);
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container spacing={6} alignItems="center">
-        <Grid item xs={3}>
+      <Grid container spacing={6} alignItems="baseline">
+        <Grid item xs={3} style={{ alignSelf: "center" }}>
           <h6 className="opening-hours-day">{day}</h6>
         </Grid>
         <Grid item xs={4}>

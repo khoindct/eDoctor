@@ -156,58 +156,40 @@ const DoctorOpeningHoursPage: React.FC = () => {
                 {...reactHookFormProps}
               />
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                setError={setError}
-                errors={errors}
                 startDay="startTimeTuesday"
                 endDay="endTimeTuesday"
                 day="Tuesday"
+                {...reactHookFormProps}
               />
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                setError={setError}
-                errors={errors}
                 startDay="startTimeWednesday"
                 endDay="endTimeWednesday"
                 day="Wednesday"
+                {...reactHookFormProps}
               />
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                setError={setError}
-                errors={errors}
                 startDay="startTimeThursday"
                 endDay="endTimeThursday"
                 day="Thursday"
+                {...reactHookFormProps}
               />
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                setError={setError}
-                errors={errors}
                 startDay="startTimeFriday"
                 endDay="endTimeFriday"
                 day="Friday"
+                {...reactHookFormProps}
               />
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                setError={setError}
-                errors={errors}
                 startDay="startTimeSaturday"
                 endDay="endTimeSaturday"
                 day="Saturday"
+                {...reactHookFormProps}
               />
               <OpeningHoursPerDay
-                getValues={getValues}
-                setValue={setValue}
-                setError={setError}
-                errors={errors}
                 startDay="startTimeSunday"
                 endDay="endTimeSunday"
                 day="Sunday"
+                {...reactHookFormProps}
               />
               <Grid container justify="flex-end">
                 <Box mt={4} mr={24}>
