@@ -10,9 +10,10 @@ interface Location {
 
 interface IMap {
   geometry: number[];
+  address?: string;
 }
 
-const Map: React.FC<IMap> = ({ geometry }) => {
+const Map: React.FC<IMap> = ({ geometry, address }) => {
   const [center] = useState<Location>({
     lat: geometry?.[1],
     lng: geometry?.[0],
@@ -31,7 +32,7 @@ const Map: React.FC<IMap> = ({ geometry }) => {
         defaultZoom={zoom}
         center={center}
       >
-        <LocationMarker lat={center.lat} lng={center.lng} />
+        <LocationMarker lat={center.lat} lng={center.lng} address={address} />
       </GoogleMapReact>
     </div>
   );

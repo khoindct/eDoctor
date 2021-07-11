@@ -80,7 +80,10 @@ const CardClinicDetail: React.FC<any> = ({ clinic }) => {
         unmountOnExit
       >
         <CardContent>
-          <Map geometry={clinic?.geometry?.coordinates} />
+          <Map
+            geometry={clinic?.geometry?.coordinates}
+            address={clinic?.address}
+          />
         </CardContent>
       </Collapse>
     </Card>
