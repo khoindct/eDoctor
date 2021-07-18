@@ -1,0 +1,9 @@
+.autocomplete-input-font {
+  font-size: 1.5rem !important;
+}
+
+.custom-autocomplete {
+  & .MuiAutocomplete-tag {
+    font-size: 1.3rem;
+  }
+}

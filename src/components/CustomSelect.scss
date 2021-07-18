@@ -1,0 +1,9 @@
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chip,
+.menu-item {
+  font-size: 1.5rem !important;
+}
