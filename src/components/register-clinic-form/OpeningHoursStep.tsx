@@ -1,8 +1,19 @@
 import React from "react";
-import { Box, Grid } from "@material-ui/core";
+import { Box, createStyles, Grid, Theme } from "@material-ui/core";
 import CustomButton from "../CustomButton";
 import { IFormStep } from "./controls.model";
 import OpeningHoursPerDay from "./OpeningHoursPerDay";
+import OpeningHoursDialog from "../OpeningHoursDialog";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      width: "80%",
+      maxHeight: 435,
+    },
+  })
+);
 
 const OpeningHoursStep: React.FC<IFormStep> = ({
   handleNext,
@@ -11,9 +22,37 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
   errors,
 }) => {
   const isValid = true;
+  const classes = useStyles();
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openingHours, setOpeningHours] = React.useState("Dione");
+
+  const handleClickAddHours = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = (newValue?: string) => {
+    setOpenDialog(false);
+
+    if (newValue) {
+      console.log(newValue);
+
+      setOpeningHours(newValue);
+    }
+  };
 
   return (
     <>
+      <CustomButton callback={handleClickAddHours}>Edit Hours</CustomButton>
+      <OpeningHoursDialog
+        classes={{
+          paper: classes.paper,
+        }}
+        id="ringtone-menu"
+        keepMounted
+        open={openDialog}
+        onClose={handleCloseDialog}
+        value={openingHours}
+      />
       <OpeningHoursPerDay
         setValue={setValue}
         errors={errors}

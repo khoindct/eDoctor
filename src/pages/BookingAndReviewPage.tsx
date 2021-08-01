@@ -138,6 +138,7 @@ const BookingAndReviewPage = () => {
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
     setValue("bookedDate", new Date(Date.parse(selectedDate as any)));
+    debugger;
   };
 
   const handleTimeChange = (date: Date | null) => {
@@ -218,6 +219,8 @@ const BookingAndReviewPage = () => {
     // const bookedTime = selectedTime;
     const { bookedDate, bookedTime } = data;
     const now = new Date(Date.now());
+    console.log(bookedDate, bookedTime);
+    debugger;
     [now, bookedDate].forEach((date) => date.setHours(0, 0, 0, 0));
     if (bookedDate.getTime() < now.getTime()) {
       setError("bookedDate", {
@@ -226,9 +229,8 @@ const BookingAndReviewPage = () => {
       });
       return;
     }
-    const selectedTime = bookedTime.getDay();
-    const workingDay = clinic.find(
-      (row: IClinicSchedule) => row.dayOfWeek === selectedTime
+    const workingDay = clinic.schedule.find(
+      (row: IClinicSchedule) => row.dayOfWeek === bookedDate.getDay()
     );
     const time = bookedTime.getHours() * 60 + (bookedTime.getMinutes() % 60);
     if (workingDay.startTime <= time || time <= workingDay.endTime) {
@@ -321,6 +323,7 @@ const BookingAndReviewPage = () => {
               className="book-appointment-form"
               onSubmit={handleSubmit(handleBookFormSubmit)}
             >
+              {/* TODO: Use Controller from react hook form */}
               <ReactNiceDate updateDateValue={handleDateChange} />
               <h6 className="book-appointment-title">
                 Selected date:{" "}
@@ -329,9 +332,9 @@ const BookingAndReviewPage = () => {
                 </span>
               </h6>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                {/* TODO: Use Controller from react hook form */}
                 <KeyboardTimePicker
                   margin="normal"
-                  id="time-picker"
                   value={selectedTime}
                   onChange={handleTimeChange}
                   KeyboardButtonProps={{

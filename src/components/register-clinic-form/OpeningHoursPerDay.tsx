@@ -111,7 +111,6 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
         <Grid item xs={4}>
           <KeyboardTimePicker
             margin="normal"
-            id="time-picker"
             value={selectedStartDate}
             onChange={handleStartDateChange}
             KeyboardButtonProps={{
@@ -126,7 +125,6 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
         <Grid item xs={4}>
           <KeyboardTimePicker
             margin="normal"
-            id="time-picker"
             value={selectedEndDate}
             onChange={handleEndDateChange}
             KeyboardButtonProps={{
