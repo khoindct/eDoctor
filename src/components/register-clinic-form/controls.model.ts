@@ -20,6 +20,13 @@ export interface IFormInput {
   // };
 
   // Opening hours property
+  // monday: [[Date]];
+  // tuesday: [[Date]];
+  // wednesday: [[Date]];
+  // thursday: [[Date]];
+  // friday: [[Date]];
+  // saturday: [[Date]];
+  // sunday: [[Date]];
   startTimeMonday: Date;
   endTimeMonday: Date;
 
