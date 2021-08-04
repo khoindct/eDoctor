@@ -114,6 +114,9 @@ const StepForm = () => {
       type: "Point",
       coordinates: [coordinates.lng, coordinates.lat],
     });
+    console.log(formData);
+    return;
+
     const data = getFormData(formData);
     mutationSubmitClinic.mutate(data as any);
   };

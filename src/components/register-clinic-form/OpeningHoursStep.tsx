@@ -1,10 +1,10 @@
-import React from "react";
-import { Box, createStyles, Grid, Theme } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Box, Button, createStyles, Grid, Theme } from "@material-ui/core";
 import CustomButton from "../CustomButton";
-import { IFormStep } from "./controls.model";
-import OpeningHoursPerDay from "./OpeningHoursPerDay";
+import { IFormStep, IDays } from "./controls.model";
 import OpeningHoursDialog from "../OpeningHoursDialog";
 import { makeStyles } from "@material-ui/styles";
+import CustomTableOpeningHours from "../CustomTableOpeningHours";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,30 +19,49 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
   handleNext,
   handleBack,
   setValue,
-  errors,
 }) => {
   const isValid = true;
   const classes = useStyles();
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [openingHours, setOpeningHours] = React.useState("Dione");
+  const [openingHours, setOpeningHours] = React.useState<(number | null)[][]>(
+    Array(7).fill([])
+  );
+  const days: IDays[] = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+
+  useEffect(() => {
+    days.forEach((day) => setValue && setValue(day, []));
+  }, []);
 
   const handleClickAddHours = () => {
     setOpenDialog(true);
   };
 
-  const handleCloseDialog = (newValue?: string) => {
+  const handleCloseDialog = (newValue?: (number | null)[][]) => {
     setOpenDialog(false);
 
     if (newValue) {
-      console.log(newValue);
-
       setOpeningHours(newValue);
+      days.forEach((day, index) => setValue && setValue(day, newValue[index]));
     }
   };
 
   return (
     <>
-      <CustomButton callback={handleClickAddHours}>Edit Hours</CustomButton>
+      <Button
+        color="secondary"
+        variant="outlined"
+        onClick={handleClickAddHours}
+      >
+        Edit Hours
+      </Button>
       <OpeningHoursDialog
         classes={{
           paper: classes.paper,
@@ -53,55 +72,7 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
         onClose={handleCloseDialog}
         value={openingHours}
       />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeMonday"
-        endDay="endTimeMonday"
-        day="Monday"
-      />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeTuesday"
-        endDay="endTimeTuesday"
-        day="Tuesday"
-      />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeWednesday"
-        endDay="endTimeWednesday"
-        day="Wednesday"
-      />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeThursday"
-        endDay="endTimeThursday"
-        day="Thursday"
-      />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeFriday"
-        endDay="endTimeFriday"
-        day="Friday"
-      />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeSaturday"
-        endDay="endTimeSaturday"
-        day="Saturday"
-      />
-      <OpeningHoursPerDay
-        setValue={setValue}
-        errors={errors}
-        startDay="startTimeSunday"
-        endDay="endTimeSunday"
-        day="Sunday"
-      />
+      <CustomTableOpeningHours workingHours={openingHours} />
       <Box ml="auto" mt={2} mr={2}>
         <Grid container spacing={1}>
           <Grid item xs={6}>

@@ -20,13 +20,13 @@ export interface IFormInput {
   // };
 
   // Opening hours property
-  // monday: [[Date]];
-  // tuesday: [[Date]];
-  // wednesday: [[Date]];
-  // thursday: [[Date]];
-  // friday: [[Date]];
-  // saturday: [[Date]];
-  // sunday: [[Date]];
+  monday: (number | null)[];
+  tuesday: (number | null)[];
+  wednesday: (number | null)[];
+  thursday: (number | null)[];
+  friday: (number | null)[];
+  saturday: (number | null)[];
+  sunday: (number | null)[];
   startTimeMonday: Date;
   endTimeMonday: Date;
 
@@ -48,6 +48,15 @@ export interface IFormInput {
   startTimeSunday: Date;
   endTimeSunday: Date;
 }
+
+export type IDays =
+  | "sunday"
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday";
 
 export interface IFormStep {
   handleNext?: () => void;

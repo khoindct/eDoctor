@@ -1,0 +1,18 @@
+.table {
+  &__head {
+    background-color: var(--color-primary);
+    color: #fff !important;
+    font-size: 1.7rem !important;
+  }
+  &__body {
+    font-size: 1.5rem !important;
+  }
+  &__row {
+    vertical-align: top !important;
+  }
+  &__right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

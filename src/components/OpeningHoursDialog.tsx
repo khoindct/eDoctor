@@ -18,14 +18,15 @@ import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 import React, { useState, useEffect, useRef } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import "./OpeningHoursDialog.scss";
+import { transformToNumber } from "../helpers/datetime-helper";
 
 interface IOpeningHoursDialog {
   classes: Record<"paper", string>;
   id: string;
   keepMounted: boolean;
-  value: string;
+  value: (number | null)[][];
   open: boolean;
-  onClose: (value?: string) => void;
+  onClose: (value?: (number | null)[][]) => void;
 }
 
 interface IOpeningHoursInput {
@@ -43,17 +44,28 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
   handleRemove,
   handleResultChange,
 }) => {
-  const [startdDate, setStartDate] =
-    React.useState<MaterialUiPickersDate>(null);
+  const [startDate, setStartDate] = React.useState<MaterialUiPickersDate>(null);
   const [endDate, setEndDate] = React.useState<MaterialUiPickersDate>(null);
+  const [startDateError, setStartDateError] = React.useState(false);
+  const [endDateError, setEndDateError] = React.useState(false);
 
   const handleStartDateChange = (date: MaterialUiPickersDate) => {
     setStartDate(date);
+    if (date && endDate && date?.getTime() >= endDate?.getTime()) {
+      setStartDateError(true);
+      return;
+    }
+    setStartDateError(false);
     handleResultChange(date, index, 0);
   };
 
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     setEndDate(date);
+    if (date && startDate && date?.getTime() <= startDate?.getTime()) {
+      setEndDateError(true);
+      return;
+    }
+    setEndDateError(false);
     handleResultChange(date, index, 1);
   };
 
@@ -61,18 +73,22 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
     <>
       <Grid item xs={4}>
         <KeyboardTimePicker
+          initialFocusedDate={new Date(0, 0, 0, 0)}
           margin="normal"
           label="Open time"
-          value={startdDate}
+          value={startDate}
           onChange={handleStartDateChange}
           KeyboardButtonProps={{
             "aria-label": "change time",
           }}
+          error={startDateError}
+          helperText={startDateError && "Open time must be sooner"}
         />
       </Grid>
       <Grid item xs={2}></Grid>
       <Grid item xs={4}>
         <KeyboardTimePicker
+          initialFocusedDate={new Date(0, 0, 0, 0)}
           margin="normal"
           label="Close time"
           value={endDate}
@@ -80,6 +96,8 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
           KeyboardButtonProps={{
             "aria-label": "change time",
           }}
+          error={endDateError}
+          helperText={endDateError && "Close time must be later"}
         />
       </Grid>
       <Grid item xs={2}>
@@ -103,21 +121,46 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
   ...other
 }) => {
   const [value, setValue] = useState(valueProp);
-  const [result, setResult] = useState<[any]>([[]]);
+  const [result, setResult] = useState<(number | null)[][]>([[]]); // Array contains hours values according to number of hour fields
   const [state, setState] = useState({
+    checkedSunday: false,
     checkedMonday: false,
     checkedTuesday: false,
     checkedWednesday: false,
     checkedThursday: false,
     checkedFriday: false,
     checkedSaturday: false,
-    checkedSunday: false,
   });
   const [stateSpecial, setStateSpecial] = useState({
     checkedOpen: false,
     checkedClose: false,
   });
+  const isDayChecked = Object.keys(state).some((day) => (state as any)[day]);
   const hasSpecialState = stateSpecial.checkedOpen || stateSpecial.checkedClose;
+
+  const handleRemoveHours = (index: number) => {
+    setHours((prevState) => prevState.filter((_, i) => i !== index));
+    setResult((prevState) => prevState.filter((_, i) => i !== index));
+  };
+
+  const handleResultChange = (
+    date: MaterialUiPickersDate,
+    index: number,
+    position: number
+  ) => {
+    setResult((prevState) => {
+      prevState[index][position] = transformToNumber(date);
+      return prevState;
+    });
+  };
+
+  const [hours, setHours] = useState([
+    <OpeningHoursInput
+      index={0}
+      handleRemove={handleRemoveHours}
+      handleResultChange={handleResultChange}
+    />,
+  ]); // Input working hours fields
 
   useEffect(() => {
     // If there is value (edit case)
@@ -132,9 +175,11 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
   }, [valueProp, open]);
 
   useEffect(() => {
+    // Display hours input
     if (hasSpecialState) {
       setHours([]);
     }
+    // Add hours input when user uncheck special state
     if (!hasSpecialState) {
       const newHour = [
         <OpeningHoursInput
@@ -145,6 +190,9 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
       ];
       setHours(newHour);
     }
+
+    if (stateSpecial.checkedClose) setResult([]);
+    if (stateSpecial.checkedOpen) setResult([[0, 0]]);
   }, [stateSpecial]);
 
   const handleCancel = () => {
@@ -152,24 +200,11 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
   };
 
   const handleOk = () => {
-    // TODO: add working hours (result) to selected days (state)
-    // onClose with that variable
-    console.log(result);
-    onClose(value);
-  };
-
-  const handleRemoveHours = (index: number) => {
-    const newHours = [...hours];
-    const newResult: [any] = [...result];
-    if (!index) {
-      newHours.shift();
-      newResult.shift();
-    } else {
-      newHours.splice(index, 1);
-      newResult.splice(index, 1);
-    }
-    setHours(newHours);
-    setResult(newResult);
+    const workingHours = Array(7).fill([]);
+    Object.keys(state).forEach(
+      (day, index) => (state as any)[day] && (workingHours[index] = [...result])
+    );
+    onClose(workingHours);
   };
 
   const handleAddHours = () => {
@@ -182,29 +217,8 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
         handleResultChange={handleResultChange}
       />,
     ]);
-
-    const newResult: [any] = [...result];
-    newResult.push([]);
-    setResult(newResult);
+    setResult((prevState) => [...prevState, []]);
   };
-
-  const handleResultChange = (
-    date: MaterialUiPickersDate,
-    index: number,
-    position: number
-  ) => {
-    const newResult: [any] = [...result];
-    newResult[index][position] = date;
-    setResult(newResult);
-  };
-
-  const [hours, setHours] = useState([
-    <OpeningHoursInput
-      index={0}
-      handleRemove={handleRemoveHours}
-      handleResultChange={handleResultChange}
-    />,
-  ]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.checked });
@@ -356,7 +370,7 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
         <Button autoFocus onClick={handleCancel} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleOk} color="primary">
+        <Button onClick={handleOk} color="primary" disabled={!isDayChecked}>
           Ok
         </Button>
       </DialogActions>
