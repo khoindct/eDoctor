@@ -27,26 +27,6 @@ export interface IFormInput {
   friday: (number | null)[];
   saturday: (number | null)[];
   sunday: (number | null)[];
-  startTimeMonday: Date;
-  endTimeMonday: Date;
-
-  startTimeTuesday: Date;
-  endTimeTuesday: Date;
-
-  startTimeWednesday: Date;
-  endTimeWednesday: Date;
-
-  startTimeThursday: Date;
-  endTimeThursday: Date;
-
-  startTimeFriday: Date;
-  endTimeFriday: Date;
-
-  startTimeSaturday: Date;
-  endTimeSaturday: Date;
-
-  startTimeSunday: Date;
-  endTimeSunday: Date;
 }
 
 export type IDays =

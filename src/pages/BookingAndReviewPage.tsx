@@ -33,6 +33,7 @@ import { useTypedSelector } from "../hooks/useTypedSelector";
 import CustomModal from "../components/CustomModal";
 import Page from "../components/Page";
 import CustomFormHelperText from "../components/CustomFormHelperText";
+import CustomTableOpeningHours from "../components/CustomTableOpeningHours";
 
 interface IFormReply {
   reviewId: string;
@@ -121,11 +122,17 @@ const BookingAndReviewPage = () => {
     async () => {
       const response = await axios.get(`/clinics/${id}`);
       const clinic = response.data.data.data;
-      setDateRows(
-        clinic.schedule.map((row: any) =>
-          createDateData(row.dayOfWeek, row.startTime, row.endTime)
-        )
-      );
+      let hours = clinic.schedule;
+
+      hours = hours.map((data: any) => {
+        const workingHours = data.workingHours.map((time: any) => [
+          +time.startTime,
+          +time.endTime,
+        ]);
+        return [...workingHours];
+      });
+
+      setDateRows(hours);
       setReviews(clinic.reviews);
       return clinic;
     },
@@ -285,39 +292,7 @@ const BookingAndReviewPage = () => {
         >
           <Grid container justify="space-evenly">
             <div className="opening">
-              <Table className="table" aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      classes={{ body: "table__body", head: "table__head" }}
-                    >
-                      Opening Hours
-                    </TableCell>
-                    <TableCell
-                      classes={{ body: "table__body", head: "table__head" }}
-                    ></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {dateRows?.map((row: any) => (
-                    <TableRow key={row.name}>
-                      <TableCell
-                        classes={{ body: "table__body", head: "table__head" }}
-                        component="th"
-                        scope="row"
-                      >
-                        {row.name}
-                      </TableCell>
-                      <TableCell
-                        classes={{ body: "table__body", head: "table__head" }}
-                        align="right"
-                      >
-                        {row.hours}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <CustomTableOpeningHours workingHours={dateRows} />
             </div>
             <form
               className="book-appointment-form"

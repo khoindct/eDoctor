@@ -145,7 +145,8 @@ const DoctorOpeningHoursPage: React.FC = () => {
           />
           <Divider />
           <CardContent>
-            <form
+            Replace with another component
+            {/* <form
               className="opening-hours-form"
               onSubmit={handleSubmit(onSubmit)}
             >
@@ -196,7 +197,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
                   <CustomButton type="submit">Save Changes</CustomButton>
                 </Box>
               </Grid>
-            </form>
+            </form> */}
           </CardContent>
         </Card>
 

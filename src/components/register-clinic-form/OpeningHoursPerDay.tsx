@@ -53,91 +53,92 @@ const OpeningHoursPerDay: React.FC<IOpeningHoursPerDay> = ({
   endDay,
   day,
 }) => {
-  const [selectedStartDate, setSelectedStartDate] =
-    React.useState<MaterialUiPickersDate>(new Date("2014-08-18T08:00:00"));
-  const [selectedEndDate, setSelectedEndDate] =
-    React.useState<MaterialUiPickersDate>(new Date("2014-08-18T17:00:00"));
+  // const [selectedStartDate, setSelectedStartDate] =
+  //   React.useState<MaterialUiPickersDate>(new Date("2014-08-18T08:00:00"));
+  // const [selectedEndDate, setSelectedEndDate] =
+  //   React.useState<MaterialUiPickersDate>(new Date("2014-08-18T17:00:00"));
 
-  React.useEffect(() => {
-    if (getValues && setValue) {
-      setSelectedStartDate(getValues(startDay));
-      setSelectedEndDate(getValues(endDay));
-      setValue(startDay, getValues(startDay));
-      setValue(endDay, getValues(endDay));
-    }
-    // eslint-disable-next-line
-  }, []);
+  // React.useEffect(() => {
+  //   if (getValues && setValue) {
+  //     setSelectedStartDate(getValues(startDay));
+  //     setSelectedEndDate(getValues(endDay));
+  //     setValue(startDay, getValues(startDay));
+  //     setValue(endDay, getValues(endDay));
+  //   }
+  //   // eslint-disable-next-line
+  // }, []);
 
-  const handleStartDateChange = (date: MaterialUiPickersDate) => {
-    date && setValue && setValue(startDay, date);
-    setSelectedStartDate(date);
+  // const handleStartDateChange = (date: MaterialUiPickersDate) => {
+  //   date && setValue && setValue(startDay, date);
+  //   setSelectedStartDate(date);
 
-    const endTime =
-      selectedEndDate &&
-      selectedEndDate.getHours() * 60 + selectedEndDate.getMinutes();
-    const startTime = date && date.getHours() * 60 + date.getMinutes();
-    endTime && startTime && endTime < startTime
-      ? setError &&
-        setError(startDay, {
-          type: "manual",
-          message: "Start time must before end time",
-        })
-      : clearErrors && clearErrors([startDay, endDay]);
-  };
+  //   const endTime =
+  //     selectedEndDate &&
+  //     selectedEndDate.getHours() * 60 + selectedEndDate.getMinutes();
+  //   const startTime = date && date.getHours() * 60 + date.getMinutes();
+  //   endTime && startTime && endTime < startTime
+  //     ? setError &&
+  //       setError(startDay, {
+  //         type: "manual",
+  //         message: "Start time must before end time",
+  //       })
+  //     : clearErrors && clearErrors([startDay, endDay]);
+  // };
 
-  const handleEndDateChange = (date: MaterialUiPickersDate) => {
-    date && setValue && setValue(endDay, date);
-    setSelectedEndDate(date);
-    // Set errors for datetime
-    const endTime = date && date.getHours() * 60 + date.getMinutes();
-    const startTime =
-      selectedStartDate &&
-      selectedStartDate?.getHours() * 60 + selectedStartDate?.getMinutes();
-    endTime && startTime && endTime < startTime
-      ? setError &&
-        setError(endDay, {
-          type: "manual",
-          message: "End time must after start time",
-        })
-      : clearErrors && clearErrors([startDay, endDay]);
-  };
+  // const handleEndDateChange = (date: MaterialUiPickersDate) => {
+  //   date && setValue && setValue(endDay, date);
+  //   setSelectedEndDate(date);
+  //   // Set errors for datetime
+  //   const endTime = date && date.getHours() * 60 + date.getMinutes();
+  //   const startTime =
+  //     selectedStartDate &&
+  //     selectedStartDate?.getHours() * 60 + selectedStartDate?.getMinutes();
+  //   endTime && startTime && endTime < startTime
+  //     ? setError &&
+  //       setError(endDay, {
+  //         type: "manual",
+  //         message: "End time must after start time",
+  //       })
+  //     : clearErrors && clearErrors([startDay, endDay]);
+  // };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container spacing={6} alignItems="baseline">
-        <Grid item xs={3} style={{ alignSelf: "center" }}>
-          <h6 className="opening-hours-day">{day}</h6>
-        </Grid>
-        <Grid item xs={4}>
-          <KeyboardTimePicker
-            margin="normal"
-            value={selectedStartDate}
-            onChange={handleStartDateChange}
-            KeyboardButtonProps={{
-              "aria-label": "change time",
-            }}
-            error={(errors as any)[startDay] && true}
-            helperText={
-              (errors as any)[startDay] && (errors as any)[startDay].message
-            }
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <KeyboardTimePicker
-            margin="normal"
-            value={selectedEndDate}
-            onChange={handleEndDateChange}
-            KeyboardButtonProps={{
-              "aria-label": "change time",
-            }}
-            error={(errors as any)[endDay] && true}
-            helperText={
-              (errors as any)[endDay] && (errors as any)[endDay].message
-            }
-          />
-        </Grid>
-      </Grid>
-    </MuiPickersUtilsProvider>
+    <div>Fixing...</div>
+    // <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    //   <Grid container spacing={6} alignItems="baseline">
+    //     <Grid item xs={3} style={{ alignSelf: "center" }}>
+    //       <h6 className="opening-hours-day">{day}</h6>
+    //     </Grid>
+    //     <Grid item xs={4}>
+    //       <KeyboardTimePicker
+    //         margin="normal"
+    //         value={selectedStartDate}
+    //         onChange={handleStartDateChange}
+    //         KeyboardButtonProps={{
+    //           "aria-label": "change time",
+    //         }}
+    //         error={(errors as any)[startDay] && true}
+    //         helperText={
+    //           (errors as any)[startDay] && (errors as any)[startDay].message
+    //         }
+    //       />
+    //     </Grid>
+    //     <Grid item xs={4}>
+    //       <KeyboardTimePicker
+    //         margin="normal"
+    //         value={selectedEndDate}
+    //         onChange={handleEndDateChange}
+    //         KeyboardButtonProps={{
+    //           "aria-label": "change time",
+    //         }}
+    //         error={(errors as any)[endDay] && true}
+    //         helperText={
+    //           (errors as any)[endDay] && (errors as any)[endDay].message
+    //         }
+    //       />
+    //     </Grid>
+    //   </Grid>
+    // </MuiPickersUtilsProvider>
   );
 };
 

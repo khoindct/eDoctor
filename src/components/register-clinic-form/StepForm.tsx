@@ -83,7 +83,21 @@ const StepForm = () => {
 
   function getFormData(object: any) {
     const formData = new FormData();
-    Object.keys(object).forEach((key) => formData.append(key, object[key]));
+    const days = [
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+    ];
+    Object.keys(object).forEach((key) => {
+      const value = days.includes(key)
+        ? JSON.stringify(object[key])
+        : object[key];
+      formData.append(key, value);
+    });
     return formData;
   }
 
@@ -114,9 +128,6 @@ const StepForm = () => {
       type: "Point",
       coordinates: [coordinates.lng, coordinates.lat],
     });
-    console.log(formData);
-    return;
-
     const data = getFormData(formData);
     mutationSubmitClinic.mutate(data as any);
   };
