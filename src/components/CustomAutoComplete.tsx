@@ -37,12 +37,12 @@ const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({ options }) => {
           <span style={{ fontSize: "1.5rem" }}>{option}</span>
         </>
       )}
-      //   style={{ width: 500 }}
-      //   renderTags={(tagValue, getTagProps) => {
-      //     return tagValue.map((option, index) => (
-      //       <CustomChip {...getTagProps({ index })} label={option} />
-      //     ));
-      //   }}
+      style={{ width: 500 }}
+      renderTags={(tagValue, getTagProps) => {
+        return tagValue.map((option, index) => (
+          <CustomChip {...getTagProps({ index })} label={option} />
+        ));
+      }}
       renderInput={(params) => (
         <TextField
           {...params}

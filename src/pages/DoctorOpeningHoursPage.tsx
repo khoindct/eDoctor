@@ -14,65 +14,41 @@ import { useQueryClient, useMutation, useQuery } from "react-query";
 import api from "../api";
 import CustomButton from "../components/CustomButton";
 import CustomModal from "../components/CustomModal";
+import EditOpeningHours from "../components/EditOpeningHours";
 import Page from "../components/Page";
-import { IFormInput } from "../components/register-clinic-form/controls.model";
-import OpeningHoursPerDay from "../components/register-clinic-form/OpeningHoursPerDay";
+import {
+  days,
+  IFormInput,
+} from "../components/register-clinic-form/controls.model";
+import { getFormData } from "../helpers/form-data-helper";
 import "./DoctorOpeningHoursPage.scss";
-
-interface IScheduleDay {
-  startTime: number;
-  endTime: number;
-  dayOfWeek: number;
-}
 
 const DoctorOpeningHoursPage: React.FC = () => {
   const axios = api();
-  const {
-    getValues,
-    setValue,
-    setError,
-    clearErrors,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<IFormInput>();
-  const reactHookFormProps = {
-    getValues,
-    setValue,
-    setError,
-    clearErrors,
-    errors,
-  };
+  const { setValue, handleSubmit } = useForm<IFormInput>();
+  // const [workingHours, setWorkingHours] = useState<(number | null)[][]>([]);
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
+  const updateScheduleFormValue = (value: (number | null)[][]) => {
+    days.forEach((day, index) => setValue && setValue(day, value[index]));
+  };
+
   const getClinicSchedule = async () => {
     const { data } = await axios.get("/clinics/detail/schedule");
-    const schedule = data.data.data.schedule;
+    const schedule = data.data.data;
 
-    const scheduleMap: any = new Map([
-      [0, { startTime: "startTimeSunday", endTime: "endTimeSunday" }],
-      [1, { startTime: "startTimeMonday", endTime: "endTimeMonday" }],
-      [2, { startTime: "startTimeTuesday", endTime: "endTimeTuesday" }],
-      [3, { startTime: "startTimeWednesday", endTime: "endTimeWednesday" }],
-      [4, { startTime: "startTimeThursday", endTime: "endTimeThursday" }],
-      [5, { startTime: "startTimeFriday", endTime: "endTimeFriday" }],
-      [6, { startTime: "startTimeSaturday", endTime: "endTimeSaturday" }],
-    ]);
-
-    schedule.forEach((item: IScheduleDay) => {
-      const eventStart = new Date();
-      eventStart.setHours(Math.floor(item.startTime / 60), item.startTime % 60);
-
-      const eventEnd = new Date();
-      eventEnd.setHours(Math.floor(item.endTime / 60), item.endTime % 60);
-
-      setValue(scheduleMap.get(item.dayOfWeek).startTime, eventStart);
-      setValue(scheduleMap.get(item.dayOfWeek).endTime, eventEnd);
+    const hours = schedule.map((data: any) => {
+      const workingHours = data.workingHours.map((time: any) => [
+        +time.startTime,
+        +time.endTime,
+      ]);
+      return [...workingHours];
     });
-
-    return schedule;
+    updateScheduleFormValue(hours);
+    return hours;
   };
 
   const mutationUpdateSchedule = useMutation(
@@ -93,7 +69,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
     }
   );
 
-  const { isLoading } = useQuery<IScheduleDay[]>(
+  const { data: workingHours, isLoading } = useQuery<(number | null)[][]>(
     "clinicSchedule",
     getClinicSchedule,
     {
@@ -102,7 +78,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
     }
   );
 
-  if (isLoading) {
+  if (isLoading || !workingHours) {
     return (
       <Page className="" title="Dashboard">
         <Backdrop className="backdrop" open>
@@ -117,6 +93,8 @@ const DoctorOpeningHoursPage: React.FC = () => {
     setBackdropOpen(true);
     setModalSuccessOpen(false);
     setModalErrorOpen(false);
+    const data = getFormData(formData);
+    console.log({ formData, data });
     mutationUpdateSchedule.mutate(formData as any);
   };
 
@@ -145,59 +123,20 @@ const DoctorOpeningHoursPage: React.FC = () => {
           />
           <Divider />
           <CardContent>
-            Replace with another component
-            {/* <form
+            <EditOpeningHours
+              handleDialogClose={updateScheduleFormValue}
+              workingHours={workingHours}
+            />
+            <form
               className="opening-hours-form"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <OpeningHoursPerDay
-                startDay="startTimeMonday"
-                endDay="endTimeMonday"
-                day="Monday"
-                {...reactHookFormProps}
-              />
-              <OpeningHoursPerDay
-                startDay="startTimeTuesday"
-                endDay="endTimeTuesday"
-                day="Tuesday"
-                {...reactHookFormProps}
-              />
-              <OpeningHoursPerDay
-                startDay="startTimeWednesday"
-                endDay="endTimeWednesday"
-                day="Wednesday"
-                {...reactHookFormProps}
-              />
-              <OpeningHoursPerDay
-                startDay="startTimeThursday"
-                endDay="endTimeThursday"
-                day="Thursday"
-                {...reactHookFormProps}
-              />
-              <OpeningHoursPerDay
-                startDay="startTimeFriday"
-                endDay="endTimeFriday"
-                day="Friday"
-                {...reactHookFormProps}
-              />
-              <OpeningHoursPerDay
-                startDay="startTimeSaturday"
-                endDay="endTimeSaturday"
-                day="Saturday"
-                {...reactHookFormProps}
-              />
-              <OpeningHoursPerDay
-                startDay="startTimeSunday"
-                endDay="endTimeSunday"
-                day="Sunday"
-                {...reactHookFormProps}
-              />
               <Grid container justify="flex-end">
                 <Box mt={4} mr={24}>
                   <CustomButton type="submit">Save Changes</CustomButton>
                 </Box>
               </Grid>
-            </form> */}
+            </form>
           </CardContent>
         </Card>
 

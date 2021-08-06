@@ -15,7 +15,7 @@ import {
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import "./OpeningHoursDialog.scss";
 import { transformToNumber } from "../helpers/datetime-helper";
@@ -163,12 +163,6 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
   ]); // Input working hours fields
 
   useEffect(() => {
-    // If there is value (edit case)
-    // Update result
-    console.log(result);
-  }, [result]); //TODO: remove dependency
-
-  useEffect(() => {
     if (!open) {
       setValue(valueProp);
     }
@@ -193,6 +187,8 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
 
     if (stateSpecial.checkedClose) setResult([]);
     if (stateSpecial.checkedOpen) setResult([[0, 0]]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateSpecial]);
 
   const handleCancel = () => {

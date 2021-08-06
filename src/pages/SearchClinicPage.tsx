@@ -32,6 +32,7 @@ const SearchClinicPage = () => {
     return () => {
       clearTimeout(a);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchSymptoms]);
 
   const getClinics = async () => {
@@ -53,11 +54,7 @@ const SearchClinicPage = () => {
     refetchInterval: false,
   });
 
-  const {
-    isLoading: isSymptomLoading,
-    isError: isSymptomError,
-    error: symptomError,
-  } = useQuery("symptomData", getSymptoms, {
+  const _ = useQuery("symptomData", getSymptoms, {
     refetchOnWindowFocus: false,
     refetchInterval: false,
   });
@@ -83,12 +80,12 @@ const SearchClinicPage = () => {
         <Grid container alignItems="flex-end" className="search-bar">
           <Grid item md={3}>
             <CustomAutoComplete options={symptoms} />
-            {/* {symptoms.length && (
+            {symptoms.length && (
               <CustomSelect
                 items={symptoms}
                 onItemChange={handleSearchClinicsBySymptoms}
               />
-            )} */}
+            )}
           </Grid>
           <Box marginLeft="auto" />
           <Grid item md={8}>

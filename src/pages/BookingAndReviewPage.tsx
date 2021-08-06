@@ -6,11 +6,6 @@ import {
   CircularProgress,
   Divider,
   Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import CustomCarousel from "../components/CustomCarousel";
@@ -55,30 +50,6 @@ interface IClinicSchedule {
   startTime: number;
   endTime: number;
 }
-
-const createDateData = (
-  dayOfWeek: number,
-  startTime: number,
-  endTime: number
-) => {
-  const dataMap = new Map([
-    [0, "Sunday"],
-    [1, "Monday"],
-    [2, "Tuesday"],
-    [3, "Wednesday"],
-    [4, "Thursday"],
-    [5, "Friday"],
-    [6, "Saturday"],
-  ]);
-  return {
-    name: dataMap.get(dayOfWeek),
-    hours: `${String(startTime / 60).padStart(2, "0")}:${String(
-      startTime % 60
-    ).padStart(2, "0")} - ${String(endTime / 60).padStart(2, "0")}:${String(
-      endTime % 60
-    ).padStart(2, "0")}`,
-  };
-};
 
 const BookingAndReviewPage = () => {
   const { id } = useParams();

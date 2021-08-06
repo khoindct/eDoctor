@@ -10,6 +10,7 @@ import { Control, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router";
 import api from "../../api";
+import { getFormData } from "../../helpers/form-data-helper";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import CustomModal from "../CustomModal";
 import { IFormInput } from "./controls.model";
@@ -80,26 +81,6 @@ const StepForm = () => {
         break;
     }
   };
-
-  function getFormData(object: any) {
-    const formData = new FormData();
-    const days = [
-      "sunday",
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-    ];
-    Object.keys(object).forEach((key) => {
-      const value = days.includes(key)
-        ? JSON.stringify(object[key])
-        : object[key];
-      formData.append(key, value);
-    });
-    return formData;
-  }
 
   const mutationSubmitClinic = useMutation(
     (formData) => {

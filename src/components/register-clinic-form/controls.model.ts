@@ -46,3 +46,13 @@ export interface IFormStep {
   control: Control<IFormInput>;
   register: UseFormRegister<IFormInput>;
 }
+
+export const days: IDays[] = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];

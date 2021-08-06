@@ -38,6 +38,7 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
 
   useEffect(() => {
     days.forEach((day) => setValue && setValue(day, []));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClickAddHours = () => {
