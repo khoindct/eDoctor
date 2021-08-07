@@ -1,0 +1,54 @@
+.custom-dialog-title-root {
+  text-align: center;
+
+  & > h2 {
+    color: var(--color-text-secondary);
+    font-size: 2rem !important;
+  }
+}
+
+.custom-control-root {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.MuiFormLabel-root,
+.MuiPickersClockNumber-clockNumber,
+.MuiButton-label {
+  font-size: 1.5rem !important;
+}
+
+.MuiFormControl-root,
+.MuiInput-formControl {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+// .MuiInputLabel-formControl {
+//   transform: translateY(10px) !important;
+// }
+
+.custom-control-label {
+  font-size: 1.5rem !important;
+
+  &-circle {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-grey-dark-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-text-secondary);
+  }
+
+  &-checked {
+    background-color: var(--background-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.custom-checkbox-input > span > input:checked + .custom-control-label {
+  background-color: red;
+}

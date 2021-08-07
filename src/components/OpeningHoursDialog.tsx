@@ -19,6 +19,7 @@ import React, { useState, useEffect } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import "./OpeningHoursDialog.scss";
 import { transformToNumber } from "../helpers/datetime-helper";
+import classnames from "classnames";
 
 interface IOpeningHoursDialog {
   classes: Record<"paper", string>;
@@ -70,9 +71,15 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
   };
 
   return (
-    <>
-      <Grid item xs={4}>
+    <Grid container alignItems="center">
+      <Grid item xs={5}>
         <KeyboardTimePicker
+          inputVariant="outlined"
+          InputProps={{
+            style: {
+              fontSize: 15,
+            },
+          }}
           initialFocusedDate={new Date(0, 0, 0, 0)}
           margin="normal"
           label="Open time"
@@ -85,9 +92,15 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
           helperText={startDateError && "Open time must be sooner"}
         />
       </Grid>
-      <Grid item xs={2}></Grid>
-      <Grid item xs={4}>
+      <Grid item xs={1}></Grid>
+      <Grid item xs={5}>
         <KeyboardTimePicker
+          inputVariant="outlined"
+          InputProps={{
+            style: {
+              fontSize: 15,
+            },
+          }}
           initialFocusedDate={new Date(0, 0, 0, 0)}
           margin="normal"
           label="Close time"
@@ -100,7 +113,7 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
           helperText={endDateError && "Close time must be later"}
         />
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1}>
         <IconButton
           color="primary"
           aria-label="remove"
@@ -110,7 +123,7 @@ const OpeningHoursInput: React.FC<IOpeningHoursInput> = ({
           <CloseIcon />
         </IconButton>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
@@ -243,76 +256,144 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
       open={open}
       {...other}
     >
-      <DialogTitle id="confirmation-dialog-title">Chọn ngày & giờ</DialogTitle>
+      <DialogTitle
+        classes={{ root: "custom-dialog-title-root" }}
+        id="confirmation-dialog-title"
+      >
+        Select days & time
+      </DialogTitle>
       <DialogContent>
-        <Grid container>
-          <Grid item xs={12}>
+        <Grid container style={{ gap: "2rem", marginBottom: "2rem" }}>
+          <Grid container justify="space-between">
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedSunday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedSunday}
                   onChange={handleChange}
                   name="checkedSunday"
+                  style={{ display: "none" }}
                 />
               }
               label="S"
             />
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedMonday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedMonday}
                   onChange={handleChange}
                   name="checkedMonday"
+                  style={{ display: "none" }}
                 />
               }
               label="M"
             />
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedTuesday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedTuesday}
                   onChange={handleChange}
                   name="checkedTuesday"
+                  style={{ display: "none" }}
                 />
               }
               label="T"
             />
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedWednesday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedWednesday}
                   onChange={handleChange}
                   name="checkedWednesday"
+                  style={{ display: "none" }}
                 />
               }
               label="W"
             />
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedThursday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedThursday}
                   onChange={handleChange}
                   name="checkedThursday"
+                  style={{ display: "none" }}
                 />
               }
               label="T"
             />
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedFriday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedFriday}
                   onChange={handleChange}
                   name="checkedFriday"
+                  style={{ display: "none" }}
                 />
               }
               label="F"
             />
             <FormControlLabel
+              classes={{
+                label: classnames({
+                  "custom-control-label": true,
+                  "custom-control-label-circle": true,
+                  "custom-control-label-checked": state.checkedSaturday,
+                }),
+                root: "custom-control-root",
+              }}
               control={
                 <Checkbox
                   checked={state.checkedSaturday}
                   onChange={handleChange}
                   name="checkedSaturday"
+                  style={{ display: "none" }}
                 />
               }
               label="S"
@@ -320,6 +401,9 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
           </Grid>{" "}
           <Grid item xs={12}>
             <FormControlLabel
+              classes={{
+                label: "custom-control-label",
+              }}
               control={
                 <Checkbox
                   checked={stateSpecial.checkedOpen}
@@ -330,6 +414,9 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
               label="Open 24 hours"
             />
             <FormControlLabel
+              classes={{
+                label: "custom-control-label",
+              }}
               control={
                 <Checkbox
                   checked={stateSpecial.checkedClose}
@@ -344,20 +431,25 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
         <Grid container>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container>
-              {hours.map((item, index) =>
-                React.cloneElement(item, {
-                  key: index,
-                  index,
-                  handleRemove: handleRemoveHours,
-                })
-              )}
+              {hours.map((item, index) => (
+                <Grid item xs={12} key={index}>
+                  {React.cloneElement(item, {
+                    index,
+                    handleRemove: handleRemoveHours,
+                  })}
+                </Grid>
+              ))}
             </Grid>
           </MuiPickersUtilsProvider>
         </Grid>
         {hasSpecialState ? (
           <></>
         ) : (
-          <Button onClick={handleAddHours} color="primary">
+          <Button
+            onClick={handleAddHours}
+            color="primary"
+            style={{ marginTop: "1rem" }}
+          >
             Add hours
           </Button>
         )}
