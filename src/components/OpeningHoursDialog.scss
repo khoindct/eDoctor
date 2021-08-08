@@ -30,6 +30,7 @@
 
 .custom-control-label {
   font-size: 1.5rem !important;
+  transition: all 0.3s;
 
   &-circle {
     width: 4rem;
@@ -47,8 +48,4 @@
     border-color: var(--color-primary);
     color: var(--color-primary);
   }
-}
-
-.custom-checkbox-input > span > input:checked + .custom-control-label {
-  background-color: red;
 }

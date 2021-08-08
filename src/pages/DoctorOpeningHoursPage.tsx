@@ -53,7 +53,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
 
   const mutationUpdateSchedule = useMutation(
     (formData) => {
-      return axios.patch(`/clinics/detail/schedule`, formData);
+      return axios.patch("/clinics/detail/schedule", formData);
     },
     {
       onSuccess: (data) => {
@@ -93,9 +93,16 @@ const DoctorOpeningHoursPage: React.FC = () => {
     setBackdropOpen(true);
     setModalSuccessOpen(false);
     setModalErrorOpen(false);
-    const data = getFormData(formData);
-    console.log({ formData, data });
-    mutationUpdateSchedule.mutate(formData as any);
+    const data = {
+      sunday: JSON.stringify(formData["sunday"]),
+      monday: JSON.stringify(formData["monday"]),
+      tuesday: JSON.stringify(formData["tuesday"]),
+      wednesday: JSON.stringify(formData["wednesday"]),
+      thursday: JSON.stringify(formData["thursday"]),
+      friday: JSON.stringify(formData["friday"]),
+      saturday: JSON.stringify(formData["saturday"]),
+    };
+    mutationUpdateSchedule.mutate(data as any);
   };
 
   return (

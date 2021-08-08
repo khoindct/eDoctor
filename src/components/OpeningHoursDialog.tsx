@@ -250,12 +250,7 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
   };
 
   return (
-    <Dialog
-      maxWidth="xs"
-      aria-labelledby="confirmation-dialog-title"
-      open={open}
-      {...other}
-    >
+    <Dialog aria-labelledby="confirmation-dialog-title" open={open} {...other}>
       <DialogTitle
         classes={{ root: "custom-dialog-title-root" }}
         id="confirmation-dialog-title"
@@ -430,7 +425,7 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
         </Grid>
         <Grid container>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container>
+            <Grid container style={{ gap: "1.5rem" }}>
               {hours.map((item, index) => (
                 <Grid item xs={12} key={index}>
                   {React.cloneElement(item, {
@@ -442,9 +437,7 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
             </Grid>
           </MuiPickersUtilsProvider>
         </Grid>
-        {hasSpecialState ? (
-          <></>
-        ) : (
+        {hasSpecialState || (
           <Button
             onClick={handleAddHours}
             color="primary"
