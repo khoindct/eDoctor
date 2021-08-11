@@ -198,7 +198,7 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
       setHours(newHour);
     }
 
-    if (stateSpecial.checkedClose) setResult([]);
+    if (stateSpecial.checkedClose) setResult([[]]);
     if (stateSpecial.checkedOpen) setResult([[0, 0]]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
