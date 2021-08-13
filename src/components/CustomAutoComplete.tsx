@@ -11,9 +11,13 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface ICustomAutoComplete {
   options: string[];
+  handleChange: (data: string[]) => void;
 }
 
-const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({ options }) => {
+const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({
+  options,
+  handleChange,
+}) => {
   return (
     <Autocomplete
       multiple
@@ -24,6 +28,9 @@ const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({ options }) => {
         root: "custom-autocomplete",
       }}
       options={options}
+      onChange={(event: any, newValue: string[] | null) => {
+        handleChange(newValue!);
+      }}
       disableCloseOnSelect
       getOptionLabel={(option) => option}
       renderOption={(option, { selected }) => (

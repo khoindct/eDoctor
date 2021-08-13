@@ -1870,6 +1870,11 @@
   "resolved" "https://registry.npmjs.org/@types/aria-query/-/aria-query-4.2.1.tgz"
   "version" "4.2.1"
 
+"@types/autosuggest-highlight@^3.1.1":
+  "integrity" "sha512-onPUHT+32TyI7ctiG7G/JtWlVkEBH2bw1onOWaea0L0dZmKNhP+KIOcrh7gnr2LTzD9/cjQlC7zJdv259dg0lg=="
+  "resolved" "https://registry.npmjs.org/@types/autosuggest-highlight/-/autosuggest-highlight-3.1.1.tgz"
+  "version" "3.1.1"
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   "integrity" "sha512-zGZJzzBUVDo/eV6KgbE0f0ZI7dInEYvo12Rb70uNQDshC3SkRMb67ja0GgRHZgAX3Za6rhaWlvbDO8rrGyAb1g=="
   "resolved" "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.1.14.tgz"
@@ -2905,6 +2910,13 @@
     "num2fraction" "^1.2.2"
     "postcss" "^7.0.32"
     "postcss-value-parser" "^4.1.0"
+
+"autosuggest-highlight@^3.1.1":
+  "integrity" "sha512-MQ6GNIGMMZbeA5FlBLXXgkZEthysCdYNkMV4MahB2/qB/9cwBnVsePUPnIqkMuzjzclTtDa67xln7cgLDu2f/g=="
+  "resolved" "https://registry.npmjs.org/autosuggest-highlight/-/autosuggest-highlight-3.1.1.tgz"
+  "version" "3.1.1"
+  dependencies:
+    "diacritic" "0.0.2"
 
 "aws-sign2@~0.7.0":
   "integrity" "sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg="
@@ -4693,6 +4705,11 @@
   dependencies:
     "address" "^1.0.1"
     "debug" "^2.6.0"
+
+"diacritic@0.0.2":
+  "integrity" "sha1-/CqIe1pbwKCoVPthTHwvIJBh7gQ="
+  "resolved" "https://registry.npmjs.org/diacritic/-/diacritic-0.0.2.tgz"
+  "version" "0.0.2"
 
 "diff-sequences@^26.6.2":
   "integrity" "sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q=="

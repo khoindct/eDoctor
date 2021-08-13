@@ -10,7 +10,6 @@ import "./SearchClinicPage.scss";
 import CardClinicDetail from "../components/card-clinic-detail/CardClinicDetail";
 import { ChangeEvent, useState } from "react";
 import { Box, CircularProgress, Grid } from "@material-ui/core";
-import CustomSelect from "../components/CustomSelect";
 import CustomAutoComplete from "../components/CustomAutoComplete";
 
 const SearchClinicPage = () => {
@@ -79,13 +78,10 @@ const SearchClinicPage = () => {
       <section className="search-section">
         <Grid container alignItems="flex-end" className="search-bar">
           <Grid item md={3}>
-            <CustomAutoComplete options={symptoms} />
-            {symptoms.length && (
-              <CustomSelect
-                items={symptoms}
-                onItemChange={handleSearchClinicsBySymptoms}
-              />
-            )}
+            <CustomAutoComplete
+              options={symptoms}
+              handleChange={handleSearchClinicsBySymptoms}
+            />
           </Grid>
           <Box marginLeft="auto" />
           <Grid item md={8}>
