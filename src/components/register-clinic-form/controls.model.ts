@@ -14,6 +14,7 @@ export interface IFormInput {
   coverImage: File;
   description: string;
   geometry: string;
+  specialists: string[];
   // geometry: {
   //   type: "Point";
   //   coordinates: number[];

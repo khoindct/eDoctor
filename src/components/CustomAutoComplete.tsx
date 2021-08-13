@@ -11,11 +11,15 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface ICustomAutoComplete {
   options: string[];
+  label: string;
+  placeholder: string;
   handleChange: (data: string[]) => void;
 }
 
 const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({
   options,
+  label,
+  placeholder,
   handleChange,
 }) => {
   return (
@@ -44,7 +48,6 @@ const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({
           <span style={{ fontSize: "1.5rem" }}>{option}</span>
         </>
       )}
-      style={{ width: 500 }}
       renderTags={(tagValue, getTagProps) => {
         return tagValue.map((option, index) => (
           <CustomChip {...getTagProps({ index })} label={option} />
@@ -54,8 +57,8 @@ const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({
         <TextField
           {...params}
           variant="outlined"
-          label="Triệu chứng"
-          placeholder="Nhập triệu chứng bệnh"
+          label={label}
+          placeholder={placeholder}
         />
       )}
     />

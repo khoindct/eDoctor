@@ -13,8 +13,9 @@ const LocationStep: React.FC<IFormStep> = ({ handleBack, control }) => {
 
   return (
     <>
-      <CustomAutoCompleteGoogleMaps />
-      {/* <SearchLocation />
+      {/* TODO: Investigate getPlace of google map API - Place Details */}
+      {/* <CustomAutoCompleteGoogleMaps /> */}
+      <SearchLocation />
       {location && (
         <div className="clinic__map">
           <Map geometry={[coordinates.lng, coordinates.lat]} />
@@ -29,7 +30,7 @@ const LocationStep: React.FC<IFormStep> = ({ handleBack, control }) => {
             <CustomButton type="submit">Submit</CustomButton>
           </Grid>
         </Grid>
-      </Box> */}
+      </Box>
     </>
   );
 };

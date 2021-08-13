@@ -3,9 +3,12 @@ import { IFormStep } from "./controls.model";
 import CustomTextField from "../CustomTextField";
 import { Controller } from "react-hook-form";
 import CustomButton from "../CustomButton";
-import { Box, Button, Grid } from "@material-ui/core";
+import { Box, Button, CircularProgress, Grid } from "@material-ui/core";
 import "./GeneralStep.scss";
 import { clinicNameRegex, emailRegex } from "../../helpers/regex";
+import { useQuery } from "react-query";
+import api from "../../api";
+import CustomAutoComplete from "../CustomAutoComplete";
 
 // Destructuring props
 const GeneralStep: React.FC<IFormStep> = ({
@@ -14,14 +17,52 @@ const GeneralStep: React.FC<IFormStep> = ({
   setValue,
   errors,
 }) => {
+  const axios = api();
   const [coverImageFile, setCoverImageFile] = useState<string>();
+  const [specIds, setSpecIds] = useState<any>({});
   // Check if all values are not empty or if there are some error
   const isValid = true;
+
+  const getSpecialists = async () => {
+    const response = await axios.get("/specialists");
+    const data = response.data.data.data;
+    const specialistIds: any = {};
+    const specialistNames: string[] = [];
+    data.forEach((specialist: any) => {
+      const { name, _id } = specialist;
+      specialistIds[name] = _id;
+      specialistNames.push(name);
+    });
+    setSpecIds(specialistIds);
+
+    return specialistNames;
+  };
+
+  let { data: specialists, isLoading } = useQuery(
+    "specialistData",
+    getSpecialists,
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
 
   const handleChange = (event: any) => {
     setValue && setValue("coverImage", event.target.files[0]);
     setCoverImageFile(window.URL.createObjectURL(event.target.files[0]));
   };
+
+  const handleSelectSpecialists = (data: string[]) => {
+    const specialistIds: string[] = [];
+    data.forEach((name) => {
+      specialistIds.push(specIds[name]);
+    });
+    setValue && setValue("specialists", specialistIds);
+  };
+
+  if (isLoading) {
+    return <CircularProgress color="secondary" />;
+  }
 
   return (
     <Fragment>
@@ -90,6 +131,14 @@ const GeneralStep: React.FC<IFormStep> = ({
             render={({ field }) => (
               <CustomTextField label="Clinic Phone" {...field} />
             )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <CustomAutoComplete
+            options={specialists!}
+            handleChange={handleSelectSpecialists}
+            label="Specialist"
+            placeholder="Select your clinic specialist"
           />
         </Grid>
         <Grid item xs={12}>

@@ -81,6 +81,8 @@ const SearchClinicPage = () => {
             <CustomAutoComplete
               options={symptoms}
               handleChange={handleSearchClinicsBySymptoms}
+              label="Triệu chứng"
+              placeholder="Nhập triệu chứng bệnh"
             />
           </Grid>
           <Box marginLeft="auto" />
