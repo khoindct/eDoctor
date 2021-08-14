@@ -65,7 +65,10 @@ const SearchLocation: React.FC<ISearchLocation> = ({ address = "" }) => {
         id="free-solo-demo"
         freeSolo
         value={address}
-        classes={{ option: "autoComplete-text" }}
+        classes={{
+          inputRoot: "autocomplete-input-font",
+          option: "autoComplete-text",
+        }}
         options={data.map((suggestion) => suggestion.description)}
         onChange={(e, value) => handleChangeInput(value)}
         renderInput={(params) => (
