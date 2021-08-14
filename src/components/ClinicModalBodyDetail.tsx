@@ -14,6 +14,7 @@ import api from "../api";
 import "./ClinicModalBodyDetail.scss";
 import CustomButton from "./CustomButton";
 import CustomModal from "./CustomModal";
+import CustomChip from "./CustomChip";
 
 interface IClinicModalBodyDetail {
   clinic: any;
@@ -125,6 +126,16 @@ const ClinicModalBodyDetail: React.FC<IClinicModalBodyDetail> = ({
             <Grid item xs={12}>
               <h6 className="clinic-cover-image-title">
                 <b>Email</b>: {clinic?.email ?? "None"}
+              </h6>
+            </Grid>
+            <Grid item xs={12}>
+              <h6 className="clinic-cover-image-title">
+                <b>Specialists</b>:{" "}
+                <span className="clinic-specialists">
+                  {clinic?.specialists?.map((specialist: any) => (
+                    <CustomChip key={specialist.name} label={specialist.name} />
+                  )) ?? "None"}
+                </span>
               </h6>
             </Grid>
             <Grid item xs={12}>
