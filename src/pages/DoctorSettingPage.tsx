@@ -22,6 +22,7 @@ import Page from "../components/Page";
 import { clinicNameRegex } from "../helpers/regex";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import "./DoctorSettingPage.scss";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 
 interface IClinicDetailInput {
   coverImage: File | undefined;
@@ -29,6 +30,7 @@ interface IClinicDetailInput {
   name: string;
   email: string;
   address: string;
+  specialists: string;
   description: string;
   phone: string;
   geometry: string;
@@ -38,6 +40,7 @@ const DoctorSettingPage: React.FC = () => {
   const axios = api();
   const {
     control,
+    getValues,
     setValue,
     formState: { errors },
     handleSubmit,
@@ -46,17 +49,40 @@ const DoctorSettingPage: React.FC = () => {
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [coverImage, setCoverImage] = useState<string>();
+  const [specIds, setSpecIds] = useState<any>({});
   const { location, coordinates } = useTypedSelector(
     (state) => state.locations
   );
   const queryClient = useQueryClient();
 
+  const getSpecialists = async () => {
+    const response = await axios.get("/specialists");
+    const data = response.data.data.data;
+    const specialistIds: any = {};
+    const specialistNames: string[] = [];
+    data.forEach((specialist: any) => {
+      const { name, _id } = specialist;
+      specialistIds[name] = _id;
+      specialistNames.push(name);
+    });
+    setSpecIds(specialistIds);
+
+    return specialistNames;
+  };
+
   const getClinicDetail = async () => {
     const { data } = await axios.get("/clinics/detail");
     const clinic = data.data.data;
 
+    const specialistNames: string[] = [];
+    clinic?.specialists.forEach((specialist: any) => {
+      const { name } = specialist;
+      specialistNames.push(name);
+    });
+
     setCoverImage(clinic?.coverImage?.url);
     setValue("name", clinic?.name);
+    setValue("specialists", JSON.stringify(specialistNames));
     setValue("email", clinic?.email);
     setValue("phone", clinic?.phone);
     setValue("description", clinic?.description);
@@ -93,7 +119,16 @@ const DoctorSettingPage: React.FC = () => {
     }
   );
 
-  if (isLoading) {
+  let { data: specialistsData, isLoading: isSpecialistsLoading } = useQuery(
+    "specialistData",
+    getSpecialists,
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
+
+  if (isLoading || isSpecialistsLoading) {
     return (
       <Page className="" title="Dashboard">
         <Backdrop className="backdrop" open>
@@ -102,6 +137,14 @@ const DoctorSettingPage: React.FC = () => {
       </Page>
     );
   }
+
+  const handleSelectSpecialists = (data: string[]) => {
+    const specialistIds: string[] = [];
+    data.forEach((name) => {
+      specialistIds.push(specIds[name]);
+    });
+    setValue("specialists", JSON.stringify(specialistIds));
+  };
 
   const handleRemoveCoverImageFile = () => {
     setValue("deleteCoverImage", clinic?.coverImage?.filename);
@@ -247,6 +290,15 @@ const DoctorSettingPage: React.FC = () => {
                   render={({ field }) => (
                     <CustomTextField label="Clinic Phone" {...field} />
                   )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CustomAutoComplete
+                  options={specialistsData!}
+                  defaultValue={JSON.parse(getValues("specialists"))}
+                  handleChange={handleSelectSpecialists}
+                  label="Specialist"
+                  placeholder="Select your clinic specialist"
                 />
               </Grid>
               <Grid item xs={12}>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -11,6 +12,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface ICustomAutoComplete {
   options: string[];
+  defaultValue?: string[];
   label: string;
   placeholder: string;
   handleChange: (data: string[]) => void;
@@ -18,6 +20,7 @@ interface ICustomAutoComplete {
 
 const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({
   options,
+  defaultValue,
   label,
   placeholder,
   handleChange,
@@ -25,6 +28,7 @@ const CustomAutoComplete: React.FC<ICustomAutoComplete> = ({
   return (
     <Autocomplete
       multiple
+      defaultValue={defaultValue}
       limitTags={2}
       id="checkboxes-tags-demo"
       classes={{
