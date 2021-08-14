@@ -17,6 +17,7 @@ import CustomButton from "../components/CustomButton";
 import CustomModal from "../components/CustomModal";
 import CustomTextField from "../components/CustomTextField";
 import SearchLocation from "../components/map/SearchLocation";
+import Map from "../components/map/Map";
 import Page from "../components/Page";
 import { clinicNameRegex } from "../helpers/regex";
 import { useTypedSelector } from "../hooks/useTypedSelector";
@@ -277,8 +278,15 @@ const DoctorSettingPage: React.FC = () => {
                 <SearchLocation address={clinic.address} />
               </Grid>
               <Grid item xs={12}>
-                Google Map
-                {/* <Map /> */}
+                <div className="clinic__map">
+                  <Map
+                    geometry={[
+                      clinic.geometry.coordinates[0],
+                      clinic.geometry.coordinates[1],
+                    ]}
+                    address={clinic.address}
+                  />
+                </div>
               </Grid>
               <Box ml="auto" mt={2} mr={2}>
                 <CustomButton type="submit">Save Changes</CustomButton>

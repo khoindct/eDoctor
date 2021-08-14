@@ -12,7 +12,7 @@ const DoctorRatingPage: React.FC = () => {
 
   const getReviews = async () => {
     const { data } = await axios.get("/reviews/clinic");
-    const result = data.data.data.reviews;
+    const result = data.data.data;
     return result;
   };
 
@@ -29,6 +29,10 @@ const DoctorRatingPage: React.FC = () => {
         </Backdrop>
       </Page>
     );
+  }
+
+  if (!reviews.length) {
+    return <div>No data found</div>;
   }
 
   return (

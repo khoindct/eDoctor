@@ -38,6 +38,13 @@ const DashboardPage = () => {
     return result;
   };
 
+  const getClinicStatistics = async () => {
+    const { data } = await axios.get("/clinics/detail/statistic");
+
+    const result = data.data;
+    return result;
+  };
+
   const { isLoading, data: clinicAppointments } = useQuery(
     "clinicAppointments",
     getAppointments,
@@ -47,7 +54,13 @@ const DashboardPage = () => {
     }
   );
 
-  if (isLoading) {
+  const { isLoading: isClinicStatisticsLoading, data: clinicStatistics } =
+    useQuery("clinicStatistics", getClinicStatistics, {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    });
+
+  if (isLoading || isClinicStatisticsLoading) {
     return (
       <Page className="" title="Dashboard">
         <Backdrop className="backdrop" open>
@@ -222,9 +235,9 @@ const DashboardPage = () => {
   };
   const dataList = getDataList(clinicAppointments);
 
-  const totalPatient = clinicAppointments?.length;
+  const totalPatient = clinicStatistics?.totalPatients;
   const totalAppointments = clinicAppointments?.length;
-  const ratings = clinicAppointments?.clinic?.ratingAvg;
+  const ratings = clinicStatistics?.ratings;
 
   return (
     <Page className="" title="Dashboard">
