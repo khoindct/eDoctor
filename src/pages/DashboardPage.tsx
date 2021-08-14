@@ -21,6 +21,7 @@ import "./DashboardPage.scss";
 import { useQuery } from "react-query";
 import api from "../api";
 import AppointmentModalBodyDetail from "../components/AppointmentModalBodyDetail";
+import { formatTime } from "../helpers/datetime-helper";
 
 const DashboardPage = () => {
   const axios = api();
@@ -197,12 +198,7 @@ const DashboardPage = () => {
           </Typography>
         ),
         bookedTime: (
-          <Typography variant="h5">{`${Math.floor(
-            item.bookedTime / 60
-          ).toLocaleString(undefined, {
-            minimumIntegerDigits: 2,
-            useGrouping: false,
-          })}:${item.bookedTime % 60}`}</Typography>
+          <Typography variant="h5">{formatTime(item.bookedTime)}</Typography>
         ),
         status: (
           <Chip

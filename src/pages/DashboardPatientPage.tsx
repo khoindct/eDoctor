@@ -100,10 +100,26 @@ const DashboardPatientPage = () => {
     return user;
   };
 
+  const getPatientAppointments = async () => {
+    const { data } = await axios.get("/bookings/users");
+
+    const result = data.data.data;
+    return result;
+  };
+
   const { isLoading } = useQuery("profileUser", getCurrentUser, {
     refetchOnWindowFocus: false,
     refetchInterval: false,
   });
+
+  const { data: appointments, isLoading: isAppointmentLoading } = useQuery(
+    "patientAppointments",
+    getPatientAppointments,
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
 
   const mutationUpdateProfile = useMutation(
     (formData) => {
@@ -306,7 +322,7 @@ const DashboardPatientPage = () => {
         </div>
       </TabPanel>
       <TabPanel value={tabValue} index={1}>
-        <AppointmentList />
+        <AppointmentList appointments={appointments} />
       </TabPanel>
       <TabPanel value={tabValue} index={2}>
         <UpdatePassword />

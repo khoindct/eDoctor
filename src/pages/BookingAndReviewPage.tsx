@@ -194,7 +194,6 @@ const BookingAndReviewPage = () => {
     bookedTime = new Date(bookedTime);
     const now = new Date(Date.now());
     // Check if user book appointment in the past
-    debugger;
     [now, bookedDate].forEach((date) => date.setHours(0, 0, 0, 0));
     if (bookedDate.getTime() < now.getTime()) {
       setError("bookedDate", {

@@ -17,4 +17,14 @@ const transformNumberToTime = (hour: (number | null)[]) => {
   ).padStart(2, "0")}`;
 };
 
-export { transformToNumber, transformNumberToTime };
+const formatTime = (num: number) => {
+  return `${Math.floor(num / 60).toLocaleString(undefined, {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  })}:${(num % 60).toLocaleString(undefined, {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  })}`;
+};
+
+export { transformToNumber, transformNumberToTime, formatTime };
