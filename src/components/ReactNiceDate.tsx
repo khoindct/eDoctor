@@ -9,7 +9,7 @@ interface IReactNiceDate {
 }
 
 const ReactNiceDate: React.FC<IReactNiceDate> = ({ updateDateValue }) => {
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date>(new Date());
 
   const handleOnDateChange: DateChangeCallBack = (event: any) => {
     setDate(event);

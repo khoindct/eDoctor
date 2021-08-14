@@ -18,7 +18,10 @@ const LocationStep: React.FC<IFormStep> = ({ handleBack, control }) => {
       <SearchLocation />
       {location && (
         <div className="clinic__map">
-          <Map geometry={[coordinates.lng, coordinates.lat]} />
+          <Map
+            geometry={[coordinates.lng, coordinates.lat]}
+            address={location}
+          />
         </div>
       )}
       <Box ml="auto" mt={2} mr={2}>

@@ -32,7 +32,7 @@ const PatientCard: React.FC<PatientCardProps> = ({ patient }) => {
             <div className="profile__avatar--border">
               <Avatar
                 alt="Remy Sharp"
-                src={patient.avatar}
+                src={patient?.avatar || "../assets/images/default-avatar.jpg"}
                 className="profile__avatar"
               />
             </div>

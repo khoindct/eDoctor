@@ -55,10 +55,12 @@ const BookingAndReviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
+    control,
     setValue,
     setError,
+    clearErrors,
     formState: { errors },
-    handleSubmit,
+    handleSubmit: handleSubmitBooking,
   } = useForm<IFormBooking>();
   const {
     control: controlComment,
@@ -74,7 +76,6 @@ const BookingAndReviewPage = () => {
     handleSubmit: handleSubmitReply,
   } = useForm<IFormReply>();
   const [selectedDate, setSelectedDate] = useState<string>();
-  const [selectedTime, setSelectedTime] = useState<Date | null>();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
@@ -115,13 +116,7 @@ const BookingAndReviewPage = () => {
 
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
-    setValue("bookedDate", new Date(Date.parse(selectedDate as any)));
-    debugger;
-  };
-
-  const handleTimeChange = (date: Date | null) => {
-    setSelectedTime(date);
-    date && setValue("bookedTime", date);
+    setValue("bookedDate", new Date(date));
   };
 
   const mutationSubmitComment = useMutation(
@@ -193,11 +188,12 @@ const BookingAndReviewPage = () => {
     if (!authenticated) {
       return navigate("/login");
     }
-    // const bookedDate = new Date(Date.parse(selectedDate as any));
-    // const bookedTime = selectedTime;
-    const { bookedDate, bookedTime } = data;
+    ["bookedDate", "bookedTime"].forEach((value: any) => clearErrors(value));
+    let { bookedDate, bookedTime } = data;
+    bookedDate = new Date(bookedDate);
+    bookedTime = new Date(bookedTime);
     const now = new Date(Date.now());
-    console.log(bookedDate, bookedTime);
+    // Check if user book appointment in the past
     debugger;
     [now, bookedDate].forEach((date) => date.setHours(0, 0, 0, 0));
     if (bookedDate.getTime() < now.getTime()) {
@@ -207,17 +203,39 @@ const BookingAndReviewPage = () => {
       });
       return;
     }
+    // Get book date in working hour
     const workingDay = clinic.schedule.find(
       (row: IClinicSchedule) => row.dayOfWeek === bookedDate.getDay()
     );
-    const time = bookedTime.getHours() * 60 + (bookedTime.getMinutes() % 60);
-    if (workingDay.startTime <= time || time <= workingDay.endTime) {
+    const { workingHours } = workingDay;
+    // Check if working hours is closed
+    // workingHours: []
+    if (!workingHours.length) {
       setError("bookedTime", {
         type: "invalidBookedTime",
         message: `The clinic is closed. Please book in working time`,
       });
       return;
     }
+
+    const time = bookedTime.getHours() * 60 + (bookedTime.getMinutes() % 60);
+    // If working day is not open 24 hours
+    if (
+      !(workingHours.length === 1 && !workingHours[0][0] && !workingHours[0][1])
+    ) {
+      const isInWorkingHours = workingHours.some(
+        (workingHour: any) =>
+          workingHour.startTime <= time && time <= workingHour.endTime
+      );
+      if (!isInWorkingHours) {
+        setError("bookedTime", {
+          type: "invalidBookedTime",
+          message: `The clinic is closed. Please book in working time`,
+        });
+        return;
+      }
+    }
+
     const formData = { bookedDate, bookedTime };
     mutationSubmitBooking.mutate(formData as any);
   };
@@ -267,10 +285,24 @@ const BookingAndReviewPage = () => {
             </div>
             <form
               className="book-appointment-form"
-              onSubmit={handleSubmit(handleBookFormSubmit)}
+              onSubmit={handleSubmitBooking(handleBookFormSubmit)}
             >
               {/* TODO: Use Controller from react hook form */}
-              <ReactNiceDate updateDateValue={handleDateChange} />
+              <Controller
+                name="bookedDate"
+                control={control}
+                defaultValue={Date.now()}
+                rules={{
+                  required: "Booking date is not selected",
+                }}
+                render={({ field }) => (
+                  <ReactNiceDate
+                    updateDateValue={handleDateChange}
+                    {...field}
+                  />
+                )}
+              />
+
               <h6 className="book-appointment-title">
                 Selected date:{" "}
                 <span className="book-appointment-selected-date">
@@ -279,13 +311,22 @@ const BookingAndReviewPage = () => {
               </h6>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 {/* TODO: Use Controller from react hook form */}
-                <KeyboardTimePicker
-                  margin="normal"
-                  value={selectedTime}
-                  onChange={handleTimeChange}
-                  KeyboardButtonProps={{
-                    "aria-label": "change time",
+                <Controller
+                  name="bookedTime"
+                  control={control}
+                  defaultValue={Date.now()}
+                  rules={{
+                    required: "Booking time is not selected",
                   }}
+                  render={({ field }) => (
+                    <KeyboardTimePicker
+                      margin="normal"
+                      KeyboardButtonProps={{
+                        "aria-label": "change time",
+                      }}
+                      {...field}
+                    />
+                  )}
                 />
               </MuiPickersUtilsProvider>
               {errors.bookedDate && (
@@ -385,7 +426,7 @@ const BookingAndReviewPage = () => {
                       <div className="review-name">{review?.user?.name}</div>
                       <Rating
                         name="customized-empty"
-                        defaultValue={review.rating}
+                        defaultValue={review?.rating}
                         readOnly
                         emptyIcon={<StarBorderIcon fontSize="inherit" />}
                       />

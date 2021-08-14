@@ -57,7 +57,7 @@ const GeneralStep: React.FC<IFormStep> = ({
     data.forEach((name) => {
       specialistIds.push(specIds[name]);
     });
-    setValue && setValue("specialists", specialistIds);
+    setValue && setValue("specialists", JSON.stringify(specialistIds));
   };
 
   if (isLoading) {
