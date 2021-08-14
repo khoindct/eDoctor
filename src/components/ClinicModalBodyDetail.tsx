@@ -15,7 +15,15 @@ import "./ClinicModalBodyDetail.scss";
 import CustomButton from "./CustomButton";
 import CustomModal from "./CustomModal";
 
-const ClinicModalBodyDetail: React.FC<any> = ({ clinic }) => {
+interface IClinicModalBodyDetail {
+  clinic: any;
+  handleCloseModal: () => void;
+}
+
+const ClinicModalBodyDetail: React.FC<IClinicModalBodyDetail> = ({
+  clinic,
+  handleCloseModal,
+}) => {
   const axios = api();
   const queryClient = useQueryClient();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
@@ -61,7 +69,11 @@ const ClinicModalBodyDetail: React.FC<any> = ({ clinic }) => {
   return (
     <div className="clinic-detail-body-modal">
       {modalSuccessOpen && (
-        <CustomModal type="success" message="Successfully approve clinic." />
+        <CustomModal
+          type="success"
+          message="Successfully approve clinic."
+          handleParentModalClose={handleCloseModal}
+        />
       )}
       {modalErrorOpen && (
         <CustomModal

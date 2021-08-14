@@ -14,8 +14,18 @@ import api from "../api";
 import "./AppointmentModalBodyDetail.scss";
 import CustomButton from "./CustomButton";
 import CustomModal from "./CustomModal";
+import moment from "moment";
+import { formatTime } from "../helpers/datetime-helper";
 
-const AppointmentModalBodyDetail: React.FC<any> = ({ appointment }) => {
+interface IAppointmentModalBodyDetail {
+  appointment: any;
+  handleCloseModal: () => void;
+}
+
+const AppointmentModalBodyDetail: React.FC<IAppointmentModalBodyDetail> = ({
+  appointment,
+  handleCloseModal,
+}) => {
   const axios = api();
   const queryClient = useQueryClient();
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
@@ -24,11 +34,11 @@ const AppointmentModalBodyDetail: React.FC<any> = ({ appointment }) => {
 
   const mutationSubmitAppointment = useMutation(
     (formData) => {
-      return axios.put(`/appointments/${appointment._id}`, formData);
+      return axios.put(`/bookings/${appointment._id}`, formData);
     },
     {
       onSuccess: (_) => {
-        queryClient.invalidateQueries("allAppointments");
+        queryClient.invalidateQueries("clinicAppointments");
         setBackdropOpen(false);
         setModalSuccessOpen(true);
         setModalErrorOpen(false);
@@ -59,11 +69,12 @@ const AppointmentModalBodyDetail: React.FC<any> = ({ appointment }) => {
   };
 
   return (
-    <div className="Appointment-detail-body-modal">
+    <div className="appointment-detail-body-modal">
       {modalSuccessOpen && (
         <CustomModal
           type="success"
           message="Successfully approve Appointment."
+          handleParentModalClose={handleCloseModal}
         />
       )}
       {modalErrorOpen && (
@@ -86,7 +97,25 @@ const AppointmentModalBodyDetail: React.FC<any> = ({ appointment }) => {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              Appointment Details Here
+              <h6 className="clinic-cover-image-title">
+                <b>Patient name</b>: {appointment.user.name}
+              </h6>
+            </Grid>
+            <Grid item xs={12}>
+              <h6 className="clinic-cover-image-title">
+                <b>Appointment Date</b>:{" "}
+                {moment(appointment.bookedDate).format("DD-MM-YYYY")}
+              </h6>
+            </Grid>
+            <Grid item xs={12}>
+              <h6 className="clinic-cover-image-title">
+                <b>Appointment Time</b>: {formatTime(appointment.bookedTime)}
+              </h6>
+            </Grid>
+            <Grid item xs={12}>
+              <h6 className="clinic-cover-image-title">
+                <b>Note</b>: None
+              </h6>
             </Grid>
             <Box ml="auto" mt={2} mr={2}>
               <CustomButton callback={handleApproveAppointment}>

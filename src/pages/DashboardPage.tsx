@@ -5,9 +5,6 @@ import {
   Chip,
   CircularProgress,
   Grid,
-  IconButton,
-  Menu,
-  MenuItem,
   Modal,
   Typography,
 } from "@material-ui/core";
@@ -16,7 +13,6 @@ import StatisticCard from "../components/dashboard/StatisticCard";
 import DataList from "../components/data-list/DataList";
 import Page from "../components/Page";
 import moment from "moment";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "./DashboardPage.scss";
 import { useQuery } from "react-query";
 import api from "../api";
@@ -25,11 +21,8 @@ import { formatTime } from "../helpers/datetime-helper";
 
 const DashboardPage = () => {
   const axios = api();
-  // const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [appointment, setAppointment] = useState<any>();
-  const open = Boolean(anchorEl);
 
   const getAppointments = async () => {
     const { data } = await axios.get("/bookings/users");
@@ -80,15 +73,6 @@ const DashboardPage = () => {
     setOpenModal(false);
   };
 
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const options = ["Confirm", "Cancel"];
   const columns = [
     {
       name: "patient",
@@ -153,41 +137,6 @@ const DashboardPage = () => {
     {
       name: "actions",
       label: "Actions",
-      options: {
-        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
-          // const rowId = tableMeta.rowData[0];
-          return (
-            <>
-              <IconButton
-                aria-label="more"
-                aria-controls="long-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={handleClose}
-              >
-                {options.map((option) => (
-                  <MenuItem
-                    className="menu-item-content"
-                    key={option}
-                    selected={option === "Pyxis"}
-                    onClick={handleClose}
-                  >
-                    {option}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          );
-        },
-      },
     },
   ];
 
@@ -219,7 +168,7 @@ const DashboardPage = () => {
             classes={{ root: chipStyle.get(item.status) }}
           />
         ),
-        action: (
+        actions: (
           <Button
             type="button"
             variant="outlined"
@@ -259,13 +208,17 @@ const DashboardPage = () => {
       <Box mt={5} />
       <DataList data={dataList} columns={columns} title="Appointment List" />
       <Modal
+        className="appointment-modal"
         open={openModal}
         onClose={handleCloseModal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
         <React.Fragment>
-          <AppointmentModalBodyDetail appointment={appointment} />
+          <AppointmentModalBodyDetail
+            appointment={appointment}
+            handleCloseModal={handleCloseModal}
+          />
         </React.Fragment>
       </Modal>
     </Page>

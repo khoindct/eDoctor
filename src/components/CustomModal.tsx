@@ -1,15 +1,27 @@
 import { Modal } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomModalBody from "./CustomModalBody";
 import "./CustomModal.scss";
 
 interface ICustomModal {
   type: "success" | "error";
   message: string;
+  handleParentModalClose?: () => void;
 }
 
-const CustomModal: React.FC<ICustomModal> = ({ type, message }) => {
+const CustomModal: React.FC<ICustomModal> = ({
+  type,
+  message,
+  handleParentModalClose,
+}) => {
   const [modalOpen, setModalOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!modalOpen) {
+      handleParentModalClose && handleParentModalClose();
+    }
+  }, [modalOpen]);
+
   const handleModalClose = () => {
     setModalOpen(false);
   };

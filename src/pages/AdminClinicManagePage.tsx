@@ -195,7 +195,10 @@ const AdminClinicManagePage = () => {
         aria-describedby="simple-modal-description"
       >
         <React.Fragment>
-          <ClinicModalBodyDetail clinic={clinic} />
+          <ClinicModalBodyDetail
+            clinic={clinic}
+            handleCloseModal={handleCloseModal}
+          />
         </React.Fragment>
       </Modal>
     </Page>
