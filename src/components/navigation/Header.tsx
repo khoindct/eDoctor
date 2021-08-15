@@ -134,9 +134,22 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
           </>
         )}
 
-        {authenticated && (
+        {authenticated && authorization !== "patient" && (
           <>
-            <IconButton
+            <Button
+              classes={{ root: "auth-button" }}
+              variant="outlined"
+              color="primary"
+              onClick={handleSignout}
+            >
+              Sign Out
+            </Button>
+          </>
+        )}
+
+        {authenticated && authorization === "patient" && (
+          <>
+            {/* <IconButton
               color="inherit"
               aria-haspopup="true"
               aria-controls="mail-menu"
@@ -152,7 +165,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
               >
                 <NotificationsIcon className="header__menu-button" />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               aria-haspopup="true"
               color="inherit"
@@ -212,7 +225,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
                     Profile
                   </MenuItem>
                 )}
-                {authorization === "doctor" && (
+                {/* {authorization === "doctor" && (
                   <MenuItem
                     className="profile-header__item--content"
                     onClick={navigateToDashboard}
@@ -229,7 +242,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
                     <AccountIcon className="profile-header__item--icon" />{" "}
                     Dashboard
                   </MenuItem>
-                )}
+                )} */}
               </div>
               <div className="profile-header__button">
                 <Button

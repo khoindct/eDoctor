@@ -41,7 +41,9 @@ const LoginPage = () => {
 
   const cbLoginSubmitSuccess = () => {
     setBackdropOpen(false);
-    navigate(-1);
+    localStorage.getItem("role") === "patient" && navigate(-1);
+    localStorage.getItem("role") === "doctor" && navigate("/app/dashboard");
+    localStorage.getItem("role") === "admin" && navigate("/admin/clinics");
   };
 
   const cbLoginSubmitError = () => {
