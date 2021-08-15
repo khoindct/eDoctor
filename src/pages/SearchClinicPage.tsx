@@ -25,7 +25,6 @@ const SearchClinicPage = () => {
         params: { symptoms: searchSymptoms },
       });
       const result = data.data.data.data;
-      console.log(result);
       setClinics(result);
     });
     return () => {
