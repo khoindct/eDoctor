@@ -26,13 +26,15 @@ const LoginPage = () => {
     handleSubmit,
   } = useForm<IFormInput>();
   const { signin } = useActions();
-  const { authenticated, errorMessage } = useTypedSelector(
+  const { authenticated, authorization, errorMessage } = useTypedSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
     if (authenticated) {
-      navigate("/");
+      authorization === "patient" && navigate("/");
+      authorization === "doctor" && navigate("/app/dashboard");
+      authorization === "admin" && navigate("/admin/clinics");
     }
     // eslint-disable-next-line
   }, []);
