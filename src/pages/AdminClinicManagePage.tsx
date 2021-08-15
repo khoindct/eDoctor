@@ -105,7 +105,7 @@ const AdminClinicManagePage = () => {
       label: "Status",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
         setCellHeaderProps: (value: any) => {
           return {
             style: {
