@@ -79,6 +79,9 @@ const BookingAndReviewPage = () => {
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [modalSuccessOpen, setModalSuccessOpen] = useState<boolean>(false);
   const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>(
+    "Something goes wrong. Please try again!"
+  );
   const [dateRows, setDateRows] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const { authenticated } = useTypedSelector((state) => state.auth);
@@ -146,14 +149,14 @@ const BookingAndReviewPage = () => {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
-
         // const booking = data.data.data.data;
         setBackdropOpen(false);
         setModalSuccessOpen(true);
       },
-      onError: (error) => {
-        console.error(error);
+      onError: (error: any) => {
+        setErrorMessage(
+          "Unable to book an appointment. You have a pending request."
+        );
         setBackdropOpen(false);
         setModalErrorOpen(true);
       },
@@ -237,6 +240,9 @@ const BookingAndReviewPage = () => {
 
     const formData = { bookedDate, bookedTime };
     mutationSubmitBooking.mutate(formData as any);
+
+    setModalSuccessOpen(false);
+    setModalErrorOpen(false);
   };
 
   const handleCommentSubmit = async (data: IFormComment) => {
@@ -247,6 +253,9 @@ const BookingAndReviewPage = () => {
     const review = data.review;
     const formData = { rating, review };
     mutationSubmitComment.mutate(formData as any);
+
+    setModalSuccessOpen(false);
+    setModalErrorOpen(false);
   };
 
   if (isLoading) {
@@ -262,12 +271,7 @@ const BookingAndReviewPage = () => {
       {modalSuccessOpen && (
         <CustomModal type="success" message="Successfully save changes" />
       )}
-      {modalErrorOpen && (
-        <CustomModal
-          type="error"
-          message="Something goes wrong. Please try again!"
-        />
-      )}
+      {modalErrorOpen && <CustomModal type="error" message={errorMessage} />}
       <Backdrop className="backdrop" open={isLoading || backdropOpen}>
         <CircularProgress color="secondary" />
       </Backdrop>
