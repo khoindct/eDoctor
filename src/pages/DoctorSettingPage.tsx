@@ -50,6 +50,7 @@ const DoctorSettingPage: React.FC = () => {
   const [backdropOpen, setBackdropOpen] = useState<boolean>(false);
   const [coverImage, setCoverImage] = useState<string>();
   const [specIds, setSpecIds] = useState<any>({});
+  const [defaultSpecNames, setDefaultSpecNames] = useState<string[]>([]);
   const { location, coordinates } = useTypedSelector(
     (state) => state.locations
   );
@@ -74,15 +75,18 @@ const DoctorSettingPage: React.FC = () => {
     const { data } = await axios.get("/clinics/detail");
     const clinic = data.data.data;
 
-    const specialistNames: string[] = [];
+    const specialistIds: string[] = [];
+    const defSpecNames: string[] = [];
     clinic?.specialists.forEach((specialist: any) => {
-      const { name } = specialist;
-      specialistNames.push(name);
+      const { _id, name } = specialist;
+      defSpecNames.push(name);
+      specialistIds.push(_id);
     });
+    setDefaultSpecNames(defSpecNames);
 
     setCoverImage(clinic?.coverImage?.url);
     setValue("name", clinic?.name);
-    setValue("specialists", JSON.stringify(specialistNames));
+    setValue("specialists", JSON.stringify(specialistIds));
     setValue("email", clinic?.email);
     setValue("phone", clinic?.phone);
     setValue("description", clinic?.description);
@@ -128,7 +132,7 @@ const DoctorSettingPage: React.FC = () => {
     }
   );
 
-  if (isLoading || isSpecialistsLoading) {
+  if (isLoading || isSpecialistsLoading || !defaultSpecNames.length) {
     return (
       <Page className="" title="Dashboard">
         <Backdrop className="backdrop" open>
@@ -295,7 +299,7 @@ const DoctorSettingPage: React.FC = () => {
               <Grid item xs={12}>
                 <CustomAutoComplete
                   options={specialistsData!}
-                  defaultValue={JSON.parse(getValues("specialists"))}
+                  defaultValue={defaultSpecNames}
                   handleChange={handleSelectSpecialists}
                   label="Specialist"
                   placeholder="Select your clinic specialist"
