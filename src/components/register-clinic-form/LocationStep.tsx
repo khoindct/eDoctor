@@ -15,7 +15,7 @@ const LocationStep: React.FC<IFormStep> = ({ handleBack, control }) => {
     <>
       {/* TODO: Investigate getPlace of google map API - Place Details */}
       {/* <CustomAutoCompleteGoogleMaps /> */}
-      <SearchLocation />
+      <SearchLocation address={location} />
       {location && (
         <div className="clinic__map">
           <Map

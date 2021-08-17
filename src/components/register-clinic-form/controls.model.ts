@@ -2,6 +2,7 @@ import {
   Control,
   DeepMap,
   FieldError,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -42,6 +43,7 @@ export type IDays =
 export interface IFormStep {
   handleNext?: () => void;
   handleBack?: () => void;
+  getValues?: UseFormGetValues<IFormInput>;
   setValue?: UseFormSetValue<IFormInput>;
   errors: DeepMap<IFormInput, FieldError>;
   control: Control<IFormInput>;

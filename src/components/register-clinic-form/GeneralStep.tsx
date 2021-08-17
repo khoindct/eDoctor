@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { IFormStep } from "./controls.model";
 import CustomTextField from "../CustomTextField";
 import { Controller } from "react-hook-form";
@@ -14,12 +14,14 @@ import CustomAutoComplete from "../CustomAutoComplete";
 const GeneralStep: React.FC<IFormStep> = ({
   handleNext,
   control,
+  getValues,
   setValue,
   errors,
 }) => {
   const axios = api();
   const [coverImageFile, setCoverImageFile] = useState<string>();
   const [specIds, setSpecIds] = useState<any>({});
+  let defaultSpecialists: string[] | undefined;
   // Check if all values are not empty or if there are some error
   const isValid = true;
 
@@ -34,6 +36,25 @@ const GeneralStep: React.FC<IFormStep> = ({
       specialistNames.push(name);
     });
     setSpecIds(specialistIds);
+
+    if (getValues) {
+      if (getValues("coverImage")) {
+        const binaryData = [];
+        binaryData.push(getValues("coverImage"));
+        setCoverImageFile(window.URL.createObjectURL(new Blob(binaryData)));
+      }
+
+      const defaultSpecs =
+        getValues("specialists") && JSON.parse(getValues("specialists"));
+      if (defaultSpecs?.length) {
+        const specs = defaultSpecs.map(
+          (spec: string) =>
+            data.find((specialist: any) => specialist._id === spec).name
+        );
+
+        defaultSpecialists = specs;
+      }
+    }
 
     return specialistNames;
   };
@@ -135,6 +156,7 @@ const GeneralStep: React.FC<IFormStep> = ({
         </Grid>
         <Grid item xs={12}>
           <CustomAutoComplete
+            defaultValue={defaultSpecialists}
             options={specialists!}
             handleChange={handleSelectSpecialists}
             label="Specialist"

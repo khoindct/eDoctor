@@ -34,6 +34,7 @@ const StepForm = () => {
   const {
     register,
     control,
+    getValues,
     setValue,
     formState: { errors },
     handleSubmit,
@@ -52,6 +53,7 @@ const StepForm = () => {
             handleNext={handleNext}
             control={control}
             register={register}
+            getValues={getValues}
             setValue={setValue}
             errors={errors}
           />
@@ -63,6 +65,7 @@ const StepForm = () => {
             handleBack={handleBack}
             control={control}
             register={register}
+            getValues={getValues}
             setValue={setValue}
             errors={errors}
           />
@@ -73,6 +76,7 @@ const StepForm = () => {
             handleNext={handleNext}
             handleBack={handleBack}
             control={control}
+            getValues={getValues}
             register={register}
             errors={errors}
           />
