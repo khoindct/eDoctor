@@ -52,10 +52,9 @@ const SearchLocation: React.FC<ISearchLocation> = ({ address = "" }) => {
           },
         };
         getLocation(geometry);
-        console.log("Coordinates: ", { lat, lng });
       })
       .catch((error) => {
-        console.log("Error: ", error);
+        console.error("Error: ", error);
       });
   };
 
