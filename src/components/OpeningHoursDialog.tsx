@@ -197,7 +197,24 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateSpecial]);
 
+  const resetStates = () => {
+    setState({
+      checkedSunday: false,
+      checkedMonday: false,
+      checkedTuesday: false,
+      checkedWednesday: false,
+      checkedThursday: false,
+      checkedFriday: false,
+      checkedSaturday: false,
+    });
+    setStateSpecial({
+      checkedOpen: false,
+      checkedClose: false,
+    });
+  };
+
   const handleCancel = () => {
+    resetStates();
     onClose();
   };
 
@@ -206,6 +223,8 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
     Object.keys(state).forEach(
       (day, index) => (state as any)[day] && (workingHours[index] = [...result])
     );
+
+    resetStates();
     onClose(workingHours);
   };
 

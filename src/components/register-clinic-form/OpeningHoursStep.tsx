@@ -49,10 +49,14 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
     setOpenDialog(false);
 
     if (newValue) {
-      console.log(newValue);
-
-      setOpeningHours(newValue);
-      days.forEach((day, index) => setValue!(day, newValue[index]));
+      const edittedOpeningHours = [...openingHours];
+      days.forEach((day, index) => {
+        if (newValue[index].length !== 0) {
+          edittedOpeningHours[index] = newValue[index];
+          setValue!(day, newValue[index]);
+        }
+      });
+      setOpeningHours(edittedOpeningHours);
     }
   };
 

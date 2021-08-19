@@ -5,9 +5,10 @@ const transformToNumber = (date: MaterialUiPickersDate) => {
 };
 
 const transformNumberToTime = (hour: (number | null)[]) => {
+  if (!hour.length) return "Closed";
+
   const startTime = hour[0]!;
   const endTime = hour[1]!;
-
   if (!startTime && !endTime) return "Open 24 hours";
 
   return `${String(startTime / 60).padStart(2, "0")}:${String(

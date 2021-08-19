@@ -32,7 +32,12 @@ const DoctorOpeningHoursPage: React.FC = () => {
   const queryClient = useQueryClient();
 
   const updateScheduleFormValue = (value: (number | null)[][]) => {
-    days.forEach((day, index) => setValue && setValue(day, value[index]));
+    if (value) {
+      days.forEach(
+        (day, index) =>
+          value[index].length !== 0 && setValue!(day, value[index])
+      );
+    }
   };
 
   const getClinicSchedule = async () => {
@@ -46,7 +51,7 @@ const DoctorOpeningHoursPage: React.FC = () => {
       ]);
       return [...workingHours];
     });
-    updateScheduleFormValue(hours);
+    days.forEach((day, index) => setValue!(day, hours[index]));
     return hours;
   };
 

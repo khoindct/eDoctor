@@ -1,8 +1,15 @@
-import { makeStyles, Theme, createStyles, Button } from "@material-ui/core";
+import {
+  makeStyles,
+  Theme,
+  createStyles,
+  Button,
+  Box,
+} from "@material-ui/core";
 import React from "react";
 import CustomTableOpeningHours from "./CustomTableOpeningHours";
 import "./EditOpeningHours.scss";
 import OpeningHoursDialog from "./OpeningHoursDialog";
+import { days } from "../components/register-clinic-form/controls.model";
 
 interface IEditOpeningHours {
   handleDialogClose: (value: (number | null)[][]) => void;
@@ -27,11 +34,6 @@ const EditOpeningHours: React.FC<IEditOpeningHours> = ({
   const [openingHours, setOpeningHours] =
     React.useState<(number | null)[][]>(workingHours);
 
-  React.useEffect(() => {
-    console.log(openingHours);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleClickAddHours = () => {
     setOpenDialog(true);
   };
@@ -40,7 +42,14 @@ const EditOpeningHours: React.FC<IEditOpeningHours> = ({
     setOpenDialog(false);
 
     if (newValue) {
-      setOpeningHours(newValue);
+      const edittedOpeningHours = [...openingHours];
+      days.forEach((_, index) => {
+        if (newValue[index].length !== 0) {
+          edittedOpeningHours[index] = newValue[index];
+        }
+      });
+      setOpeningHours(edittedOpeningHours);
+
       handleDialogClose(newValue);
     }
   };
@@ -51,9 +60,11 @@ const EditOpeningHours: React.FC<IEditOpeningHours> = ({
         color="secondary"
         variant="outlined"
         onClick={handleClickAddHours}
+        fullWidth
       >
         Edit Hours
       </Button>
+      <Box mb={1} />
       <OpeningHoursDialog
         classes={{
           paper: classes.paper,
