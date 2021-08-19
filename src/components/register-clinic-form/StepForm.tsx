@@ -36,7 +36,7 @@ const StepForm = () => {
     control,
     getValues,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
   } = useForm<IFormInput>();
 
@@ -79,6 +79,7 @@ const StepForm = () => {
             getValues={getValues}
             register={register}
             errors={errors}
+            isValid={isValid}
           />
         );
       default:

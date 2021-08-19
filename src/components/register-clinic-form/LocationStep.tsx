@@ -6,7 +6,11 @@ import Map from "../map/Map";
 import SearchLocation from "../map/SearchLocation";
 import { IFormStep } from "./controls.model";
 
-const LocationStep: React.FC<IFormStep> = ({ handleBack, control }) => {
+const LocationStep: React.FC<IFormStep> = ({
+  handleBack,
+  control,
+  isValid,
+}) => {
   const { coordinates, location } = useTypedSelector(
     (state) => state.locations
   );

@@ -45,6 +45,7 @@ export type IDays =
 export interface IFormStep {
   handleNext?: () => void;
   handleBack?: () => void;
+  isValid?: boolean;
   getValues?: UseFormGetValues<IFormInput>;
   setValue?: UseFormSetValue<IFormInput>;
   errors: DeepMap<IFormInput, FieldError>;

@@ -3,6 +3,10 @@
     background-color: var(--color-primary) !important;
     transition: 0.4s;
 
+    &.Mui-disabled {
+      background-color: rgba(0, 0, 0, 0.26) !important;
+    }
+
     &:hover {
       background-color: var(--color-primary-light) !important;
       transform: translateY(-3px);
