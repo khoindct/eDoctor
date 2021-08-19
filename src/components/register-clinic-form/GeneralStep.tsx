@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { IFormStep } from "./controls.model";
 import CustomTextField from "../CustomTextField";
 import { Controller } from "react-hook-form";
@@ -21,7 +21,6 @@ const GeneralStep: React.FC<IFormStep> = ({
   const axios = api();
   const [coverImageFile, setCoverImageFile] = useState<string>();
   const [specIds, setSpecIds] = useState<any>({});
-  let defaultSpecialists: string[] | undefined;
   // Check if all values are not empty or if there are some error
   const isValid = true;
 
@@ -42,17 +41,6 @@ const GeneralStep: React.FC<IFormStep> = ({
         const binaryData = [];
         binaryData.push(getValues("coverImage"));
         setCoverImageFile(window.URL.createObjectURL(new Blob(binaryData)));
-      }
-
-      const defaultSpecs =
-        getValues("specialists") && JSON.parse(getValues("specialists"));
-      if (defaultSpecs?.length) {
-        const specs = defaultSpecs.map(
-          (spec: string) =>
-            data.find((specialist: any) => specialist._id === spec).name
-        );
-
-        defaultSpecialists = specs;
       }
     }
 
@@ -78,10 +66,11 @@ const GeneralStep: React.FC<IFormStep> = ({
     data.forEach((name) => {
       specialistIds.push(specIds[name]);
     });
-    setValue && setValue("specialists", JSON.stringify(specialistIds));
+    setValue!("specialists", JSON.stringify(specialistIds));
+    setValue!("specialistNames", data);
   };
 
-  if (isLoading) {
+  if (isLoading || !specialists?.length) {
     return <CircularProgress color="secondary" />;
   }
 
@@ -156,7 +145,11 @@ const GeneralStep: React.FC<IFormStep> = ({
         </Grid>
         <Grid item xs={12}>
           <CustomAutoComplete
-            defaultValue={defaultSpecialists}
+            defaultValue={
+              getValues!("specialistNames") === undefined
+                ? undefined
+                : getValues!("specialistNames")
+            }
             options={specialists!}
             handleChange={handleSelectSpecialists}
             label="Specialist"

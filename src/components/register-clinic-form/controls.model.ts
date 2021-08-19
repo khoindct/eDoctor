@@ -16,6 +16,8 @@ export interface IFormInput {
   description: string;
   geometry: string;
   specialists: string;
+
+  specialistNames: string[]; // work around purpose
   // geometry: {
   //   type: "Point";
   //   coordinates: number[];
