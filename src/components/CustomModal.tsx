@@ -20,6 +20,7 @@ const CustomModal: React.FC<ICustomModal> = ({
     if (!modalOpen) {
       handleParentModalClose && handleParentModalClose();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
 
   const handleModalClose = () => {

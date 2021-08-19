@@ -37,22 +37,14 @@ const SearchClinicPage = () => {
     const response = await axios.get("/clinics/approved-clinics");
     const data = response.data.data.data;
     setClinics(data);
-    return data;
-  };
 
-  const getSymptoms = async () => {
-    const response = await axios.get("/specialists/symptoms");
-    const data = response.data.data.data;
-    setSymptoms(data);
+    const symptomResponse = await axios.get("/specialists/symptoms");
+    const symptomData = symptomResponse.data.data.data;
+    setSymptoms(symptomData);
     return data;
   };
 
   let { isLoading, isError, error } = useQuery("clinicData", getClinics, {
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-  });
-
-  const _ = useQuery("symptomData", getSymptoms, {
     refetchOnWindowFocus: false,
     refetchInterval: false,
   });

@@ -132,30 +132,6 @@ const AppointmentList: React.FC<IAppointmentList> = ({ appointments }) => {
 
   const dataList = getDataList(appointments);
 
-  const data = appointments.map((appointment) => {
-    const { bookedDate, bookTime, clinic, status, createdAt } = appointment;
-    return [
-      {
-        clinic: (
-          <Typography variant="h5" component="span">
-            clinic.name
-          </Typography>
-        ),
-        appDate: (
-          <Typography variant="h5" component="span">
-            {moment(createdAt).format("DD-MM-YYYY")}
-          </Typography>
-        ),
-        bookDate: (
-          <Typography variant="h5" component="span">
-            {moment(clinic.bookedDate).format("DD-MM-YYYY")}
-          </Typography>
-        ),
-        status: <Chip label="Confirm" classes={{ root: "chip-success" }} />,
-      },
-    ];
-  });
-
   return (
     <MUIDataTable
       title={"Appointment List"}

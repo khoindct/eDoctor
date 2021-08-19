@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   AppBar,
-  Badge,
   Box,
   Hidden,
   IconButton,
@@ -14,11 +13,7 @@ import {
   Button,
   Avatar,
 } from "@material-ui/core";
-import {
-  Menu as MenuIcon,
-  NotificationsNone as NotificationsIcon,
-  Person as AccountIcon,
-} from "@material-ui/icons";
+import { Menu as MenuIcon, Person as AccountIcon } from "@material-ui/icons";
 
 import { notificationData } from "./data/headerData";
 import Notification from "../notification/Notification";
@@ -45,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
   const { signout } = useActions();
   const [notifications] = useState<NotificationType[]>(notificationData);
   const [notificationsMenu, setNotificationsMenu] = useState<any>(null);
-  const [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
+  // const [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   const [profileMenu, setProfileMenu] = useState<any>(null);
 
   const { authenticated, authorization } = useTypedSelector(
@@ -84,13 +79,13 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
     navigate(`/profile/${currentUser._id}`);
   };
 
-  const navigateToDashboard = () => {
-    navigate(`/app/dashboard`);
-  };
+  // const navigateToDashboard = () => {
+  //   navigate(`/app/dashboard`);
+  // };
 
-  const navigateToDashboardAdmin = () => {
-    navigate(`/admin/clinics`);
-  };
+  // const navigateToDashboardAdmin = () => {
+  //   navigate(`/admin/clinics`);
+  // };
 
   return (
     <AppBar position="fixed" className="app-bar">

@@ -40,7 +40,6 @@ const DoctorSettingPage: React.FC = () => {
   const axios = api();
   const {
     control,
-    getValues,
     setValue,
     formState: { errors },
     handleSubmit,

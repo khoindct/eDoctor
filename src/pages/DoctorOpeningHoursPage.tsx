@@ -20,7 +20,6 @@ import {
   days,
   IFormInput,
 } from "../components/register-clinic-form/controls.model";
-import { getFormData } from "../helpers/form-data-helper";
 import "./DoctorOpeningHoursPage.scss";
 
 const DoctorOpeningHoursPage: React.FC = () => {

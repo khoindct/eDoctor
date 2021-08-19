@@ -112,7 +112,7 @@ const DashboardPatientPage = () => {
     refetchInterval: false,
   });
 
-  const { data: appointments, isLoading: isAppointmentLoading } = useQuery(
+  const { data: appointments } = useQuery(
     "patientAppointments",
     getPatientAppointments,
     {

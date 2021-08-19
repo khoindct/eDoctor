@@ -133,7 +133,6 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
   open,
   ...other
 }) => {
-  const [value, setValue] = useState(valueProp);
   const [result, setResult] = useState<(number | null)[][]>([[]]); // Array contains hours values according to number of hour fields
   const [state, setState] = useState({
     checkedSunday: false,
@@ -174,12 +173,6 @@ const OpeningHoursDialog: React.FC<IOpeningHoursDialog> = ({
       handleResultChange={handleResultChange}
     />,
   ]); // Input working hours fields
-
-  useEffect(() => {
-    if (!open) {
-      setValue(valueProp);
-    }
-  }, [valueProp, open]);
 
   useEffect(() => {
     // Display hours input

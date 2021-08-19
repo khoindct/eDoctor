@@ -1,7 +1,7 @@
 import { Box, Grid } from "@material-ui/core";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import CustomButton from "../CustomButton";
-import CustomAutoCompleteGoogleMaps from "../CustomGoogleMapAutoComplete";
+// import CustomAutoCompleteGoogleMaps from "../CustomGoogleMapAutoComplete";
 import Map from "../map/Map";
 import SearchLocation from "../map/SearchLocation";
 import { IFormStep } from "./controls.model";
