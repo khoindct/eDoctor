@@ -40,7 +40,6 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
   const { signout } = useActions();
   const [notifications] = useState<NotificationType[]>(notificationData);
   const [notificationsMenu, setNotificationsMenu] = useState<any>(null);
-  // const [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   const [profileMenu, setProfileMenu] = useState<any>(null);
 
   const { authenticated, authorization } = useTypedSelector(
@@ -78,14 +77,6 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
   const navigateToProfile = () => {
     navigate(`/profile/${currentUser._id}`);
   };
-
-  // const navigateToDashboard = () => {
-  //   navigate(`/app/dashboard`);
-  // };
-
-  // const navigateToDashboardAdmin = () => {
-  //   navigate(`/admin/clinics`);
-  // };
 
   return (
     <AppBar position="fixed" className="app-bar">
@@ -144,23 +135,6 @@ const Header: React.FC<HeaderProps> = ({ onMobileNavOpen }) => {
 
         {authenticated && authorization === "patient" && (
           <>
-            {/* <IconButton
-              color="inherit"
-              aria-haspopup="true"
-              aria-controls="mail-menu"
-              onClick={(e) => {
-                setNotificationsMenu(e.currentTarget);
-                setIsNotificationsUnread(false);
-              }}
-            >
-              <Badge
-                classes={{ badge: "header__badge" }}
-                color="secondary"
-                badgeContent={isNotificationsUnread ? notifications.length : 0}
-              >
-                <NotificationsIcon className="header__menu-button" />
-              </Badge>
-            </IconButton> */}
             <IconButton
               aria-haspopup="true"
               color="inherit"

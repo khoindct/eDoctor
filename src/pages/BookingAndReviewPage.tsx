@@ -6,10 +6,13 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  IconButton,
+  Typography,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import CustomCarousel from "../components/CustomCarousel";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
+import SendIcon from "@material-ui/icons/Send";
 import CustomButton from "../components/CustomButton";
 import ReactNiceDate from "../components/ReactNiceDate";
 import DateFnsUtils from "@date-io/date-fns";
@@ -22,7 +25,7 @@ import "./BookingAndReviewPage.scss";
 import CustomTextField from "../components/CustomTextField";
 import { useNavigate, useParams } from "react-router";
 import api from "../api";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import CustomModal from "../components/CustomModal";
@@ -54,6 +57,7 @@ interface IClinicSchedule {
 const BookingAndReviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const {
     control,
     setValue,
@@ -117,6 +121,25 @@ const BookingAndReviewPage = () => {
     }
   );
 
+  const getCurrentUser = async () => {
+    if (!authenticated) {
+      return;
+    }
+    const { data } = await axios.get("/users/current-user");
+    const result = data.data;
+
+    return result;
+  };
+
+  const { isLoading: isCurrentUserLoading, data: currentUser } = useQuery(
+    ["user", authenticated],
+    getCurrentUser,
+    {
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+    }
+  );
+
   const handleDateChange = (date: any) => {
     setSelectedDate(date);
     setValue("bookedDate", new Date(date));
@@ -165,11 +188,12 @@ const BookingAndReviewPage = () => {
 
   const mutationSubmitReply = useMutation(
     (formData: any) => {
-      return axios.post(`/reviews/${formData.reviewId}`, formData.reply);
+      return axios.post(`/reviews/reply/${formData.reviewId}`, formData);
     },
     {
       onSuccess: (data) => {
         // const review = data.data.data.data;
+        queryClient.invalidateQueries("clinicData");
         setValueReply("reply", "");
         setBackdropOpen(false);
       },
@@ -181,10 +205,7 @@ const BookingAndReviewPage = () => {
   );
 
   const handleReplySubmit = async (data: IFormReply) => {
-    const reply = data.reply;
-    const reviewId = data.reviewId;
-    const formData = { reply, reviewId };
-    mutationSubmitReply.mutate(formData as any);
+    mutationSubmitReply.mutate(data as any);
   };
 
   const handleBookFormSubmit = async (data: IFormBooking) => {
@@ -258,7 +279,7 @@ const BookingAndReviewPage = () => {
     setModalErrorOpen(false);
   };
 
-  if (isLoading) {
+  if (isLoading && isCurrentUserLoading) {
     return <span>Loading...</span>;
   }
 
@@ -349,10 +370,7 @@ const BookingAndReviewPage = () => {
 
           {/* Review Form for User */}
           <div className="review-input">
-            <Avatar
-              alt="Remy Sharp"
-              src="../assets/images/default-avatar.jpg"
-            />
+            <Avatar alt={currentUser.name} src={currentUser.avatar.url} />
             <form
               className="review-form"
               onSubmit={handleSubmitComment(handleCommentSubmit)}
@@ -416,12 +434,8 @@ const BookingAndReviewPage = () => {
                 <Grid container key={review._id}>
                   <Grid item xs={1}>
                     <Avatar
-                      alt="Remy Sharp"
-                      // src="../assets/images/default-avatar.jpg"
-                      src={
-                        review?.user?.avatar ||
-                        "../assets/images/default-avatar.jpg"
-                      }
+                      alt={review.user.name}
+                      src={review?.user?.avatar.url}
                     />
                   </Grid>
                   <Grid item xs={11}>
@@ -436,6 +450,45 @@ const BookingAndReviewPage = () => {
                       <div className="comments">{review.review}</div>
                     </Grid>
                   </Grid>
+
+                  {review.replies.length &&
+                    review.replies.map((reply: any) => {
+                      return (
+                        <Grid
+                          key={reply._id}
+                          container
+                          style={{ marginTop: "2rem" }}
+                        >
+                          <Grid item xs={1}></Grid>
+                          <Grid item xs={10}>
+                            <Grid container alignItems="center">
+                              <Grid item xs={1}>
+                                <Avatar
+                                  classes={{ root: "comment__avatar" }}
+                                  alt={`${reply.user.name} is on the screen`}
+                                  src={reply.user.avatar.url}
+                                />
+                              </Grid>
+                              <Grid item xs={10} style={{ marginLeft: "1rem" }}>
+                                <Grid
+                                  container
+                                  direction="column"
+                                  style={{ gap: "1rem" }}
+                                >
+                                  <Typography variant="h4" component="h4">
+                                    {reply.user.name}
+                                  </Typography>
+                                  <Typography variant="h5" component="p">
+                                    {reply.reply}
+                                  </Typography>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      );
+                    })}
+
                   <Grid container style={{ marginTop: "2rem" }}>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={10}>
@@ -443,12 +496,15 @@ const BookingAndReviewPage = () => {
                         <Grid item xs={1}>
                           <Avatar
                             classes={{ root: "comment__avatar" }}
-                            alt="Remy Sharp"
-                            src="../assets/images/default-avatar.jpg"
+                            alt={currentUser.name}
+                            src={currentUser.avatar.url}
                           />
                         </Grid>
                         <Grid item xs={10}>
-                          <form onSubmit={handleSubmitReply(handleReplySubmit)}>
+                          <form
+                            className="form-reply"
+                            onSubmit={handleSubmitReply(handleReplySubmit)}
+                          >
                             <input
                               hidden
                               {...registerReply("reviewId")}
@@ -477,6 +533,9 @@ const BookingAndReviewPage = () => {
                                 )
                               }
                             />
+                            <IconButton type="submit" aria-label="send">
+                              <SendIcon fontSize="large" />
+                            </IconButton>
                           </form>
                         </Grid>
                       </Grid>
