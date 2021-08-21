@@ -3,6 +3,19 @@
   height: 1.5em !important;
 }
 
+div[class^="MUIDataTableSearch-main"],
+div[class*=" MUIDataTableSearch-main"] {
+  align-items: center;
+
+  & > .MuiFormControl-fullWidth > .MuiInput-formControl > .MuiInputBase-input {
+    font-size: 1.5rem !important;
+  }
+}
+
+.MuiTooltip-tooltip {
+  font-size: 1.2rem !important;
+}
+
 .MuiTablePagination-caption,
 .MuiSelect-select.MuiSelect-select {
   font-size: 1.3rem !important;
