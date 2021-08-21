@@ -1,4 +1,4 @@
-import MUIDataTable from "mui-datatables";
+import MUIDataTable, { MUIDataTableOptions } from "mui-datatables";
 import React from "react";
 import "./DataList.scss";
 
@@ -9,15 +9,18 @@ interface IDataList {
 }
 
 const DataList: React.FC<IDataList> = ({ data, columns, title }) => {
+  const options: MUIDataTableOptions = {
+    filterType: "textField",
+    selectableRows: "none",
+    download: "false",
+  };
+
   return (
     <MUIDataTable
       title={title}
       data={data}
       columns={columns}
-      options={{
-        filterType: "textField",
-        download: "false",
-      }}
+      options={options}
     />
   );
 };
