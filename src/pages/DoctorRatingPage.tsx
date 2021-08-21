@@ -31,9 +31,16 @@ const DoctorRatingPage: React.FC = () => {
     );
   }
 
-  if (!reviews.length) {
-    return <div>No data found</div>;
-  }
+  if (!reviews.length)
+    return (
+      <div className="empty-ratings-image">
+        <img
+          src={`${window.location.origin}/assets/images/empty_ratings.svg`}
+          alt="No ratings to be displayed"
+          style={{ width: "50%" }}
+        />
+      </div>
+    );
 
   return (
     <Page className="" title="Rating Dashboard">

@@ -39,6 +39,17 @@ const PatientPage: React.FC = () => {
     );
   }
 
+  if (!bookedUsers.length)
+    return (
+      <div className="empty-patient-image">
+        <img
+          src={`${window.location.origin}/assets/images/empty_patient.svg`}
+          alt="No patient to be displayed"
+          style={{ width: "50%" }}
+        />
+      </div>
+    );
+
   return (
     <Page className="" title="Patients">
       <Box mt={5} />

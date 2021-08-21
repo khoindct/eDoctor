@@ -135,13 +135,33 @@ const SearchClinicPage = () => {
       </section>
       <section className="clinic-section">
         {isLoading && <CircularProgress color="secondary" />}
-        {!clinics.length && "No clinics found"}
-        {clinics.length &&
-          clinics
+        {!clinics.length && (
+          <img
+            src="assets/images/empty_data.svg"
+            alt="Empty data"
+            style={{ width: "50%" }}
+          />
+        )}
+        {!!clinics.length &&
+          (clinics
             .filter((clinic) => clinic.name.toLowerCase().includes(filterInput))
             .map((clinic: any) => (
               <CardClinicDetail key={clinic._id} clinic={clinic} />
-            ))}
+            )).length ? (
+            clinics
+              .filter((clinic) =>
+                clinic.name.toLowerCase().includes(filterInput)
+              )
+              .map((clinic: any) => (
+                <CardClinicDetail key={clinic._id} clinic={clinic} />
+              ))
+          ) : (
+            <img
+              src="assets/images/empty_patient.svg"
+              alt="Empty data"
+              style={{ width: "50%" }}
+            />
+          ))}
       </section>
     </>
   );
