@@ -209,7 +209,7 @@ const DoctorSettingPage: React.FC = () => {
               <Grid item xs={3}>
                 <h6 className="clinic-cover-image-title">Cover image:</h6>
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={4}>
                 <Grid
                   container
                   direction="column"
@@ -223,15 +223,12 @@ const DoctorSettingPage: React.FC = () => {
                         className="clinic-cover-image"
                       />
 
-                      <Button
+                      <CustomButton
                         className="profile__button"
-                        size="medium"
-                        color="secondary"
-                        fullWidth
-                        onClick={handleRemoveCoverImageFile}
+                        callback={handleRemoveCoverImageFile}
                       >
                         Remove Avatar
-                      </Button>
+                      </CustomButton>
                     </>
                   ) : (
                     <>

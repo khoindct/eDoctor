@@ -40,6 +40,7 @@ const StepForm = () => {
     handleSubmit,
   } = useForm<IFormInput>({
     defaultValues: {
+      description: "",
       sunday: [],
       monday: [],
       tuesday: [],

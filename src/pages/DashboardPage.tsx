@@ -79,7 +79,10 @@ const DashboardPage = () => {
       label: "Patient",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        customBodyRender: (value: any) => {
+          return <Typography variant="h5">{value}</Typography>;
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -93,8 +96,15 @@ const DashboardPage = () => {
       name: "bookedDate",
       label: "Appointment Date",
       options: {
-        filter: true,
+        filter: false,
         sort: false,
+        customBodyRender: (value: any) => {
+          return (
+            <Typography variant="h5">
+              {moment(value).format("DD-MM-YYYY")}
+            </Typography>
+          );
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -108,8 +118,11 @@ const DashboardPage = () => {
       name: "bookedTime",
       label: "Booking Time",
       options: {
-        filter: true,
+        filter: false,
         sort: false,
+        customBodyRender: (value: any) => {
+          return <Typography variant="h5">{formatTime(value)}</Typography>;
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -124,7 +137,21 @@ const DashboardPage = () => {
       label: "Status",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        customBodyRender: (value: any) => {
+          const chipStyle = new Map([
+            ["pending", "chip-pending"],
+            ["approved", "chip-success"],
+            ["denied", "chip-cancel"],
+          ]);
+
+          return (
+            <Chip
+              label={value[0].toUpperCase() + value.slice(1)}
+              classes={{ root: chipStyle.get(value) }}
+            />
+          );
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -137,6 +164,20 @@ const DashboardPage = () => {
     {
       name: "actions",
       label: "Actions",
+      options: {
+        customBodyRender: (value: any) => {
+          return (
+            <Button
+              type="button"
+              variant="outlined"
+              color="secondary"
+              onClick={() => handleOpenModal(value)}
+            >
+              View Detail
+            </Button>
+          );
+        },
+      },
     },
   ];
 
@@ -145,43 +186,19 @@ const DashboardPage = () => {
       return [];
     }
 
-    const chipStyle = new Map([
-      ["pending", "chip-pending"],
-      ["approved", "chip-success"],
-      ["denied", "chip-cancel"],
-    ]);
-
     const data = list.map((item) => {
-      return {
-        patient: <Typography variant="h5">{item.user.name}</Typography>,
-        bookedDate: (
-          <Typography variant="h5">
-            {moment(item.bookedDate).format("DD-MM-YYYY")}
-          </Typography>
-        ),
-        bookedTime: (
-          <Typography variant="h5">{formatTime(item.bookedTime)}</Typography>
-        ),
-        status: (
-          <Chip
-            label={item.status[0].toUpperCase() + item.status.slice(1)}
-            classes={{ root: chipStyle.get(item.status) }}
-          />
-        ),
-        actions: (
-          <Button
-            type="button"
-            variant="outlined"
-            color="secondary"
-            onClick={() => handleOpenModal(item._id)}
-          >
-            View Detail
-          </Button>
-        ),
-      };
+      return [
+        item.user.name,
+        item.bookedDate,
+        item.bookedTime,
+        item.status,
+        item._id,
+      ];
     });
     return data;
   };
+
+  // const dataList = getDataList(clinicAppointments);
   const dataList = getDataList(clinicAppointments);
 
   const totalPatient = clinicStatistics?.totalPatients;
