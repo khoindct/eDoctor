@@ -457,7 +457,7 @@ const BookingAndReviewPage = () => {
                     </Grid>
                   </Grid>
 
-                  {review.replies.length &&
+                  {!!review.replies.length &&
                     review.replies.map((reply: any) => {
                       return (
                         <Grid
