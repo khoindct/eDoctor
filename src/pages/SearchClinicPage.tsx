@@ -3,13 +3,14 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import SearchIcon from "@material-ui/icons/Search";
+import DescriptionIcon from "@material-ui/icons/Description";
 import { useQuery } from "react-query";
 import api from "../api/";
 import "./SearchClinicPage.scss";
 
 import CardClinicDetail from "../components/card-clinic-detail/CardClinicDetail";
 import { ChangeEvent, useState } from "react";
-import { Box, CircularProgress, Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import CustomAutoComplete from "../components/CustomAutoComplete";
 
 const SearchClinicPage = () => {
@@ -17,6 +18,7 @@ const SearchClinicPage = () => {
   const [clinics, setClinics] = useState<any[]>([]);
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [searchSymptoms, setSearchSymptoms] = useState<string>();
+  const [searchUserDescription, setSearchUserDescription] = useState<string>();
   const [filterInput, setFilterInput] = useState<string>("");
 
   useEffect(() => {
@@ -26,12 +28,26 @@ const SearchClinicPage = () => {
       });
       const result = data.data.data.data;
       setClinics(result);
-    });
+    }, 300);
     return () => {
       clearTimeout(a);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchSymptoms]);
+
+  useEffect(() => {
+    const a = setTimeout(async () => {
+      const data = await axios.get("clinics/user-description", {
+        params: { diagnosis: searchUserDescription },
+      });
+      const result = data.data.data.data;
+      setClinics(result);
+    }, 300);
+    return () => {
+      clearTimeout(a);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchUserDescription]);
 
   const getClinics = async () => {
     const response = await axios.get("/clinics/approved-clinics");
@@ -55,6 +71,12 @@ const SearchClinicPage = () => {
     setFilterInput(e.target.value);
   };
 
+  const filterDescriptionClinics = (
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    setSearchUserDescription(e.target.value);
+  };
+
   const handleSearchClinicsBySymptoms = (searchSymptoms: string[]) => {
     const data = searchSymptoms.join(",");
     setSearchSymptoms(data);
@@ -67,7 +89,12 @@ const SearchClinicPage = () => {
   return (
     <>
       <section className="search-section">
-        <Grid container alignItems="flex-end" className="search-bar">
+        <Grid
+          container
+          alignItems="flex-end"
+          justify="space-between"
+          className="search-bar"
+        >
           <Grid item md={3}>
             <CustomAutoComplete
               options={symptoms}
@@ -76,11 +103,23 @@ const SearchClinicPage = () => {
               placeholder="Nhập triệu chứng bệnh"
             />
           </Grid>
-          <Box marginLeft="auto" />
-          <Grid item md={8}>
+          <Grid item md={4}>
             <FormControl fullWidth>
               <Input
-                id="input-with-icon-adornment"
+                placeholder="Describe your situation"
+                onChange={(e) => filterDescriptionClinics(e)}
+                classes={{ input: "search-input" }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <DescriptionIcon />
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Grid>
+          <Grid item md={4}>
+            <FormControl fullWidth>
+              <Input
                 placeholder="Search for the clinic by name"
                 onChange={(e) => filterClinics(e)}
                 classes={{ input: "search-input" }}
@@ -94,7 +133,6 @@ const SearchClinicPage = () => {
           </Grid>
         </Grid>
       </section>
-
       <section className="clinic-section">
         {isLoading && <CircularProgress color="secondary" />}
         {!clinics.length && "No clinics found"}
