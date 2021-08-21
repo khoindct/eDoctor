@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const OpeningHoursStep: React.FC<IFormStep> = ({
   handleNext,
   handleBack,
+  getValues,
   setValue,
 }) => {
   const isValid = true;
@@ -37,7 +38,15 @@ const OpeningHoursStep: React.FC<IFormStep> = ({
   ];
 
   useEffect(() => {
-    days.forEach((day) => setValue && setValue(day, []));
+    const values = Array(7).fill([]);
+    values[0] = getValues!("sunday");
+    values[1] = getValues!("monday");
+    values[2] = getValues!("tuesday");
+    values[3] = getValues!("wednesday");
+    values[4] = getValues!("thursday");
+    values[5] = getValues!("friday");
+    values[6] = getValues!("saturday");
+    setOpeningHours(values);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

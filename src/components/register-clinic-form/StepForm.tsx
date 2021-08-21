@@ -38,7 +38,17 @@ const StepForm = () => {
     setValue,
     formState: { errors, isValid },
     handleSubmit,
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    defaultValues: {
+      sunday: [],
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+    },
+  });
 
   // Proceed to next step
   const handleNext = () => setActiveStep((prev) => prev + 1);
