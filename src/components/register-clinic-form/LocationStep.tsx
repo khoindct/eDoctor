@@ -8,11 +8,22 @@ import { IFormStep } from "./controls.model";
 
 const LocationStep: React.FC<IFormStep> = ({
   handleBack,
+  getValues,
   control,
   isValid,
 }) => {
   const { coordinates, location } = useTypedSelector(
     (state) => state.locations
+  );
+
+  const isValidToSubmit = !(
+    getValues!("coverImage") &&
+    getValues!("name") &&
+    getValues!("phone") &&
+    getValues!("specialists")?.length !== 2 &&
+    getValues!("email") &&
+    getValues!("description") &&
+    location
   );
 
   return (
@@ -34,7 +45,9 @@ const LocationStep: React.FC<IFormStep> = ({
             <CustomButton callback={handleBack}>Back</CustomButton>
           </Grid>
           <Grid item xs={6}>
-            <CustomButton type="submit">Submit</CustomButton>
+            <CustomButton isDisabled={isValidToSubmit} type="submit">
+              Submit
+            </CustomButton>
           </Grid>
         </Grid>
       </Box>
