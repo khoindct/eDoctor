@@ -370,7 +370,13 @@ const BookingAndReviewPage = () => {
 
           {/* Review Form for User */}
           <div className="review-input">
-            <Avatar alt={currentUser.name} src={currentUser.avatar.url} />
+            <Avatar
+              alt={currentUser?.name || "Not login user"}
+              src={
+                currentUser?.avatar?.url ||
+                "../assets/images/default-avatar.jpg"
+              }
+            />
             <form
               className="review-form"
               onSubmit={handleSubmitComment(handleCommentSubmit)}
@@ -489,58 +495,60 @@ const BookingAndReviewPage = () => {
                       );
                     })}
 
-                  <Grid container style={{ marginTop: "2rem" }}>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={10}>
-                      <Grid container>
-                        <Grid item xs={1}>
-                          <Avatar
-                            classes={{ root: "comment__avatar" }}
-                            alt={currentUser.name}
-                            src={currentUser.avatar.url}
-                          />
-                        </Grid>
-                        <Grid item xs={10}>
-                          <form
-                            className="form-reply"
-                            onSubmit={handleSubmitReply(handleReplySubmit)}
-                          >
-                            <input
-                              hidden
-                              {...registerReply("reviewId")}
-                              defaultValue={review._id}
+                  {currentUser && (
+                    <Grid container style={{ marginTop: "2rem" }}>
+                      <Grid item xs={1}></Grid>
+                      <Grid item xs={10}>
+                        <Grid container>
+                          <Grid item xs={1}>
+                            <Avatar
+                              classes={{ root: "comment__avatar" }}
+                              alt={currentUser.name}
+                              src={currentUser.avatar.url}
                             />
-                            <Controller
-                              name="reply"
-                              control={controlReply}
-                              defaultValue=""
-                              rules={{
-                                required: "Reply cannot be empty",
-                              }}
-                              render={({ field }) =>
-                                errorsReply.reply ? (
-                                  <CustomTextField
-                                    error={true}
-                                    helperText={errorsReply.reply.message}
-                                    placeholder="Type here to reply..."
-                                    {...field}
-                                  />
-                                ) : (
-                                  <CustomTextField
-                                    placeholder="Type here to reply..."
-                                    {...field}
-                                  />
-                                )
-                              }
-                            />
-                            <IconButton type="submit" aria-label="send">
-                              <SendIcon fontSize="large" />
-                            </IconButton>
-                          </form>
+                          </Grid>
+                          <Grid item xs={10}>
+                            <form
+                              className="form-reply"
+                              onSubmit={handleSubmitReply(handleReplySubmit)}
+                            >
+                              <input
+                                hidden
+                                {...registerReply("reviewId")}
+                                defaultValue={review._id}
+                              />
+                              <Controller
+                                name="reply"
+                                control={controlReply}
+                                defaultValue=""
+                                rules={{
+                                  required: "Reply cannot be empty",
+                                }}
+                                render={({ field }) =>
+                                  errorsReply.reply ? (
+                                    <CustomTextField
+                                      error={true}
+                                      helperText={errorsReply.reply.message}
+                                      placeholder="Type here to reply..."
+                                      {...field}
+                                    />
+                                  ) : (
+                                    <CustomTextField
+                                      placeholder="Type here to reply..."
+                                      {...field}
+                                    />
+                                  )
+                                }
+                              />
+                              <IconButton type="submit" aria-label="send">
+                                <SendIcon fontSize="large" />
+                              </IconButton>
+                            </form>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
+                  )}
                 </Grid>
               ))}
           </div>
