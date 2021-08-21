@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
+import SendIcon from "@material-ui/icons/Send";
 import "./CommentCard.scss";
 import { Controller, useForm } from "react-hook-form";
 import CustomTextField from "../CustomTextField";
@@ -124,6 +125,7 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
           in={expanded}
           timeout="auto"
           unmountOnExit
+          style={{ marginTop: "-3rem" }}
         >
           <Box ml={15}>
             <CardContent className="comment__replies">
@@ -139,7 +141,6 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
                   <Grid item xs={9}>
                     <Grid container direction="column">
                       <h6 className="comment__name">{reply.user.name}</h6>
-                      <Box mt={1} />
                       <p className="comment__content">{reply.reply}</p>
                     </Grid>
                   </Grid>
@@ -154,7 +155,10 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
                   />
                 </Grid>
                 <Grid item xs={9}>
-                  <form onSubmit={handleSubmit(handleReplySubmit)}>
+                  <form
+                    className="form-reply"
+                    onSubmit={handleSubmit(handleReplySubmit)}
+                  >
                     <Controller
                       name="reply"
                       control={control}
@@ -178,6 +182,9 @@ const CommentCard: React.FC<ICommentCard> = ({ review }) => {
                         )
                       }
                     />
+                    <IconButton type="submit" aria-label="send">
+                      <SendIcon fontSize="large" />
+                    </IconButton>
                   </form>
                 </Grid>
               </Grid>
