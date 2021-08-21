@@ -112,7 +112,7 @@ const DashboardPatientPage = () => {
     refetchInterval: false,
   });
 
-  const { data: appointments } = useQuery(
+  const { isLoading: isAppointmentsLoading, data: appointments } = useQuery(
     "patientAppointments",
     getPatientAppointments,
     {
@@ -164,6 +164,10 @@ const DashboardPatientPage = () => {
     const data = getFormData(formData);
     mutationUpdateProfile.mutate(data as any);
   };
+
+  if (isLoading || isAppointmentsLoading) {
+    return <CircularProgress color="secondary" />;
+  }
 
   return (
     <Page className="dashboard-patient-page" title="Dashboard">

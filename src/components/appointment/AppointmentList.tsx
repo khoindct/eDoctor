@@ -13,8 +13,13 @@ const columns = [
     name: "clinic",
     label: "Clinic",
     options: {
-      filter: true,
-      sort: false,
+      customBodyRender: (value: any) => {
+        return (
+          <Typography variant="h5" component="span">
+            {value}
+          </Typography>
+        );
+      },
       setCellHeaderProps: (value: any) => {
         return {
           style: {
@@ -28,8 +33,15 @@ const columns = [
     name: "appDate",
     label: "Appointment Date",
     options: {
-      filter: true,
+      filter: false,
       sort: false,
+      customBodyRender: (value: any) => {
+        return (
+          <Typography variant="h5" component="span">
+            {moment(value).format("DD-MM-YYYY")}
+          </Typography>
+        );
+      },
       setCellHeaderProps: (value: any) => {
         return {
           style: {
@@ -43,8 +55,15 @@ const columns = [
     name: "bookedDate",
     label: "Booking Date",
     options: {
-      filter: true,
+      filter: false,
       sort: false,
+      customBodyRender: (value: any) => {
+        return (
+          <Typography variant="h5" component="span">
+            {moment(value).format("DD-MM-YYYY")}
+          </Typography>
+        );
+      },
       setCellHeaderProps: (value: any) => {
         return {
           style: {
@@ -58,8 +77,15 @@ const columns = [
     name: "bookedTime",
     label: "Booking Time",
     options: {
-      filter: true,
+      filter: false,
       sort: false,
+      customBodyRender: (value: any) => {
+        return (
+          <Typography variant="h5" component="span">
+            {formatTime(value)}
+          </Typography>
+        );
+      },
       setCellHeaderProps: (value: any) => {
         return {
           style: {
@@ -74,7 +100,21 @@ const columns = [
     label: "Status",
     options: {
       filter: true,
-      sort: false,
+      sort: true,
+      customBodyRender: (value: any) => {
+        const chipStyle = new Map([
+          ["pending", "chip-pending"],
+          ["approved", "chip-success"],
+          ["denied", "chip-cancel"],
+        ]);
+
+        return (
+          <Chip
+            label={value[0].toUpperCase() + value.slice(1)}
+            classes={{ root: chipStyle.get(value) }}
+          />
+        );
+      },
       setCellHeaderProps: (value: any) => {
         return {
           style: {
@@ -92,40 +132,9 @@ const AppointmentList: React.FC<IAppointmentList> = ({ appointments }) => {
       return [];
     }
 
-    const chipStyle = new Map([
-      ["pending", "chip-pending"],
-      ["approved", "chip-success"],
-      ["denied", "chip-cancel"],
-    ]);
-
     const data = list.map((appointment) => {
       const { bookedDate, bookedTime, clinic, status, createdAt } = appointment;
-      return {
-        clinic: (
-          <Typography variant="h5" component="span">
-            {clinic.name}
-          </Typography>
-        ),
-        appDate: (
-          <Typography variant="h5" component="span">
-            {moment(createdAt).format("DD-MM-YYYY")}
-          </Typography>
-        ),
-        bookedDate: (
-          <Typography variant="h5" component="span">
-            {moment(bookedDate).format("DD-MM-YYYY")}
-          </Typography>
-        ),
-        bookedTime: (
-          <Typography variant="h5">{formatTime(bookedTime)}</Typography>
-        ),
-        status: (
-          <Chip
-            label={status[0].toUpperCase() + status.slice(1)}
-            classes={{ root: chipStyle.get(status) }}
-          />
-        ),
-      };
+      return [clinic.name, createdAt, bookedDate, bookedTime, status];
     });
     return data;
   };
@@ -140,6 +149,7 @@ const AppointmentList: React.FC<IAppointmentList> = ({ appointments }) => {
       options={{
         filterType: "textField",
         download: "false",
+        selectableRows: "none",
       }}
     />
   );
