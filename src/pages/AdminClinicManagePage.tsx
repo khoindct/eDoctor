@@ -60,7 +60,10 @@ const AdminClinicManagePage = () => {
       label: "Name",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        customBodyRender: (value: any) => {
+          return <Typography variant="h5">{value}</Typography>;
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -76,6 +79,9 @@ const AdminClinicManagePage = () => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: (value: any) => {
+          return <Typography variant="h5">{value}</Typography>;
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -91,6 +97,9 @@ const AdminClinicManagePage = () => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: (value: any) => {
+          return <Typography variant="h5">{value}</Typography>;
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -105,7 +114,21 @@ const AdminClinicManagePage = () => {
       label: "Status",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
+        customBodyRender: (value: any) => {
+          const chipStyle = new Map([
+            ["pending", "chip-pending"],
+            ["approved", "chip-success"],
+            ["denied", "chip-cancel"],
+          ]);
+
+          return (
+            <Chip
+              label={value[0].toUpperCase() + value.slice(1)}
+              classes={{ root: chipStyle.get(value) }}
+            />
+          );
+        },
         setCellHeaderProps: (value: any) => {
           return {
             style: {
@@ -118,6 +141,29 @@ const AdminClinicManagePage = () => {
     {
       name: "action",
       label: "Action",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value: any) => {
+          return (
+            <Button
+              type="button"
+              variant="outlined"
+              color="secondary"
+              onClick={() => handleOpenModal(value)}
+            >
+              View Detail
+            </Button>
+          );
+        },
+        setCellHeaderProps: (value: any) => {
+          return {
+            style: {
+              fontSize: "1.5rem",
+            },
+          };
+        },
+      },
     },
   ];
 
@@ -126,35 +172,10 @@ const AdminClinicManagePage = () => {
       return [];
     }
 
-    const chipStyle = new Map([
-      ["pending", "chip-pending"],
-      ["approved", "chip-success"],
-      ["denied", "chip-cancel"],
-    ]);
-
     const data = list.map((item) => {
-      return {
-        name: <Typography variant="h5">{item.name}</Typography>,
-        phone: <Typography variant="h5">{item.phone}</Typography>,
-        address: <Typography variant="h5">{item.address}</Typography>,
-        status: (
-          <Chip
-            label={item.status[0].toUpperCase() + item.status.slice(1)}
-            classes={{ root: chipStyle.get(item.status) }}
-          />
-        ),
-        action: (
-          <Button
-            type="button"
-            variant="outlined"
-            color="secondary"
-            onClick={() => handleOpenModal(item._id)}
-          >
-            View Detail
-          </Button>
-        ),
-      };
+      return [item.name, item.phone, item.address, item.status, item._id];
     });
+
     return data;
   };
   const dataList = getDataList(clinics);

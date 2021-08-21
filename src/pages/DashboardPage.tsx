@@ -165,6 +165,8 @@ const DashboardPage = () => {
       name: "actions",
       label: "Actions",
       options: {
+        filter: false,
+        sort: false,
         customBodyRender: (value: any) => {
           return (
             <Button
@@ -176,6 +178,13 @@ const DashboardPage = () => {
               View Detail
             </Button>
           );
+        },
+        setCellHeaderProps: (value: any) => {
+          return {
+            style: {
+              fontSize: "1.5rem",
+            },
+          };
         },
       },
     },
